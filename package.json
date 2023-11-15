@@ -1,0 +1,15 @@
+{
+  "name": "quizzes",
+  "version": "1.0.0",
+  "description": "A simple Express, Next, and Ms Sql app.",
+  "main": "npm start",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "quiz",
+    "quizzes"
+  ],
+  "author": "Patrick MacDonald, Larissa Borsari",
+  "license": "ISC"
+}
