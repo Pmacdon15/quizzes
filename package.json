@@ -11,5 +11,13 @@
     "quizzes"
   ],
   "author": "Patrick MacDonald, Larissa Borsari",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@azure/msal-node": "^2.5.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
