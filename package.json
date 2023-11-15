@@ -4,7 +4,9 @@
   "description": "A simple Express, Next, and Ms Sql app.",
   "main": "npm start",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && node server.js",
+    "client": "cd client && npm run dev"
   },
   "keywords": [
     "quiz",
