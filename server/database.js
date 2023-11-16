@@ -1,19 +1,32 @@
 const sql = require('mssql');
 
+// Connection configuration
 const config = {
-    user: 'pmacd',
-    password: 'asdfghjkl3388',
-    server: 'Workstation',
-    database: 'test',
-    options: {
-        encrypt: true
-    }
+  user: 'pmacd',
+  password: 'asdfghjkl3388',
+  server: 'WORKSTATION', // You can use 'localhost' if SQL Server is on your local machine
+  database: 'test',
+  options: {
+    encrypt: true, // Use this if you're on Windows Azure
+    trustServerCertificate: true,
+  },
 };
 
-sql.connect(config, err => {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log('Connected to SQL Server');
-});
+// Connect to the database
+sql.connect(config)
+  .then((pool) => {
+    console.log('Connected to the database');
+
+    // Execute a simple query
+    return pool.request().query('SELECT 1 as Result');
+  })
+  .then((result) => {
+    console.log('Query Result:', result.recordset[0].Result);
+  })
+  .catch((err) => {
+    console.error('Error:', err);
+  })
+  .finally(() => {
+    // Close the connection pool
+    sql.close();
+  });
