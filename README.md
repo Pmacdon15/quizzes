@@ -59,7 +59,7 @@ This project Requires a .env file setup in the following manner to connect to th
 
  ```.env
 
-MSSQL_SERVER=' '
+MSSQL_SERVER='localhost'
 MSSQL_USER=' '
 MSSQL_PASSWORD=' '
 MSSQL_DATABASE='quizzes'

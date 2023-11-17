@@ -1,11 +1,16 @@
 const sql = require('mssql');
 
+const dotenv = require("dotenv");
+const path = require("path");
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
 // Connection configuration
 const config = {
-  user: 'pmacd',
-  password: 'asdfghjkl3388',
-  server: 'WORKSTATION',
-  database: 'quizzes',
+  user:process.env.MSSQL_USER,
+  password: process.env.MSSQL_PASSWORD,
+  server: process.env.MSSQL_HOST,
+  database:  process.env.MSSQL_DATABASE,
   options: {
     encrypt: true,
     trustServerCertificate: true,
@@ -23,7 +28,7 @@ async function connectToDatabase() {
   } catch (err) {
     console.error('Error connecting to the database:', err);
   }
-}
+} 
 
 // Function to get tests
 async function getTests() {
@@ -74,7 +79,7 @@ async function initialize() {
   //await getTests();
   //await getQuestions();
   //await getQuestionsByTestId(1);
-  await getAnswersByQuestionId(2);
+  await getAnswersByQuestionId(3);
 }
 
 // Call the initialization function

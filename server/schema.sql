@@ -8,16 +8,15 @@ CREATE TABLE tests (
     test_id INT PRIMARY KEY,
     test_name VARCHAR(50) NOT NULL
 );
-
 CREATE TABLE questions (
     question_id INT PRIMARY KEY,
-    test_id INT FOREIGN KEY REFERENCES tests(test_id),
+    test_id INT FOREIGN KEY REFERENCES tests(test_id) ON DELETE CASCADE,
     question_text VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE answers (
     answer_id INT PRIMARY KEY,
-    question_id INT FOREIGN KEY REFERENCES questions(question_id),
+    question_id INT FOREIGN KEY REFERENCES questions(question_id) ON DELETE CASCADE,
     answer_text VARCHAR(100) NOT NULL,
     correct BIT NOT NULL
 );
