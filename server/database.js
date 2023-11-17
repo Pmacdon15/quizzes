@@ -70,21 +70,21 @@ module.exports = {
       console.log(error);
     }
   },
-};
 
-async function getAnswersByQuestionId(question_id) {
-  try {
-    const result = await pool
-      .request()
-      .query(
-        `SELECT * FROM quizzes.dbo.answers WHERE question_id = ${question_id}`
-      );
-    console.dir(result.recordset);
-    return result.recordset;
-  } catch (error) {
-    console.log(error);
-  }
-}
+  async getAnswersByQuestionId(question_id) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.answers WHERE question_id = ${question_id}`
+        );
+      console.dir(result.recordset);
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+};
 
 //* For testing functions b4 exporting
 // // Connect to the database and then call the functions

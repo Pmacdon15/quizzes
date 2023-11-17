@@ -7,7 +7,8 @@ const cors = require('cors');
 const {
     connectToDatabase,
     getTests,
-    getQuestionsByTestId
+    getQuestionsByTestId,
+    getAnswersByQuestionId
 } = require("./database");
 
 app.use(express.json());
@@ -30,6 +31,11 @@ app.get('/tests', async (req, res) => {
 app.get('/questions/:test_id', async (req, res) => {
     const questions = await getQuestionsByTestId(req.params.test_id);
     res.json(questions);
+});
+
+app.get('/answers/:question_id', async (req, res) => {
+    const answers = await getAnswersByQuestionId(req.params.question_id);
+    res.json(answers);
 });
 
 app.listen(port, () => {
