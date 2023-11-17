@@ -1,14 +1,13 @@
-
-
 const express = require('express');
 const app = express();
-const port = 5544;
+const port = 5544; 
 const path = require('path');
 const cors = require('cors');
 
 const {
     connectToDatabase,
-    getTests
+    getTests,
+    getQuestionsByTestId
 } = require("./database");
 
 app.use(express.json());
@@ -22,11 +21,17 @@ app.use(cors({
 
 // Start connection to DB
 connectToDatabase();
+
 app.get('/tests', async (req, res) => {
     const tests = await getTests();
     res.json(tests);
 });
 
-app.listen(5544, () => {
-    console.log("Server is listening on port 5544");
+app.get('/questions/:test_id', async (req, res) => {
+    const questions = await getQuestionsByTestId(req.params.test_id);
+    res.json(questions);
+});
+
+app.listen(port, () => {
+    console.log("Server is listening on port "+ port);
   });
