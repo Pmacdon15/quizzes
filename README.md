@@ -53,7 +53,7 @@ npm install
 
 ## Database
 
-This project requires a Ms Sql database connection. After downloading and installing Ms Sql, Configure your database and take note of the credentials. There is a file in the repository, in quizzes/server, named schema.sql that has the configuration for the Ms Sql database. Simply copy and paste this code in to the Ms Sql terminal after logging on to the database.
+This project requires a Ms Sql database connection. After downloading and installing Ms Sql, Configure your database and take note of the credentials. There is a file in the repository, in quizzes/server, named schema.sql that has the configuration for the Ms Sql database. Simply copy and paste this code in to the Ms Sql query terminal after logging on to the database and execute to set up the database.
 
 This project Requires a .env file setup in the following manner to connect to the database(using the credentials that you set up the database with): 
 
