@@ -20,18 +20,19 @@ const config = {
 // Create a pool object
 const pool = new sql.ConnectionPool(config);
 
+module.exports = {
 // Function to connect to the database
-async function connectToDatabase() {
+async connectToDatabase() {
   try {
     await pool.connect();
     console.log('Connected to the database');
   } catch (err) {
     console.error('Error connecting to the database:', err);
   }
-} 
+} ,
 
 // Function to get tests
-async function getTests() {
+async getTests() {
   try {
     const result = await pool.request().query('SELECT * FROM quizzes.dbo.tests');
     console.dir(result.recordset);
@@ -40,7 +41,7 @@ async function getTests() {
     console.log(error);
   }
 }
-
+}
 // Function to get questions
 async function getQuestions() {
   try {
@@ -73,14 +74,14 @@ async function getAnswersByQuestionId(question_id) {
 }
 
 
-// Connect to the database and then call the functions
-async function initialize() {
-  await connectToDatabase();
-  //await getTests();
-  //await getQuestions();
-  //await getQuestionsByTestId(1);
-  await getAnswersByQuestionId(3);
-}
+// // Connect to the database and then call the functions
+// async function initialize() {
+//   await connectToDatabase();
+//   //await getTests();
+//   //await getQuestions();
+//   //await getQuestionsByTestId(1);
+//   await getAnswersByQuestionId(3);
+// }
 
-// Call the initialization function
-initialize();
+// // Call the initialization function
+// initialize();
