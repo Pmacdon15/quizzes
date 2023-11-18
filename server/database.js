@@ -20,6 +20,15 @@ const config = {
 const pool = new sql.ConnectionPool(config);
 
 module.exports = {
+   // Function to connect to the database
+   async connectToDatabase() {
+    try {
+      await pool.connect();
+      console.log("Connected to the database");
+    } catch (err) {
+      console.error("Error connecting to the database:", err);
+    }
+  },
   // Function for login
   async login(email, password) {
     try {
@@ -51,6 +60,22 @@ module.exports = {
       console.log(error);
     }
   },
+  // Function to add admin user
+  async registerUserAdmin(email, first_name, last_name, password) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `INSERT INTO quizzes.dbo.users (email, first_name, last_name, password, admin) VALUES ('${email}', '${first_name}', '${last_name}', '${password}', 'true' )`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Admin registered successfully");
+      }
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   // Function to delete user
   async deleteUser(email) {
     try {
@@ -64,17 +89,7 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
-  },
-  // Function to connect to the database
-  async connectToDatabase() {
-    try {
-      await pool.connect();
-      console.log("Connected to the database");
-    } catch (err) {
-      console.error("Error connecting to the database:", err);
-    }
-  },
-
+  }, 
   // Function to get tests
   async getTests() {
     try {
@@ -87,7 +102,6 @@ module.exports = {
       console.log(error);
     }
   },
-
   async getQuestionsByTestId(test_id) {
     try {
       const result = await pool
@@ -101,7 +115,6 @@ module.exports = {
       console.log(error);
     }
   },
-
   async getAnswersByQuestionId(question_id) {
     try {
       const result = await pool

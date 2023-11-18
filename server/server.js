@@ -8,6 +8,7 @@ const {
     connectToDatabase,
     login,
     registerUser,
+    registerUserAdmin,
     deleteUser,    
     getTests,
     getQuestionsByTestId,
@@ -35,6 +36,12 @@ app.post('/login', async (req, res) => {
 app.post('/user', async (req, res) => {
     const { email, first_name, last_name, password } = req.body;
     const users = await registerUser(email, first_name, last_name, password);
+    res.json(users);
+});
+
+app.post('/userAdmin', async (req, res) => {
+    const { email, first_name, last_name, password } = req.body;
+    const users = await registerUserAdmin(email, first_name, last_name, password);
     res.json(users);
 });
 
