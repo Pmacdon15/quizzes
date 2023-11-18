@@ -5,6 +5,7 @@ const port = 5544;
 const cors = require('cors');
 
 const {
+    login,
     connectToDatabase,
     getTests,
     getQuestionsByTestId,
@@ -22,6 +23,12 @@ app.use(cors({
 
 // Start connection to DB
 connectToDatabase();
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const users = await login(email, password);
+    res.json(users);
+});
 
 app.get('/tests', async (req, res) => {
     const tests = await getTests();

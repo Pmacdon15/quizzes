@@ -20,6 +20,21 @@ const config = {
 const pool = new sql.ConnectionPool(config);
 
 module.exports = {
+  // Function for login
+  async login(email, password) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.users WHERE email= '${email}' AND password = '${password}'`
+        );
+      delete result.recordset[0].password;
+      console.dir(result.recordset);
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   // Function to connect to the database
   async connectToDatabase() {
     try {
@@ -42,21 +57,7 @@ module.exports = {
       console.log(error);
     }
   },
-
-  //* might not be needed
-  // Function to get questions
-  // async getQuestions() {
-  //   try {
-  //     const result = await pool
-  //       .request()
-  //       .query("SELECT * FROM quizzes.dbo.questions");
-  //     console.dir(result.recordset);
-  //     return result.recordset;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
+  
   async getQuestionsByTestId(test_id) {
     try {
       const result = await pool
@@ -86,14 +87,14 @@ module.exports = {
   },
 };
 
-//* For testing functions b4 exporting
+// //* For testing functions b4 exporting
 // // Connect to the database and then call the functions
 // async function initialize() {
 //   await module.exports.connectToDatabase();
 //   //await getTests();
 //   //await getQuestions();
 //   //await getQuestionsByTestId(1);
-//   await getAnswersByQuestionId(3);
+//   await module.exports.login("user@example.com", "hashed_password");
 // }
 
 // // Call the initialization function
