@@ -12,6 +12,7 @@ const {
     updatePassword,
     deleteUser,    
     getTests,
+    addTest,
     getQuestionsByTestId,
     getAnswersByQuestionId
 } = require("./database");
@@ -60,6 +61,12 @@ app.delete('/user/:email', async (req, res) => {
 
 app.get('/tests', async (req, res) => {
     const tests = await getTests();
+    res.json(tests);
+});
+
+app.post('/test', async (req, res) => {
+    const { test_name } = req.body;
+    const tests = await addTest(test_name);
     res.json(tests);
 });
 

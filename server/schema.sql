@@ -14,9 +14,10 @@ CREATE TABLE users (
 );
 
 CREATE TABLE tests (
-    test_id INT PRIMARY KEY,
+    test_id INT IDENTITY(1,1) PRIMARY KEY,
     test_name VARCHAR(50) NOT NULL
 );
+
 CREATE TABLE questions (
     question_id INT PRIMARY KEY,
     test_id INT FOREIGN KEY REFERENCES tests(test_id) ON DELETE CASCADE,
@@ -36,7 +37,7 @@ VALUES
     ('user@example.com', 'Regular', 'User', 'password', 0);
 
 
-INSERT INTO tests (test_id, test_name) VALUES (1, 'Math'), (2, 'Places'), (3, 'Shapes');
+INSERT INTO tests (test_name) VALUES ('Math'), ('Places'), ('Shapes');
 
 INSERT INTO questions (question_id, test_id, question_text) VALUES
     (1, 1, 'What is 1 + 1?'),

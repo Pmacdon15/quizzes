@@ -119,6 +119,22 @@ module.exports = {
       console.log(error);
     }
   },
+  // Function to add test
+  async addTest(test_name) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `INSERT INTO quizzes.dbo.tests (test_name) VALUES ('${test_name}')`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Test added successfully");
+      }
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   async getQuestionsByTestId(test_id) {
     try {
       const result = await pool
