@@ -76,6 +76,23 @@ module.exports = {
       console.log(error);
     }
   },
+  // Function update password
+  async updatePassword(email, password) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `UPDATE quizzes.dbo.users SET password = '${password}' WHERE email = '${email}'`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Password updated successfully");
+      }
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   // Function to delete user
   async deleteUser(email) {
     try {

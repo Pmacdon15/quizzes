@@ -9,6 +9,7 @@ const {
     login,
     registerUser,
     registerUserAdmin,
+    updatePassword,
     deleteUser,    
     getTests,
     getQuestionsByTestId,
@@ -44,6 +45,13 @@ app.post('/userAdmin', async (req, res) => {
     const users = await registerUserAdmin(email, first_name, last_name, password);
     res.json(users);
 });
+
+app.put('/user/:email', async (req, res) => {
+    const { password } = req.body;
+    const users = await updatePassword(req.params.email, password);
+    res.json(users);
+});
+
 
 app.delete('/user/:email', async (req, res) => {
     const users = await deleteUser(req.params.email);
