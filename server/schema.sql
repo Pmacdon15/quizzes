@@ -5,7 +5,7 @@ USE quizzes;
 GO
 
 CREATE TABLE users (
-    user_id INT PRIMARY KEY,
+    user_id INT IDENTITY(1,1) PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -30,10 +30,10 @@ CREATE TABLE answers (
     correct BIT NOT NULL
 );
 
-INSERT INTO users (user_id, email, first_name, last_name, password, admin) 
+INSERT INTO users (email, first_name, last_name, password, admin) 
 VALUES 
-    (1, 'admin@example.com', 'Admin', 'User', 'hashed_password', 1),
-    (2, 'user@example.com', 'Regular', 'User', 'hashed_password', 0);
+    ('admin@example.com', 'Admin', 'User', 'password', 1),
+    ('user@example.com', 'Regular', 'User', 'password', 0);
 
 
 INSERT INTO tests (test_id, test_name) VALUES (1, 'Math'), (2, 'Places'), (3, 'Shapes');

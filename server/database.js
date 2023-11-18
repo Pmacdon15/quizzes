@@ -35,6 +35,23 @@ module.exports = {
       console.log(error);
     }
   },
+  // Function to register user
+  async registerUser(email, first_name, last_name, password) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `INSERT INTO quizzes.dbo.users (email, first_name, last_name, password, admin) VALUES ('${email}', '${first_name}', '${last_name}', '${password}', 'false' )`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("User registered successfully");
+      } 
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   // Function to connect to the database
   async connectToDatabase() {
     try {
@@ -57,7 +74,7 @@ module.exports = {
       console.log(error);
     }
   },
-  
+
   async getQuestionsByTestId(test_id) {
     try {
       const result = await pool
@@ -87,14 +104,17 @@ module.exports = {
   },
 };
 
-// //* For testing functions b4 exporting
+//* For testing functions b4 exporting
 // // Connect to the database and then call the functions
 // async function initialize() {
 //   await module.exports.connectToDatabase();
-//   //await getTests();
-//   //await getQuestions();
-//   //await getQuestionsByTestId(1);
-//   await module.exports.login("user@example.com", "hashed_password");
+  
+//   await module.exports.registerUser(
+//     "new3@example.com",
+//     "bob1",
+//     "henry1",
+//     "password"
+//   );
 // }
 
 // // Call the initialization function
