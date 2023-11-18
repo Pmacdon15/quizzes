@@ -14,6 +14,7 @@ const {
     getTests,
     addTest,
     getQuestionsByTestId,
+    addQuestionByTestId,
     getAnswersByQuestionId
 } = require("./database");
 
@@ -73,6 +74,12 @@ app.post('/test', async (req, res) => {
 app.get('/questions/:test_id', async (req, res) => {
     const questions = await getQuestionsByTestId(req.params.test_id);
     res.json(questions);
+});
+
+app.post('/question/:test_id', async (req, res) => {
+    const { question_text} = req.body;
+    const question = await addQuestionByTestId(req.params.test_id, question_text);
+    res.json(question);
 });
 
 app.get('/answers/:question_id', async (req, res) => {

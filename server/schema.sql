@@ -21,13 +21,13 @@ CREATE TABLE tests (
 CREATE TABLE questions (
     question_id INT IDENTITY(1,1) PRIMARY KEY,
     test_id INT FOREIGN KEY REFERENCES tests(test_id) ON DELETE CASCADE,
-    question_text VARCHAR(100) NOT NULL
+    question_text VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE answers (
     answer_id INT IDENTITY(1,1) PRIMARY KEY,
     question_id INT FOREIGN KEY REFERENCES questions(question_id) ON DELETE CASCADE,
-    answer_text VARCHAR(100) NOT NULL,
+    answer_text VARCHAR(250) NOT NULL,
     correct BIT NOT NULL
 );
 

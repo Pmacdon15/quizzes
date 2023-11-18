@@ -20,8 +20,8 @@ const config = {
 const pool = new sql.ConnectionPool(config);
 
 module.exports = {
-   // Function to connect to the database
-   async connectToDatabase() {
+  // Function to connect to the database
+  async connectToDatabase() {
     try {
       await pool.connect();
       console.log("  Connected to the database");
@@ -106,7 +106,7 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
-  }, 
+  },
   // Function to get tests
   async getTests() {
     try {
@@ -119,6 +119,7 @@ module.exports = {
       console.log(error);
     }
   },
+
   // Function to add test
   async addTest(test_name) {
     try {
@@ -135,6 +136,8 @@ module.exports = {
       console.log(error);
     }
   },
+
+  // Function to get questions by test id
   async getQuestionsByTestId(test_id) {
     try {
       const result = await pool
@@ -148,6 +151,24 @@ module.exports = {
       console.log(error);
     }
   },
+
+  // Function to add question by test id
+  async addQuestionByTestId(test_id, question_text) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `INSERT INTO quizzes.dbo.questions (test_id, question_text) VALUES ('${test_id}', '${question_text}')`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Question added successfully");
+      }
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   async getAnswersByQuestionId(question_id) {
     try {
       const result = await pool
