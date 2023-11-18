@@ -4,6 +4,16 @@ GO
 USE quizzes;
 GO
 
+CREATE TABLE users (
+    user_id INT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    admin BIT NOT NULL
+);
+
+
 CREATE TABLE tests (
     test_id INT PRIMARY KEY,
     test_name VARCHAR(50) NOT NULL
@@ -20,6 +30,12 @@ CREATE TABLE answers (
     answer_text VARCHAR(100) NOT NULL,
     correct BIT NOT NULL
 );
+
+INSERT INTO users (user_id, email, first_name, last_name, password, admin) 
+VALUES 
+    (1, 'admin@example.com', 'Admin', 'User', 'hashed_password', 1),
+    (2, 'user@example.com', 'Regular', 'User', 'hashed_password', 0);
+
 
 INSERT INTO tests (test_id, test_name) VALUES (1, 'Math'), (2, 'Places'), (3, 'Shapes');
 

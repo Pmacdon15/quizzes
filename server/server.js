@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 5544; 
-const path = require('path');
+// const path = require('path');
 const cors = require('cors');
 
 const {
@@ -40,4 +40,4 @@ app.get('/answers/:question_id', async (req, res) => {
 
 app.listen(port, () => {
     console.log("Server is listening on port "+ port);
-  });
+});
