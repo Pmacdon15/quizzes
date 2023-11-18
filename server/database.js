@@ -137,6 +137,23 @@ module.exports = {
     }
   },
 
+  // Function to edit test_id
+  async editTest(test_name, new_test_name) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `UPDATE quizzes.dbo.tests SET test_name = '${new_test_name}' WHERE test_name = '${test_name}'`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Test edited successfully");
+      }
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   // Function to get questions by test id
   async getQuestionsByTestId(test_id) {
     try {
@@ -169,6 +186,7 @@ module.exports = {
     }
   },
 
+  // Function to get answers by question id
   async getAnswersByQuestionId(question_id) {
     try {
       const result = await pool
@@ -182,6 +200,7 @@ module.exports = {
       console.log(error);
     }
   },
+
 };
 
 //* For testing functions b4 exporting

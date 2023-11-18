@@ -13,6 +13,7 @@ const {
     deleteUser,    
     getTests,
     addTest,
+    editTest,
     getQuestionsByTestId,
     addQuestionByTestId,
     getAnswersByQuestionId
@@ -71,16 +72,28 @@ app.post('/test', async (req, res) => {
     res.json(tests);
 });
 
+app.put('/test/:test_name', async (req, res) => {
+    const { new_test_name } = req.body;
+    const tests = await editTest(req.params.test_name, new_test_name);
+    res.json(tests);
+});
+
 app.get('/questions/:test_id', async (req, res) => {
     const questions = await getQuestionsByTestId(req.params.test_id);
     res.json(questions);
 });
 
-app.post('/question/:test_id', async (req, res) => {
+app.post('/question/test_id', async (req, res) => {
     const { question_text} = req.body;
     const question = await addQuestionByTestId(req.params.test_id, question_text);
     res.json(question);
 });
+
+// app.put('/question/:question_id', async (req, res) => {
+//     const { question_text} = req.body;
+//     const question = await editQuestion(req.params.question_id, question_text);
+//     res.json(question);
+// });
 
 app.get('/answers/:question_id', async (req, res) => {
     const answers = await getAnswersByQuestionId(req.params.question_id);
