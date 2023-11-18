@@ -45,13 +45,26 @@ module.exports = {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("User registered successfully");
-      } 
+      }
       return result.recordset;
     } catch (error) {
       console.log(error);
     }
   },
-
+  // Function to delete user
+  async deleteUser(email) {
+    try {
+      const result = await pool
+        .request()
+        .query(`DELETE FROM quizzes.dbo.users WHERE email = '${email}'`);
+      if (result.rowsAffected[0] === 1) {
+        console.log("User deleted successfully");
+      }
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   // Function to connect to the database
   async connectToDatabase() {
     try {
@@ -108,7 +121,7 @@ module.exports = {
 // // Connect to the database and then call the functions
 // async function initialize() {
 //   await module.exports.connectToDatabase();
-  
+
 //   await module.exports.registerUser(
 //     "new3@example.com",
 //     "bob1",

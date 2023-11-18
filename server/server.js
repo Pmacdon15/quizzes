@@ -7,7 +7,8 @@ const cors = require('cors');
 const {
     connectToDatabase,
     login,
-    registerUser,    
+    registerUser,
+    deleteUser,    
     getTests,
     getQuestionsByTestId,
     getAnswersByQuestionId
@@ -31,9 +32,14 @@ app.post('/login', async (req, res) => {
     res.json(users);
 });
 
-app.post('/register', async (req, res) => {
+app.post('/user', async (req, res) => {
     const { email, first_name, last_name, password } = req.body;
     const users = await registerUser(email, first_name, last_name, password);
+    res.json(users);
+});
+
+app.delete('/user/:email', async (req, res) => {
+    const users = await deleteUser(req.params.email);
     res.json(users);
 });
 
