@@ -13,7 +13,6 @@ CREATE TABLE users (
     admin BIT NOT NULL
 );
 
-
 CREATE TABLE tests (
     test_id INT PRIMARY KEY,
     test_name VARCHAR(50) NOT NULL
@@ -65,14 +64,14 @@ INSERT INTO answers (answer_id, question_id, answer_text, correct) VALUES
     
     -- Answers for Question 2
     (5, 2, '3', 0),
-    (6, 2, '4', 0),
+    (6, 2, '4', 1),
     (7, 2, '5', 0),
-    (8, 2, '6', 1),
+    (8, 2, '6', 0),
     
     -- Answers for Question 3
     (9, 3, '4', 0),
-    (10, 3, '6', 0),
-    (11, 3, '9', 1),
+    (10, 3, '6', 1),
+    (11, 3, '9', 0),
     (12, 3, '12', 0),
     
     -- Answers for Question 4
@@ -83,8 +82,8 @@ INSERT INTO answers (answer_id, question_id, answer_text, correct) VALUES
     
     -- Answers for Question 5
     (17, 5, '9', 0),
-    (18, 5, '10', 0),
-    (19, 5, '11', 1),
+    (18, 5, '10', 1),
+    (19, 5, '11', 0),
     (20, 5, '15', 0),
     
     -- Answers for Question 6
