@@ -155,12 +155,12 @@ module.exports = {
   },
 
   // Function to get questions by test id
-  async getQuestionsByTestId(test_id) {
+  async getQuestionsByTestName(test_name) {
     try {
       const result = await pool
         .request()
         .query(
-          `SELECT * FROM quizzes.dbo.questions WHERE test_id = ${test_id}`
+          `SELECT * FROM quizzes.dbo.questions WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}')`
         );
       console.dir(result.recordset);
       return result.recordset;

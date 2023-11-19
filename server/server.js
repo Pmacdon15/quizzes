@@ -14,7 +14,7 @@ const {
     getTests,
     addTest,
     editTest,
-    getQuestionsByTestId,
+    getQuestionsByTestName,
     addQuestionByTestId,
     getAnswersByQuestionId
 } = require("./database");
@@ -85,9 +85,9 @@ app.put('/test/:test_name', async (req, res) => {
     res.json(tests);
 });
 
-// Get questions by test id
-app.get('/questions/:test_id', async (req, res) => {
-    const questions = await getQuestionsByTestId(req.params.test_id);
+// Get questions by test name
+app.get('/questions/:test_name', async (req, res) => {
+    const questions = await getQuestionsByTestName(req.params.test_name);
     res.json(questions);
 });
 
