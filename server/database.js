@@ -186,6 +186,23 @@ module.exports = {
     }
   },
 
+  // Function to edit question by question id
+  async editQuestionByQuestionId(question_id, question_text) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `UPDATE quizzes.dbo.questions SET question_text = '${question_text}' WHERE question_id = '${question_id}'`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Question edited successfully");
+      }
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   // Function to get answers by question id
   async getAnswersByQuestionId(question_id) {
     try {

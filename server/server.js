@@ -16,6 +16,7 @@ const {
     editTest,
     getQuestionsByTestName,
     addQuestionByTestName,
+    editQuestionByQuestionId,
     getAnswersByQuestionId
 } = require("./database");
 
@@ -98,13 +99,14 @@ app.post('/question/:test_name', async (req, res) => {
     res.json(question);
 });
 
+// Edit question by by question id
+app.put('/question/:question_id', async (req, res) => {
+    const { question_text } = req.body;
+    const question = await editQuestionByQuestionId(req.params.question_id, question_text);
+    res.json(question);
+});
 
-// app.put('/question/:question_id', async (req, res) => {
-//     const { question_text} = req.body;
-//     const question = await editQuestion(req.params.question_id, question_text);
-//     res.json(question);
-// });
-
+// Get answers by question id
 app.get('/answers/:question_id', async (req, res) => {
     const answers = await getAnswersByQuestionId(req.params.question_id);
     res.json(answers);
