@@ -4,24 +4,7 @@ const port = 5544;
 const cors = require("cors");
 
 // Import functions from database.js
-const {
-  connectToDatabase,
-  login,
-  registerUser,
-  registerUserAdmin,
-  updatePassword,
-  deleteUser,
-  getTests,
-  addTest,
-  editTest,
-  getQuestionsByTestName,
-  addQuestionByTestName,
-  editQuestionByQuestionId,
-  getAnswersByQuestionId,
-  addAnswerByQuestionId,
-  editAnswerByAnswerId,
-  deleteAnswerByAnswerId,
-} = require("./database");
+const Database = require("./database.js");
 
 // Import function from graphic.js
 const { displayGraphic } = require("./graphic");
@@ -39,72 +22,72 @@ app.use(
 );
 
 // Start connection to DB
-connectToDatabase();
+Database.connectToDatabase();
 
 // Login
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const users = await login(email, password);
+  const users = await Database.login(email, password);
   res.json(users);
 });
 
 // Register user
 app.post("/user", async (req, res) => {
   const { email, first_name, last_name, password } = req.body;
-  const users = await registerUser(email, first_name, last_name, password);
+  const users = await Database.registerUser(email, first_name, last_name, password);
   res.json(users);
 });
 
 // Register admin user
 app.post("/userAdmin", async (req, res) => {
   const { email, first_name, last_name, password } = req.body;
-  const users = await registerUserAdmin(email, first_name, last_name, password);
+  const users = await Database.registerUserAdmin(email, first_name, last_name, password);
   res.json(users);
 });
 
 // Update password
 app.put("/user/:email", async (req, res) => {
   const { new_password } = req.body;
-  const users = await updatePassword(req.params.email, new_password);
+  const users = await Database.updatePassword(req.params.email, new_password);
   res.json(users);
 });
 
 // Delete user
 app.delete("/user/:email", async (req, res) => {
-  const users = await deleteUser(req.params.email);
+  const users = await Database.deleteUser(req.params.email);
   res.json(users);
 });
 
 // Get all tests
 app.get("/tests", async (req, res) => {
-  const tests = await getTests();
+  const tests = await Database.getTests();
   res.json(tests);
 });
 
 // Add test
 app.post("/test", async (req, res) => {
   const { test_name } = req.body;
-  const tests = await addTest(test_name);
+  const tests = await Database.addTest(test_name);
   res.json(tests);
 });
 
 // Edit test name
 app.put("/test/:test_name", async (req, res) => {
   const { new_test_name } = req.body;
-  const tests = await editTest(req.params.test_name, new_test_name);
+  const tests = await Database.editTest(req.params.test_name, new_test_name);
   res.json(tests);
 });
 
 // Get questions by test name
 app.get("/questions/:test_name", async (req, res) => {
-  const questions = await getQuestionsByTestName(req.params.test_name);
+  const questions = await Database.getQuestionsByTestName(req.params.test_name);
   res.json(questions);
 });
 
 // Add question by test name
 app.post("/question/:test_name", async (req, res) => {
   const { question_text } = req.body;
-  const question = await addQuestionByTestName(
+  const question = await Database.addQuestionByTestName(
     req.params.test_name,
     question_text
   );
@@ -114,25 +97,39 @@ app.post("/question/:test_name", async (req, res) => {
 // Edit question by by question id
 app.put("/question/:question_id", async (req, res) => {
   const { question_text } = req.body;
-  const question = await editQuestionByQuestionId(
+  const question = await Database.editQuestionByQuestionId(
     req.params.question_id,
     question_text
   );
   res.json(question);
 });
 
+// Delete question by question id
+app.delete("/question/:question_id", async (req, res) => {
+  const question = await Database.deleteQuestionByQuestionId(
+    req.params.question_id
+  );
+  res.json(question);
+});
+
+// Get all answers
+app.get("/answers", async (req, res) => {
+  const answers = await Database.getAnswers();
+  res.json(answers);
+});
+
 // Get answers by question id
-app.get("/answers/:question_id", async (req, res) => {
-  const answers = await getAnswersByQuestionId(req.params.question_id);
+app.get("/answer/:question_id", async (req, res) => {
+  const answers = await Database.getAnswersByQuestionId(req.params.question_id);
   res.json(answers);
 });
 
 // Add answer by question id
 app.post("/answer/:question_id", async (req, res) => {
-  const { answer_text, correct } = req.body;
-  const answer = await addAnswerByQuestionId(
+  const { new_answer_text, correct } = req.body;
+  const answer = await Database.addAnswerByQuestionId(
     req.params.question_id,
-    answer_text,
+    new_answer_text,
     correct
   );
   res.json(answer);
@@ -141,7 +138,7 @@ app.post("/answer/:question_id", async (req, res) => {
 // Edit answer by answer id
 app.put("/answer/:answer_id", async (req, res) => {
   const { new_answer_text, correct } = req.body;
-  const answer = await editAnswerByAnswerId(
+  const answer = await Database.editAnswerByAnswerId(
     req.params.answer_id,
     new_answer_text,
     correct
@@ -151,7 +148,7 @@ app.put("/answer/:answer_id", async (req, res) => {
 
 // Delete answer by answer id
 app.delete("/answer/:answer_id", async (req, res) => {
-  const answer = await deleteAnswerByAnswerId(req.params.answer_id);
+  const answer = await Database.deleteAnswerByAnswerId(req.params.answer_id);
   res.json(answer);
 });
 
