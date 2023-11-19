@@ -24,7 +24,8 @@ module.exports = {
   async connectToDatabase() {
     try {
       await pool.connect();
-      console.log("  Connected to the database");
+      console.log('\x1b[33mConnected to the database!!\x1b[0m');
+
     } catch (err) {
       console.error("Error connecting to the database:", err);
     }
@@ -247,6 +248,23 @@ module.exports = {
         console.log("Answer edited successfully");
       }
       // Todo decide if i want to return anything other than a console log
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  // Function to delete answer by answer id
+  async deleteAnswerByAnswerId(answer_id) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `DELETE FROM quizzes.dbo.answers WHERE answer_id = '${answer_id}'`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Answer deleted successfully");
+      }
       return result.recordset;
     } catch (error) {
       console.log(error);
