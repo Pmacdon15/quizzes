@@ -217,6 +217,23 @@ module.exports = {
       console.log(error);
     }
   },
+  
+  // Function to add answer by question id
+  async addAnswerByQuestionId(question_id, answer_text, correct) {
+    try {
+        const result = await pool
+            .request()
+            .query(
+                `INSERT INTO quizzes.dbo.answers (question_id, answer_text, correct) VALUES (${question_id}, '${answer_text}', '${correct}')`
+            );
+        if (result.rowsAffected[0] === 1) {
+            console.log("Answer added successfully");
+        }
+        return result.recordset;
+    } catch (error) {
+        console.log(error);
+    }
+},
 
 };
 
