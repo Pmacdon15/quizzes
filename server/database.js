@@ -170,12 +170,12 @@ module.exports = {
   },
 
   // Function to add question by test id
-  async addQuestionByTestId(test_id, question_text) {
+  async addQuestionByTestName(test_name, question_text) {
     try {
       const result = await pool
         .request()
         .query(
-          `INSERT INTO quizzes.dbo.questions (test_id, question_text) VALUES ('${test_id}', '${question_text}')`
+          `INSERT INTO quizzes.dbo.questions (test_id, question_text) VALUES ((SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}'), '${question_text}')`
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Question added successfully");
