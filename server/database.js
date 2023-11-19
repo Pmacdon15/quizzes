@@ -217,23 +217,41 @@ module.exports = {
       console.log(error);
     }
   },
-  
+
   // Function to add answer by question id
   async addAnswerByQuestionId(question_id, answer_text, correct) {
     try {
-        const result = await pool
-            .request()
-            .query(
-                `INSERT INTO quizzes.dbo.answers (question_id, answer_text, correct) VALUES (${question_id}, '${answer_text}', '${correct}')`
-            );
-        if (result.rowsAffected[0] === 1) {
-            console.log("Answer added successfully");
-        }
-        return result.recordset;
+      const result = await pool
+        .request()
+        .query(
+          `INSERT INTO quizzes.dbo.answers (question_id, answer_text, correct) VALUES (${question_id}, '${answer_text}', '${correct}')`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Answer added successfully");
+      }
+      return result.recordset;
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-},
+  },
+
+  // Function to edit answer by answer id
+  async editAnswerByAnswerId(answer_id, new_answer_text, correct) {
+    try {
+      const result = await pool
+        .request()
+        .query(
+          `UPDATE quizzes.dbo.answers SET answer_text = '${new_answer_text}', correct = '${correct}' WHERE answer_id = '${answer_id}'`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Answer edited successfully");
+      }
+      // Todo decide if i want to return anything other than a console log
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
 };
 

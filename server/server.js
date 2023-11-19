@@ -18,7 +18,8 @@ const {
     addQuestionByTestName,
     editQuestionByQuestionId,
     getAnswersByQuestionId,
-    addAnswerByQuestionId
+    addAnswerByQuestionId,
+    editAnswerByAnswerId,
 } = require("./database");
 
 app.use(express.json());
@@ -117,6 +118,13 @@ app.get('/answers/:question_id', async (req, res) => {
 app.post('/answer/:question_id', async (req, res) => {
     const { answer_text, correct } = req.body;
     const answer = await addAnswerByQuestionId(req.params.question_id, answer_text, correct);
+    res.json(answer);
+});
+
+// Edit answer by answer id
+app.put('/answer/:answer_id', async (req, res) => {
+    const { new_answer_text, correct } = req.body;
+    const answer = await editAnswerByAnswerId(req.params.answer_id, new_answer_text, correct);
     res.json(answer);
 });
 
