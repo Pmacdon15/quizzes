@@ -31,58 +31,67 @@ app.use(cors({
 // Start connection to DB
 connectToDatabase();
 
+// Login 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const users = await login(email, password);
     res.json(users);
 });
 
+// Register user
 app.post('/user', async (req, res) => {
     const { email, first_name, last_name, password } = req.body;
     const users = await registerUser(email, first_name, last_name, password);
     res.json(users);
 });
 
+// Register admin user
 app.post('/userAdmin', async (req, res) => {
     const { email, first_name, last_name, password } = req.body;
     const users = await registerUserAdmin(email, first_name, last_name, password);
     res.json(users);
 });
 
+// Update password
 app.put('/user/:email', async (req, res) => {
-    const { password } = req.body;
-    const users = await updatePassword(req.params.email, password);
+    const { new_password } = req.body;
+    const users = await updatePassword(req.params.email, new_password);
     res.json(users);
 });
 
-
+// Delete user
 app.delete('/user/:email', async (req, res) => {
     const users = await deleteUser(req.params.email);
     res.json(users);
 });
 
+// Get all tests
 app.get('/tests', async (req, res) => {
     const tests = await getTests();
     res.json(tests);
 });
 
+// Add test
 app.post('/test', async (req, res) => {
     const { test_name } = req.body;
     const tests = await addTest(test_name);
     res.json(tests);
 });
 
+// Edit test name 
 app.put('/test/:test_name', async (req, res) => {
     const { new_test_name } = req.body;
     const tests = await editTest(req.params.test_name, new_test_name);
     res.json(tests);
 });
 
+// Get questions by test id
 app.get('/questions/:test_id', async (req, res) => {
     const questions = await getQuestionsByTestId(req.params.test_id);
     res.json(questions);
 });
 
+// Add question by test id
 app.post('/question/test_id', async (req, res) => {
     const { question_text} = req.body;
     const question = await addQuestionByTestId(req.params.test_id, question_text);

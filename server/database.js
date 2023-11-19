@@ -77,12 +77,12 @@ module.exports = {
     }
   },
   // Function update password
-  async updatePassword(email, password) {
+  async updatePassword(email, new_password) {
     try {
       const result = await pool
         .request()
         .query(
-          `UPDATE quizzes.dbo.users SET password = '${password}' WHERE email = '${email}'`
+          `UPDATE quizzes.dbo.users SET password = '${new_password}' WHERE email = '${email}'`
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Password updated successfully");
