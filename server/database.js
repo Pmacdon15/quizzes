@@ -19,6 +19,7 @@ const config = {
 // Create a pool object
 const pool = new sql.ConnectionPool(config);
 
+// Todo functions other then get do not return anything other than a console log, not sure this is an issue
 module.exports = {
   // Function to connect to the database
   async connectToDatabase() {
@@ -273,18 +274,3 @@ module.exports = {
 
 };
 
-//* For testing functions b4 exporting
-// // Connect to the database and then call the functions
-// async function initialize() {
-//   await module.exports.connectToDatabase();
-
-//   await module.exports.registerUser(
-//     "new3@example.com",
-//     "bob1",
-//     "henry1",
-//     "password"
-//   );
-// }
-
-// // Call the initialization function
-// initialize();

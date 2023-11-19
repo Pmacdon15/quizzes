@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 const port = 5544;
-// const path = require('path');
 const cors = require("cors");
 
+// Import functions from database.js
 const {
   connectToDatabase,
   login,
@@ -23,11 +23,14 @@ const {
   deleteAnswerByAnswerId,
 } = require("./database");
 
+// Import function from graphic.js
 const { displayGraphic } = require("./graphic");
 
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// CORS for cross-origin requests
 app.use(
   cors({
     origin: "http://localhost:3000",
