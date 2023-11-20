@@ -282,11 +282,11 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Answer edited successfully");
-      }
-      // Todo decide if i want to return anything other than a console log
+      }      
       return result.recordset;
     } catch (error) {
       console.log(error);
+      return 0;
     }
   }
 
