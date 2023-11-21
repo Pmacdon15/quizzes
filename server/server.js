@@ -27,35 +27,75 @@ Database.connectToDatabase();
 // Login
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const users = await Database.login(email, password);
-  res.json(users);
+  const user = await Database.login(email, password);
+  if (user === null || user === undefined) {
+    res.status(400).send("Something when wrong with login");
+  } else {
+    res.status(200).json(user);
+  }
+});
+
+// Get user by email
+app.get("/user/:email", async (req, res) => {
+  const user = await Database.getUsersByEmail(req.params.email);
+  if (user === null || user === undefined) {
+    res.status(400).send("Something when wrong with login");
+  } else {
+    res.status(200).json(user);
+  }
 });
 
 // Register user
 app.post("/user", async (req, res) => {
   const { email, first_name, last_name, password } = req.body;
-  const users = await Database.registerUser(email, first_name, last_name, password);
-  res.json(users);
+  const user = await Database.registerUser(
+    email,
+    first_name,
+    last_name,
+    password
+  );
+  if (user === null || user === undefined) {
+    res.status(400).send("Something when wrong with adding a user.");
+  } else {
+    res.status(200).json(user);
+  }
 });
 
 // Register admin user
 app.post("/userAdmin", async (req, res) => {
   const { email, first_name, last_name, password } = req.body;
-  const users = await Database.registerUserAdmin(email, first_name, last_name, password);
-  res.json(users);
+  const users = await Database.registerUserAdmin(
+    email,
+    first_name,
+    last_name,
+    password
+  );
+  if (users === null || users === undefined) {
+    res.status(400).send("Something when wrong with adding an admin user.");
+  } else {
+    res.status(200).json(users);
+  }
 });
 
 // Update password
 app.put("/user/:email", async (req, res) => {
   const { new_password } = req.body;
   const users = await Database.updatePassword(req.params.email, new_password);
-  res.json(users);
+  if (users === null || users === undefined) {
+    res.status(400).send("Something when wrong with updating password.");
+  } else {
+    res.status(200).json(users);
+  }
 });
 
 // Delete user
 app.delete("/user/:email", async (req, res) => {
   const users = await Database.deleteUser(req.params.email);
-  res.json(users);
+  if (users === null || users === undefined) {
+    res.status(400).send("Something when wrong with deleting user.");
+  } else {
+    res.status(200).json(users);
+  }
 });
 
 // Get all tests

@@ -3,11 +3,10 @@ const dotenv = require("dotenv");
 const path = require("path");
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
-const database = process.env.MSSQL_DATABASE
+const database = process.env.MSSQL_DATABASE;
 
 class Database {
   constructor() {
-   
     const config = {
       user: process.env.MSSQL_USER,
       password: process.env.MSSQL_PASSWORD,
@@ -32,7 +31,7 @@ class Database {
       console.error("Error connecting to the database:", err);
     }
   }
-  
+
   // Function for login
   async login(email, password) {
     try {
@@ -42,7 +41,20 @@ class Database {
           `SELECT * FROM quizzes.dbo.users WHERE email= '${email}' AND password = '${password}'`
         );
       delete result.recordset[0].password;
-      console.dir(result.recordset);
+      console.log("User logged in successfully");
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Function to get users By email
+  async getUsersByEmail(email) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(`SELECT * FROM quizzes.dbo.users WHERE email = '${email}'`);
+      delete result.recordset[0].password;
       return result.recordset;
     } catch (error) {
       console.log(error);
@@ -59,8 +71,10 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("User registered successfully");
+        const user = this.getUsersByEmail(email);
+        return user;
+        //return result.recordset;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
@@ -76,8 +90,9 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Admin registered successfully");
+        const user = this.getUsersByEmail(email);
+        return user;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
@@ -86,15 +101,19 @@ class Database {
   // Function update password
   async updatePassword(email, new_password) {
     try {
+      if (new_password === undefined) {
+        console.log("New password is undefined. Cannot update password.");
+        throw new Error("New password is undefined. Cannot update password.");
+      }
       const result = await this.pool
         .request()
         .query(
           `UPDATE quizzes.dbo.users SET password = '${new_password}' WHERE email = '${email}'`
         );
-      if (result.rowsAffected[0] === 1) {
-        console.log("Password updated successfully");
-      }
-      return result.recordset;
+
+      console.log("Password updated successfully");
+      const user = this.getUsersByEmail(email);
+      return user;
     } catch (error) {
       console.log(error);
     }
@@ -103,13 +122,14 @@ class Database {
   // Function to delete user
   async deleteUser(email) {
     try {
+      const user = this.getUsersByEmail(email);
       const result = await this.pool
         .request()
         .query(`DELETE FROM quizzes.dbo.users WHERE email = '${email}'`);
       if (result.rowsAffected[0] === 1) {
         console.log("User deleted successfully");
-      }
-      return result.recordset;
+        return user;        
+      }      
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +147,7 @@ class Database {
       console.log(error);
     }
   }
-  
+
   // Function to add test
   async addTest(test_name) {
     try {
@@ -226,7 +246,7 @@ class Database {
       console.log(error);
     }
   }
-  
+
   // Function to get all answers
   async getAnswers() {
     try {
@@ -282,7 +302,7 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Answer edited successfully");
-      }      
+      }
       return result.recordset;
     } catch (error) {
       console.log(error);
@@ -306,6 +326,6 @@ class Database {
       console.log(error);
     }
   }
-};
+}
 
 module.exports = new Database();
