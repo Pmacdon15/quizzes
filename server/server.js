@@ -229,7 +229,11 @@ app.put("/answer/:answer_id", async (req, res) => {
 // Delete answer by answer id
 app.delete("/answer/:answer_id", async (req, res) => {
   const answer = await Database.deleteAnswerByAnswerId(req.params.answer_id);
-  res.json(answer);
+  if (answer === null || answer === undefined) {
+    res.status(400).send("Something when wrong with deleting an answer.");
+  } else {
+    res.status(200).json(answer);
+  }
 });
 
 // Start server

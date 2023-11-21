@@ -405,6 +405,7 @@ class Database {
   // Function to delete answer by answer id
   async deleteAnswerByAnswerId(answer_id) {
     try {
+      const deleted_answer = await this.getAnswerByAnswerId(answer_id);
       const result = await this.pool
         .request()
         .query(
@@ -412,8 +413,8 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Answer deleted successfully");
+        return deleted_answer;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
