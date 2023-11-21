@@ -141,7 +141,22 @@ class Database {
       const result = await this.pool
         .request()
         .query("SELECT * FROM quizzes.dbo.tests");
-      console.dir(result.recordset);
+      //console.dir(result.recordset);
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Function to get tests by test name
+  async getTestsByName(test_name) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.tests WHERE test_name = '${test_name}'`
+        );
+      //console.dir(result);
       return result.recordset;
     } catch (error) {
       console.log(error);
@@ -171,18 +186,23 @@ class Database {
     }
   }
 
-  // Function to edit test_id
+  // Function to edit test name by test name
   async editTest(test_name, new_test_name) {
     try {
+      if (new_test_name === undefined){
+        throw new Error("New test name is undefined. Cannot edit test.");
+      }
       const result = await this.pool
         .request()
         .query(
           `UPDATE quizzes.dbo.tests SET test_name = '${new_test_name}' WHERE test_name = '${test_name}'`
         );
+        //console.log("Generated SQL query:", query);
       if (result.rowsAffected[0] === 1) {
         console.log("Test edited successfully");
-      }
-      return result.recordset;
+        const test = this.getTestsByName(new_test_name);
+        return test;
+      }      
     } catch (error) {
       console.log(error);
     }
@@ -335,3 +355,4 @@ class Database {
 }
 
 module.exports = new Database();
+ 

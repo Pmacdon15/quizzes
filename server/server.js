@@ -122,8 +122,13 @@ app.post("/test", async (req, res) => {
 // Edit test name
 app.put("/test/:test_name", async (req, res) => {
   const { new_test_name } = req.body;
-  const tests = await Database.editTest(req.params.test_name, new_test_name);
-  res.json(tests);
+  //console.log(req.params.test_name);
+  const test = await Database.editTest(req.params.test_name, new_test_name);
+  if (test === null || test === undefined) {
+    res.status(400).send("Something when wrong with editing a test.");
+  } else {
+    res.status(200).json(test);
+  }
 });
 
 // Get questions by test name
