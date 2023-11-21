@@ -128,8 +128,8 @@ class Database {
         .query(`DELETE FROM quizzes.dbo.users WHERE email = '${email}'`);
       if (result.rowsAffected[0] === 1) {
         console.log("User deleted successfully");
-        return user;        
-      }      
+        return user;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -180,7 +180,6 @@ class Database {
         const test = this.getTests();
         return test;
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -189,7 +188,7 @@ class Database {
   // Function to edit test name by test name
   async editTest(test_name, new_test_name) {
     try {
-      if (new_test_name === undefined){
+      if (new_test_name === undefined) {
         throw new Error("New test name is undefined. Cannot edit test.");
       }
       const result = await this.pool
@@ -197,12 +196,12 @@ class Database {
         .query(
           `UPDATE quizzes.dbo.tests SET test_name = '${new_test_name}' WHERE test_name = '${test_name}'`
         );
-        //console.log("Generated SQL query:", query);
+      //console.log("Generated SQL query:", query);
       if (result.rowsAffected[0] === 1) {
         console.log("Test edited successfully");
         const test = this.getTestsByName(new_test_name);
         return test;
-      }      
+      }
     } catch (error) {
       console.log(error);
     }
@@ -216,8 +215,11 @@ class Database {
         .query(
           `SELECT * FROM quizzes.dbo.questions WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}')`
         );
-      console.dir(result.recordset);
-      return result.recordset;
+      if (result.recordset.length > 0 ){
+        console.log("Questions retrieved successfully");
+        console.dir(result.recordset);
+        return result.recordset;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -355,4 +357,3 @@ class Database {
 }
 
 module.exports = new Database();
- 

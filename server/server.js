@@ -39,7 +39,7 @@ app.post("/login", async (req, res) => {
 app.get("/user/:email", async (req, res) => {
   const user = await Database.getUsersByEmail(req.params.email);
   if (user === null || user === undefined) {
-    res.status(400).send("Something when wrong with login");
+    res.status(400).send("Something when wrong with getting user.");
   } else {
     res.status(200).json(user);
   }
@@ -121,8 +121,7 @@ app.post("/test", async (req, res) => {
 
 // Edit test name
 app.put("/test/:test_name", async (req, res) => {
-  const { new_test_name } = req.body;
-  //console.log(req.params.test_name);
+  const { new_test_name } = req.body;  
   const test = await Database.editTest(req.params.test_name, new_test_name);
   if (test === null || test === undefined) {
     res.status(400).send("Something when wrong with editing a test.");
@@ -134,7 +133,11 @@ app.put("/test/:test_name", async (req, res) => {
 // Get questions by test name
 app.get("/questions/:test_name", async (req, res) => {
   const questions = await Database.getQuestionsByTestName(req.params.test_name);
-  res.json(questions);
+  if (questions === null || questions === undefined) {
+    res.status(400).send("Something when wrong with getting questions.");
+  } else {
+    res.status(200).json(questions);
+  }
 });
 
 // Add question by test name
