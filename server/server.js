@@ -189,7 +189,11 @@ app.get("/answers", async (req, res) => {
 // Get answers by question id
 app.get("/answer/:question_id", async (req, res) => {
   const answers = await Database.getAnswersByQuestionId(req.params.question_id);
-  res.json(answers);
+  if (answers === null || answers === undefined) {
+    res.status(400).send("Something when wrong with getting answers.");
+  } else {
+    res.status(200).json(answers);
+  }
 });
 
 // Add answer by question id
