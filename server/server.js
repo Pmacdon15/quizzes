@@ -101,14 +101,22 @@ app.delete("/user/:email", async (req, res) => {
 // Get all tests
 app.get("/tests", async (req, res) => {
   const tests = await Database.getTests();
-  res.json(tests);
+  if (tests === null || tests === undefined) {
+    res.status(400).send("Something when wrong with getting tests.");
+  } else {
+    res.status(200).json(tests);
+  }  
 });
 
 // Add test
 app.post("/test", async (req, res) => {
   const { test_name } = req.body;
   const tests = await Database.addTest(test_name);
-  res.json(tests);
+  if (tests === null || tests === undefined) {
+    res.status(400).send("Something when wrong with adding a test.");
+  } else {
+    res.status(200).json(tests);
+  }
 });
 
 // Edit test name

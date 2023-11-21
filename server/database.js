@@ -102,7 +102,7 @@ class Database {
   async updatePassword(email, new_password) {
     try {
       if (new_password === undefined) {
-        console.log("New password is undefined. Cannot update password.");
+        //console.log("New password is undefined. Cannot update password.");
         throw new Error("New password is undefined. Cannot update password.");
       }
       const result = await this.pool
@@ -151,6 +151,10 @@ class Database {
   // Function to add test
   async addTest(test_name) {
     try {
+      if (test_name === undefined) {
+        //console.log("Test name is undefined. Cannot add test.");
+        throw new Error("Test name is undefined. Cannot add test.");
+      }
       const result = await this.pool
         .request()
         .query(
@@ -158,8 +162,10 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Test added successfully");
+        const test = this.getTests();
+        return test;
       }
-      return result.recordset;
+      
     } catch (error) {
       console.log(error);
     }
