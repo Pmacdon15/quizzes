@@ -215,9 +215,27 @@ class Database {
         .query(
           `SELECT * FROM quizzes.dbo.questions WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}')`
         );
-      if (result.recordset.length > 0 ){
+      if (result.recordset.length > 0) {
         console.log("Questions retrieved successfully");
-        console.dir(result.recordset);
+        //console.dir(result.recordset);
+        return result.recordset;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Function to get question by question id
+  async getQuestionByQuestionId(question_id) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.questions WHERE question_id = '${question_id}'`
+        );
+      if (result.recordset.length > 0) {
+        //console.log("Question retrieved successfully");
+        //console.dir(result.recordset);
         return result.recordset;
       }
     } catch (error) {
@@ -228,6 +246,9 @@ class Database {
   // Function to add question by test id
   async addQuestionByTestName(test_name, question_text) {
     try {
+      if (question_text === undefined) {
+        throw new Error("Question text is undefined. Cannot add question.");
+      }
       const result = await this.pool
         .request()
         .query(
@@ -235,8 +256,14 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Question added successfully");
+        const question_id = await this.pool
+          .request()
+          .query(
+            `SELECT question_id FROM quizzes.dbo.questions WHERE question_text = '${question_text}'`
+          );        
+        const question = await this.getQuestionByQuestionId(question_id.recordset[0].question_id); // Await here
+        return question;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }

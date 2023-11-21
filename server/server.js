@@ -147,7 +147,11 @@ app.post("/question/:test_name", async (req, res) => {
     req.params.test_name,
     question_text
   );
-  res.json(question);
+  if (question === null || question === undefined) {
+    res.status(400).send("Something when wrong with adding a question.");
+  } else {
+    res.status(200).json(question);
+  }  
 });
 
 // Edit question by by question id
