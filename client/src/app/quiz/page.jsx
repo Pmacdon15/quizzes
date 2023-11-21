@@ -21,9 +21,6 @@ useEffect(() => {
   fetchQuestions();
 }, [])
 
-console.log(questions)
-
-
   return (
     <div className="container">
     <ThemeProvider theme={theme}>
