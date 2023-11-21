@@ -234,7 +234,7 @@ class Database {
           `SELECT * FROM quizzes.dbo.questions WHERE question_id = '${question_id}'`
         );
       if (result.recordset.length > 0) {
-        //console.log("Question retrieved successfully");       
+        //console.log("Question retrieved successfully");
         return result.recordset;
       }
     } catch (error) {
@@ -303,7 +303,7 @@ class Database {
       if (result.rowsAffected[0] === 1) {
         console.log("Question deleted successfully");
         return deletedQuestion;
-      }      
+      }
     } catch (error) {
       console.log(error);
     }
@@ -337,18 +337,44 @@ class Database {
     }
   }
 
+  // Function to get answer by answer id
+  async getAnswerByAnswerId(answer_id) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.answers WHERE answer_id = '${answer_id}'`
+        );
+      //console.dir(result.recordset);
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // Function to add answer by question id
   async addAnswerByQuestionId(question_id, answer_text, correct) {
     try {
+      if (answer_text === undefined || correct === undefined) {
+        throw new Error("Field Answer_text or correct is undefined. Cannot add answer.");
+      }      
       const result = await this.pool
         .request()
         .query(
           `INSERT INTO quizzes.dbo.answers (question_id, answer_text, correct) VALUES (${question_id}, '${answer_text}', '${correct}')`
         );
+      const answer_id = await this.pool
+        .request()
+        .query(
+          `SELECT answer_id FROM quizzes.dbo.answers WHERE answer_text = '${answer_text}'`
+        );
       if (result.rowsAffected[0] === 1) {
         console.log("Answer added successfully");
+        const answer = await this.getAnswerByAnswerId(
+          answer_id.recordset[0].answer_id
+        );
+        return answer;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }

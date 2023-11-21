@@ -26,7 +26,7 @@ CREATE TABLE questions (
 
 CREATE TABLE answers (
     answer_id INT IDENTITY(1,1) PRIMARY KEY,
-    question_id INT FOREIGN KEY REFERENCES questions(question_id) ON DELETE CASCADE,
+    question_id INT FOREIGN KEY REFERENCES questions(question_id) ON DELETE CASCADE NOT NULL,
     answer_text VARCHAR(250) NOT NULL,
     correct BIT NOT NULL
 );

@@ -204,7 +204,11 @@ app.post("/answer/:question_id", async (req, res) => {
     new_answer_text,
     correct
   );
-  res.json(answer);
+  if (answer === null || answer === undefined) {
+    res.status(400).send("Something when wrong with adding an answer.");
+  }else {
+    res.status(200).json(answer);
+  }
 });
 
 // Edit answer by answer id
