@@ -383,18 +383,22 @@ class Database {
   // Function to edit answer by answer id
   async editAnswerByAnswerId(answer_id, new_answer_text, correct) {
     try {
+      if (new_answer_text === undefined || correct === undefined) {
+        throw new Error("Field 'new_answer_text' or 'correct' is undefined. Cannot edit answer.");
+      }
       const result = await this.pool
         .request()
         .query(
           `UPDATE quizzes.dbo.answers SET answer_text = '${new_answer_text}', correct = '${correct}' WHERE answer_id = '${answer_id}'`
-        );
+        );       
       if (result.rowsAffected[0] === 1) {
         console.log("Answer edited successfully");
+        const answer = await this.getAnswerByAnswerId(answer_id);
+        return answer;
       }
-      return result.recordset;
+      
     } catch (error) {
-      console.log(error);
-      return 0;
+      console.log(error);      
     }
   }
 
