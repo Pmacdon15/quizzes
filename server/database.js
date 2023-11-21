@@ -260,8 +260,10 @@ class Database {
           .request()
           .query(
             `SELECT question_id FROM quizzes.dbo.questions WHERE question_text = '${question_text}'`
-          );        
-        const question = await this.getQuestionByQuestionId(question_id.recordset[0].question_id); // Await here
+          );
+        const question = await this.getQuestionByQuestionId(
+          question_id.recordset[0].question_id
+        ); // Await here
         return question;
       }
     } catch (error) {
@@ -272,6 +274,9 @@ class Database {
   // Function to edit question by question id
   async editQuestionByQuestionId(question_id, question_text) {
     try {
+      if (question_text === undefined) {
+        throw new Error("Question text is undefined. Cannot edit question.");
+      }
       const result = await this.pool
         .request()
         .query(
@@ -279,12 +284,14 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Question edited successfully");
+        const question = await this.getQuestionByQuestionId(question_id);
+        return question;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
   }
+
   // Function to delete question by question id
   async deleteQuestionByQuestionId(question_id) {
     try {

@@ -156,12 +156,16 @@ app.post("/question/:test_name", async (req, res) => {
 
 // Edit question by by question id
 app.put("/question/:question_id", async (req, res) => {
-  const { question_text } = req.body;
+  const { new_question_text } = req.body;
   const question = await Database.editQuestionByQuestionId(
     req.params.question_id,
-    question_text
+    new_question_text
   );
-  res.json(question);
+  if (question === null || question === undefined) {
+    res.status(400).send("Something when wrong with editing a question.");
+  } else {
+    res.status(200).json(question);
+  }
 });
 
 // Delete question by question id
