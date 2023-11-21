@@ -234,8 +234,7 @@ class Database {
           `SELECT * FROM quizzes.dbo.questions WHERE question_id = '${question_id}'`
         );
       if (result.recordset.length > 0) {
-        //console.log("Question retrieved successfully");
-        //console.dir(result.recordset);
+        //console.log("Question retrieved successfully");       
         return result.recordset;
       }
     } catch (error) {
@@ -295,6 +294,7 @@ class Database {
   // Function to delete question by question id
   async deleteQuestionByQuestionId(question_id) {
     try {
+      const deletedQuestion = await this.getQuestionByQuestionId(question_id);
       const result = await this.pool
         .request()
         .query(
@@ -302,8 +302,8 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Question deleted successfully");
-      }
-      return result.recordset;
+        return deletedQuestion;
+      }      
     } catch (error) {
       console.log(error);
     }

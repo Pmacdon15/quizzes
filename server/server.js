@@ -105,7 +105,7 @@ app.get("/tests", async (req, res) => {
     res.status(400).send("Something when wrong with getting tests.");
   } else {
     res.status(200).json(tests);
-  }  
+  }
 });
 
 // Add test
@@ -121,7 +121,7 @@ app.post("/test", async (req, res) => {
 
 // Edit test name
 app.put("/test/:test_name", async (req, res) => {
-  const { new_test_name } = req.body;  
+  const { new_test_name } = req.body;
   const test = await Database.editTest(req.params.test_name, new_test_name);
   if (test === null || test === undefined) {
     res.status(400).send("Something when wrong with editing a test.");
@@ -151,7 +151,7 @@ app.post("/question/:test_name", async (req, res) => {
     res.status(400).send("Something when wrong with adding a question.");
   } else {
     res.status(200).json(question);
-  }  
+  }
 });
 
 // Edit question by by question id
@@ -173,7 +173,11 @@ app.delete("/question/:question_id", async (req, res) => {
   const question = await Database.deleteQuestionByQuestionId(
     req.params.question_id
   );
-  res.json(question);
+  if (question === null || question === undefined) {
+    res.status(400).send("Something when wrong with deleting a question.");
+  } else {
+    res.status(200).json(question);
+  }
 });
 
 // Get all answers
