@@ -6,22 +6,22 @@ import CssBaseline from '@mui/material/CssBaseline';
 import axios from 'axios';
 
 const index = () => {
-const [questions,setQuestions] = useState([]);
+const [tests, setTests] = useState([]);
 
 useEffect(() => {
-  const fetchQuestions = async() => {
+  const fetchTests = async() => {
     try{
-      const response = await axios.get("/questions/Math");
-      setQuestions(response.data);
+      const response = await axios.get("http://localhost:5544/tests");
+      setTests(response.data);
     }
     catch (error){
       console.error('Failed to get questions: ', error);
     }
   }
-  fetchQuestions();
+  fetchTests();
 }, [])
 
-console.log(questions)
+console.log(tests)
 
 
   return (
@@ -30,9 +30,9 @@ console.log(questions)
       <CssBaseline />
     <h1>Quiz Page</h1>
     <ul>
-    {questions.map((question) => (
-            <li key={question.question_id}>
-              {question.question_text}
+    {tests.map((test) => (
+            <li key={test.test_id}>
+              {test.test_name}
             </li>
           ))}
     </ul>
