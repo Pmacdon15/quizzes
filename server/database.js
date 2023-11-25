@@ -338,41 +338,21 @@ class Database {
   // }
 
   // Function to get answers by test name
- // Function to get answers by test name
-async getAnswersByTestName(test_name) {
-  try {
-    const questionResult = await this.pool
-      .request()
-      .query(`
-        SELECT question_id
-        FROM quizzes.dbo.questions
-        WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}')
-      `);
-
-    if (questionResult.recordset.length > 0) {
-      const question_id = questionResult.recordset[0].question_id;
-
-      const answerResult = await this.pool
+  async getAnswersByTestName(test_name) {
+    try {
+      const result = await this.pool
         .request()
-        .query(`
-          SELECT *
-          FROM quizzes.dbo.answers
-          WHERE question_id = ${question_id}
-        `);
-
-      if (answerResult.recordset.length > 0) {
-        console.log("Answers retrieved successfully");
-        return answerResult.recordset;
-      }
+        .query(
+          `SELECT * FROM quizzes.dbo.answers WHERE question_id IN (SELECT question_id FROM quizzes.dbo.questions WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}'))`
+        );
+        if (result.recordset.length > 0) {
+          console.log("Answers retrieved successfully");
+          return result.recordset;
+        }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.error("Error in getAnswersByTestName:", error);
-    // Handle the error appropriately, e.g., return an error response
-    throw error;
   }
-}
-
-  
   // Function to get answer by answer id
   async getAnswerByAnswerId(answer_id) {
     try {
