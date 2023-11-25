@@ -186,9 +186,19 @@ app.get("/answers", async (req, res) => {
   res.json(answers);
 });
 
-// Get answers by question id
-app.get("/answer/:question_id", async (req, res) => {
-  const answers = await Database.getAnswersByQuestionId(req.params.question_id);
+// // Get answers by question id
+// app.get("/answer/:question_id", async (req, res) => {
+//   const answers = await Database.getAnswersByQuestionId(req.params.question_id);
+//   if (answers === null || answers === undefined) {
+//     res.status(400).send("Something when wrong with getting answers.");
+//   } else {
+//     res.status(200).json(answers);
+//   }
+// });
+
+// Get answers by test name
+app.get("/answers/:test_name", async (req, res) => {
+  const answers = await Database.getAnswersByTestName(req.params.test_name);
   if (answers === null || answers === undefined) {
     res.status(400).send("Something when wrong with getting answers.");
   } else {
