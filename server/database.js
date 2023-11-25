@@ -322,21 +322,37 @@ class Database {
     }
   }
 
-  // Function to get answers by question id
-  async getAnswersByQuestionId(question_id) {
+  // // Function to get answers by question id
+  // async getAnswersByQuestionId(question_id) {
+  //   try {
+  //     const result = await this.pool
+  //       .request()
+  //       .query(
+  //         `SELECT * FROM quizzes.dbo.answers WHERE question_id = ${question_id}`
+  //       );
+  //     console.dir(result.recordset);
+  //     return result.recordset;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  // Function to get answers by test name
+  async getAnswersByTestName(test_name) {
     try {
       const result = await this.pool
         .request()
         .query(
-          `SELECT * FROM quizzes.dbo.answers WHERE question_id = ${question_id}`
+          `SELECT * FROM quizzes.dbo.answers WHERE question_id IN (SELECT question_id FROM quizzes.dbo.questions WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}'))`
         );
-      console.dir(result.recordset);
-      return result.recordset;
+        if (result.recordset.length > 0) {
+          console.log("Answers retrieved successfully");
+          return result.recordset;
+        }
     } catch (error) {
       console.log(error);
     }
   }
-
   // Function to get answer by answer id
   async getAnswerByAnswerId(answer_id) {
     try {
