@@ -16,23 +16,26 @@ import axios from "axios";
 
 const index = ({ params }) => {
   const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const fetchQuestionsAndAnswers = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5544/questions/${params.test_name}`
-        );
-        setQuestions(response.data);
+        const [questionsResponse, answersResponse] = await Promise.all([
+          axios.get(`http://localhost:5544/questions/${params.test_name}`),
+          axios.get(`http://localhost:5544/answers/${params.test_name}`),
+        ]);
+        setQuestions(questionsResponse.data);
+        setAnswers(answersResponse.data);
       } catch (error) {
         console.error("Failed to get tests: ", error);
       }
     };
-    fetchQuestions();
+    fetchQuestionsAndAnswers();
   }, []);
 
   console.log(questions);
-
+  console.log(answers);
   return (
     <div className="container">
       <ThemeProvider theme={theme}>
