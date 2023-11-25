@@ -1,44 +1,47 @@
-'use client'
-import React, {useState, useEffect} from 'react';
-import theme from '../../../src/theme';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import axios from 'axios';
+"use client";
+import React, { useState, useEffect } from "react";
+import theme from "../../../src/theme";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import axios from "axios";
+import Link from "next/link";
+import Button from "@mui/material/Button";
 
 const index = () => {
-const [tests, setTests] = useState([]);
+  const [tests, setTests] = useState([]);
 
-useEffect(() => {
-  const fetchTests = async() => {
-    try{
-      const response = await axios.get("http://localhost:5544/tests");
-      setTests(response.data);
-    }
-    catch (error){
-      console.error('Failed to get tests: ', error);
-    }
-  }
-  fetchTests();
-}, [])
+  useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const response = await axios.get("http://localhost:5544/tests");
+        setTests(response.data);
+      } catch (error) {
+        console.error("Failed to get tests: ", error);
+      }
+    };
+    fetchTests();
+  }, []);
 
-console.log(tests)
+  console.log(tests);
 
+  return (    
 
-  return (
     <div className="container">
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-    <h1>Quiz Page</h1>
-    <ul>
-    {tests.map((test) => (
-            <li key={test.test_id}>
-              {test.test_name}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <h1>Quiz Page</h1>
+        <ul>
+          {tests.map((test) => (
+            <li key={test.test_id}>          
+              <Link href={"/questions/" + test.test_name}>
+                <Button>{test.test_name}</Button>
+              </Link>
             </li>
           ))}
-    </ul>
-  </ThemeProvider>
-  </div>
-  )
-}
+        </ul>
+      </ThemeProvider>
+    </div>
+  );
+};
 
-export default index
+export default index;

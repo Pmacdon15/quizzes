@@ -1,12 +1,3 @@
-// 'use client'
-// import { useRouter } from 'next/navigation'
-
-// //import { useRouter } from 'next/router'
-
-// export default function Page({ params }) {
-//   return <div>My Post: {params.test}</div>
-// }
-
 "use client";
 import React, { useState, useEffect } from "react";
 import theme from "../../../../src/theme";
@@ -14,9 +5,10 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import axios from "axios";
 
-const index = ({ params }) => {
+const Index = ({ params }) => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   useEffect(() => {
     const fetchQuestionsAndAnswers = async () => {
@@ -34,33 +26,42 @@ const index = ({ params }) => {
     fetchQuestionsAndAnswers();
   }, []);
 
-  console.log(questions);
-  console.log(answers);
+  const handleNextQuestion = () => {
+    // Move to the next question
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+  };
 
   return (
     <div className="container">
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <h1>Questions Page</h1>
-        <ul>
-          {questions.map((question) => (
-            <li key={question.question_id}>
-              {question.question_text}
-              <ul>
-                {answers
-                  .filter(
-                    (answer) => answer.question_id === question.question_id
-                  )
-                  .map((answer) => (
-                    <li key={answer.answer_id}>{answer.answer_text}</li>
-                  ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+        {questions.length > 0 && answers.length > 0 && (
+          <div>
+            <ul>
+              <li>
+                {questions[currentQuestionIndex].question_text}
+                <ul>
+                  {answers
+                    .filter(
+                      (answer) =>
+                        answer.question_id ===
+                        questions[currentQuestionIndex].question_id
+                    )
+                    .map((answer) => (
+                      <li key={answer.answer_id}>{answer.answer_text}</li>
+                    ))}
+                </ul>
+              </li>
+            </ul>
+            {currentQuestionIndex < questions.length - 1 && (
+              <button onClick={handleNextQuestion}>Next Question</button>
+            )}
+          </div>
+        )}
       </ThemeProvider>
     </div>
   );
 };
 
-export default index;
+export default Index;
