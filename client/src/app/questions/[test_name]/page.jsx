@@ -16,22 +16,26 @@ import axios from "axios";
 
 const index = ({ params }) => {
   const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const fetchQuestionsAndAnswers = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5544/questions/${params.test_name}`
-        );
-        setQuestions(response.data);
+        const [questionsResponse, answersResponse] = await Promise.all([
+          axios.get(`http://localhost:5544/questions/${params.test_name}`),
+          axios.get(`http://localhost:5544/answers/${params.test_name}`),
+        ]);
+        setQuestions(questionsResponse.data);
+        setAnswers(answersResponse.data);
       } catch (error) {
         console.error("Failed to get tests: ", error);
       }
     };
-    fetchQuestions();
+    fetchQuestionsAndAnswers();
   }, []);
 
   console.log(questions);
+  console.log(answers);
 
   return (
     <div className="container">
@@ -39,11 +43,20 @@ const index = ({ params }) => {
         <CssBaseline />
         <h1>Questions Page</h1>
         <ul>
-          <li key={params.test_name}>
-            {questions.length > 0 && (
-              <li key={questions[0].test_id}>{questions[0].question_text}</li>
-            )}
-          </li>
+          {questions.map((question) => (
+            <li key={question.question_id}>
+              {question.question_text}
+              <ul>
+                {answers
+                  .filter(
+                    (answer) => answer.question_id === question.question_id
+                  )
+                  .map((answer) => (
+                    <li key={answer.answer_id}>{answer.answer_text}</li>
+                  ))}
+              </ul>
+            </li>
+          ))}
         </ul>
       </ThemeProvider>
     </div>
