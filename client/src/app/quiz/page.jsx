@@ -15,7 +15,7 @@ useEffect(() => {
       setTests(response.data);
     }
     catch (error){
-      console.error('Failed to get questions: ', error);
+      console.error('Failed to get tests: ', error);
     }
   }
   fetchTests();
