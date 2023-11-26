@@ -57,14 +57,15 @@ const Index = ({ params }) => {
           sx={{
             bgcolor: "#ffffff",
             height: "80vh",
-            padding: "5%",
+            padding: "3%",
+            // paddingLeft: "5%",
             marginTop: "12%",
             borderRadius: "10px",
           }}
         >
-          <h1>Questions Page</h1>
+            <h1>Questions Page</h1>
           {questions.length > 0 && answers.length > 0 && (
-            <div>
+            <div className="questions">
               {questions[currentQuestionIndex].question_text}
               <RadioGroup value={selectedAnswer} onChange={handleAnswerChange}>
                 {answers
