@@ -3,11 +3,10 @@ const dotenv = require("dotenv");
 const path = require("path");
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
-const database = process.env.MSSQL_DATABASE
+const database = process.env.MSSQL_DATABASE;
 
 class Database {
   constructor() {
-   
     const config = {
       user: process.env.MSSQL_USER,
       password: process.env.MSSQL_PASSWORD,
@@ -32,7 +31,7 @@ class Database {
       console.error("Error connecting to the database:", err);
     }
   }
-  
+
   // Function for login
   async login(email, password) {
     try {
@@ -42,7 +41,20 @@ class Database {
           `SELECT * FROM quizzes.dbo.users WHERE email= '${email}' AND password = '${password}'`
         );
       delete result.recordset[0].password;
-      console.dir(result.recordset);
+      console.log("User logged in successfully");
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Function to get users By email
+  async getUsersByEmail(email) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(`SELECT * FROM quizzes.dbo.users WHERE email = '${email}'`);
+      delete result.recordset[0].password;
       return result.recordset;
     } catch (error) {
       console.log(error);
@@ -59,8 +71,10 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("User registered successfully");
+        const user = this.getUsersByEmail(email);
+        return user;
+        //return result.recordset;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
@@ -76,8 +90,9 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Admin registered successfully");
+        const user = this.getUsersByEmail(email);
+        return user;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
@@ -86,15 +101,19 @@ class Database {
   // Function update password
   async updatePassword(email, new_password) {
     try {
+      if (new_password === undefined) {
+        //console.log("New password is undefined. Cannot update password.");
+        throw new Error("New password is undefined. Cannot update password.");
+      }
       const result = await this.pool
         .request()
         .query(
           `UPDATE quizzes.dbo.users SET password = '${new_password}' WHERE email = '${email}'`
         );
-      if (result.rowsAffected[0] === 1) {
-        console.log("Password updated successfully");
-      }
-      return result.recordset;
+
+      console.log("Password updated successfully");
+      const user = this.getUsersByEmail(email);
+      return user;
     } catch (error) {
       console.log(error);
     }
@@ -103,13 +122,14 @@ class Database {
   // Function to delete user
   async deleteUser(email) {
     try {
+      const user = this.getUsersByEmail(email);
       const result = await this.pool
         .request()
         .query(`DELETE FROM quizzes.dbo.users WHERE email = '${email}'`);
       if (result.rowsAffected[0] === 1) {
         console.log("User deleted successfully");
+        return user;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
@@ -121,16 +141,35 @@ class Database {
       const result = await this.pool
         .request()
         .query("SELECT * FROM quizzes.dbo.tests");
-      console.dir(result.recordset);
+      //console.dir(result.recordset);
       return result.recordset;
     } catch (error) {
       console.log(error);
     }
   }
-  
+
+  // Function to get tests by test name
+  async getTestsByName(test_name) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.tests WHERE test_name = '${test_name}'`
+        );
+      //console.dir(result);
+      return result.recordset;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // Function to add test
   async addTest(test_name) {
     try {
+      if (test_name === undefined) {
+        //console.log("Test name is undefined. Cannot add test.");
+        throw new Error("Test name is undefined. Cannot add test.");
+      }
       const result = await this.pool
         .request()
         .query(
@@ -138,25 +177,31 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Test added successfully");
+        const test = this.getTests();
+        return test;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
   }
 
-  // Function to edit test_id
+  // Function to edit test name by test name
   async editTest(test_name, new_test_name) {
     try {
+      if (new_test_name === undefined) {
+        throw new Error("New test name is undefined. Cannot edit test.");
+      }
       const result = await this.pool
         .request()
         .query(
           `UPDATE quizzes.dbo.tests SET test_name = '${new_test_name}' WHERE test_name = '${test_name}'`
         );
+      //console.log("Generated SQL query:", query);
       if (result.rowsAffected[0] === 1) {
         console.log("Test edited successfully");
+        const test = this.getTestsByName(new_test_name);
+        return test;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
@@ -170,8 +215,28 @@ class Database {
         .query(
           `SELECT * FROM quizzes.dbo.questions WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}')`
         );
-      console.dir(result.recordset);
-      return result.recordset;
+      if (result.recordset.length > 0) {
+        console.log("Questions retrieved successfully");
+        //console.dir(result.recordset);
+        return result.recordset;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Function to get question by question id
+  async getQuestionByQuestionId(question_id) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.questions WHERE question_id = '${question_id}'`
+        );
+      if (result.recordset.length > 0) {
+        //console.log("Question retrieved successfully");
+        return result.recordset;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -180,6 +245,9 @@ class Database {
   // Function to add question by test id
   async addQuestionByTestName(test_name, question_text) {
     try {
+      if (question_text === undefined) {
+        throw new Error("Question text is undefined. Cannot add question.");
+      }
       const result = await this.pool
         .request()
         .query(
@@ -187,8 +255,16 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Question added successfully");
+        const question_id = await this.pool
+          .request()
+          .query(
+            `SELECT question_id FROM quizzes.dbo.questions WHERE question_text = '${question_text}'`
+          );
+        const question = await this.getQuestionByQuestionId(
+          question_id.recordset[0].question_id
+        ); // Await here
+        return question;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
@@ -197,6 +273,9 @@ class Database {
   // Function to edit question by question id
   async editQuestionByQuestionId(question_id, question_text) {
     try {
+      if (question_text === undefined) {
+        throw new Error("Question text is undefined. Cannot edit question.");
+      }
       const result = await this.pool
         .request()
         .query(
@@ -204,15 +283,18 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Question edited successfully");
+        const question = await this.getQuestionByQuestionId(question_id);
+        return question;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
   }
+
   // Function to delete question by question id
   async deleteQuestionByQuestionId(question_id) {
     try {
+      const deletedQuestion = await this.getQuestionByQuestionId(question_id);
       const result = await this.pool
         .request()
         .query(
@@ -220,13 +302,13 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Question deleted successfully");
+        return deletedQuestion;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
   }
-  
+
   // Function to get all answers
   async getAnswers() {
     try {
@@ -240,15 +322,46 @@ class Database {
     }
   }
 
-  // Function to get answers by question id
-  async getAnswersByQuestionId(question_id) {
+  // // Function to get answers by question id
+  // async getAnswersByQuestionId(question_id) {
+  //   try {
+  //     const result = await this.pool
+  //       .request()
+  //       .query(
+  //         `SELECT * FROM quizzes.dbo.answers WHERE question_id = ${question_id}`
+  //       );
+  //     console.dir(result.recordset);
+  //     return result.recordset;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  // Function to get answers by test name
+  async getAnswersByTestName(test_name) {
     try {
       const result = await this.pool
         .request()
         .query(
-          `SELECT * FROM quizzes.dbo.answers WHERE question_id = ${question_id}`
+          `SELECT * FROM quizzes.dbo.answers WHERE question_id IN (SELECT question_id FROM quizzes.dbo.questions WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}'))`
         );
-      console.dir(result.recordset);
+        if (result.recordset.length > 0) {
+          console.log("Answers retrieved successfully");
+          return result.recordset;
+        }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  // Function to get answer by answer id
+  async getAnswerByAnswerId(answer_id) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.answers WHERE answer_id = '${answer_id}'`
+        );
+      //console.dir(result.recordset);
       return result.recordset;
     } catch (error) {
       console.log(error);
@@ -258,15 +371,26 @@ class Database {
   // Function to add answer by question id
   async addAnswerByQuestionId(question_id, answer_text, correct) {
     try {
+      if (answer_text === undefined || correct === undefined) {
+        throw new Error("Field Answer_text or correct is undefined. Cannot add answer.");
+      }      
       const result = await this.pool
         .request()
         .query(
           `INSERT INTO quizzes.dbo.answers (question_id, answer_text, correct) VALUES (${question_id}, '${answer_text}', '${correct}')`
         );
+      const answer_id = await this.pool
+        .request()
+        .query(
+          `SELECT answer_id FROM quizzes.dbo.answers WHERE answer_text = '${answer_text}'`
+        );
       if (result.rowsAffected[0] === 1) {
         console.log("Answer added successfully");
+        const answer = await this.getAnswerByAnswerId(
+          answer_id.recordset[0].answer_id
+        );
+        return answer;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
@@ -275,24 +399,29 @@ class Database {
   // Function to edit answer by answer id
   async editAnswerByAnswerId(answer_id, new_answer_text, correct) {
     try {
+      if (new_answer_text === undefined || correct === undefined) {
+        throw new Error("Field 'new_answer_text' or 'correct' is undefined. Cannot edit answer.");
+      }
       const result = await this.pool
         .request()
         .query(
           `UPDATE quizzes.dbo.answers SET answer_text = '${new_answer_text}', correct = '${correct}' WHERE answer_id = '${answer_id}'`
-        );
+        );       
       if (result.rowsAffected[0] === 1) {
         console.log("Answer edited successfully");
-      }      
-      return result.recordset;
+        const answer = await this.getAnswerByAnswerId(answer_id);
+        return answer;
+      }
+      
     } catch (error) {
-      console.log(error);
-      return 0;
+      console.log(error);      
     }
   }
 
   // Function to delete answer by answer id
   async deleteAnswerByAnswerId(answer_id) {
     try {
+      const deleted_answer = await this.getAnswerByAnswerId(answer_id);
       const result = await this.pool
         .request()
         .query(
@@ -300,12 +429,12 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Answer deleted successfully");
+        return deleted_answer;
       }
-      return result.recordset;
     } catch (error) {
       console.log(error);
     }
   }
-};
+}
 
 module.exports = new Database();

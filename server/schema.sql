@@ -14,19 +14,19 @@ CREATE TABLE users (
 );
 
 CREATE TABLE tests (
-    test_id INT IDENTITY(1,1) PRIMARY KEY,
-    test_name VARCHAR(50) NOT NULL
+    test_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    test_name VARCHAR(50) UNIQUE NOT NULL
 );
 
 CREATE TABLE questions (
-    question_id INT IDENTITY(1,1) PRIMARY KEY,
-    test_id INT FOREIGN KEY REFERENCES tests(test_id) ON DELETE CASCADE,
-    question_text VARCHAR(250) NOT NULL
+    question_id INT IDENTITY(1,1) PRIMARY KEY ,
+    test_id INT FOREIGN KEY REFERENCES tests(test_id) ON DELETE CASCADE NOT NULL,
+    question_text VARCHAR(250) UNIQUE NOT NULL
 );
 
 CREATE TABLE answers (
     answer_id INT IDENTITY(1,1) PRIMARY KEY,
-    question_id INT FOREIGN KEY REFERENCES questions(question_id) ON DELETE CASCADE,
+    question_id INT FOREIGN KEY REFERENCES questions(question_id) ON DELETE CASCADE NOT NULL,
     answer_text VARCHAR(250) NOT NULL,
     correct BIT NOT NULL
 );
