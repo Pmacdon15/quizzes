@@ -6,6 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import Link from 'next/link';
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -89,7 +90,13 @@ const Index = ({ params }) => {
             </div>
           )}
         </Box>
+      <Link href="/quiz" style={{display: 'flex', justifyContent: 'center'}}>
+        <Button variant="contained" color="primary" style={{ margin: '5px' }}>
+          Go Back
+        </Button>
+      </Link>
       </Container>
+  
     </ThemeProvider>
   );
 };

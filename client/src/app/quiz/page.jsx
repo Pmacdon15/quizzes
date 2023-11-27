@@ -1,47 +1,44 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import theme from "../../../src/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import axios from "axios";
-import Link from "next/link";
-import Button from "@mui/material/Button";
+import Link from 'next/link';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import theme from "../../../src/theme";
+import Container from "@mui/material/Container";
 
-const index = () => {
-  const [tests, setTests] = useState([]);
 
-  useEffect(() => {
-    const fetchTests = async () => {
-      try {
-        const response = await axios.get("http://localhost:5544/tests");
-        setTests(response.data);
-      } catch (error) {
-        console.error("Failed to get tests: ", error);
-      }
-    };
-    fetchTests();
-  }, []);
-
-  console.log(tests);
+const Index = () => {
+  const quizSlugs = ['Math', 'Places', 'Shapes'];
 
   return (    
-
     <div className="container">
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <h1>Quiz Page</h1>
-        <ul>
-          {tests.map((test) => (
-            <li key={test.test_id}>          
-              <Link href={"/questions/" + test.test_name}>
-                <Button>{test.test_name}</Button>
-              </Link>
-            </li>
+        <Container maxWidth="sm">
+        <Box
+          sx={{
+            bgcolor: "#ffffff",
+            height: "80vh",
+            padding: "3%",
+            marginTop: "12%",
+            borderRadius: "10px",
+            display: 'flex', flexDirection: 'column', alignItems: 'center'
+          }}
+        >
+          <h1>Choose a Quiz</h1>
+          {quizSlugs.map((slug) => (
+            <Link key={slug} href={`/questions/${encodeURIComponent(slug)}`} passHref>
+              {/* Pass the test name as a parameter in the URL */}
+              <Button variant="contained" color="primary" style={{ margin: '5px' }}>
+                {slug}
+              </Button>
+            </Link>
           ))}
-        </ul>
+        </Box>
+        </Container>
       </ThemeProvider>
     </div>
   );
-};
+}
 
-export default index;
+export default Index;
