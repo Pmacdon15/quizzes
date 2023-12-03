@@ -1,3 +1,7 @@
+/**
+ * The copyPaste module provides functions for copying and pasting text.
+ * @type {object}
+ */
 const copyPaste = require('copy-paste');
 
 // Read from the clipboard

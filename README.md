@@ -58,7 +58,7 @@ This project requires a Ms Sql database connection. After downloading and instal
 
 This project Requires a .env file setup in the following manner to connect to the database(using the credentials that you set up the database with): 
 
- ```.env
+ ```
 
 MSSQL_HOST='localhost'
 MSSQL_USER=' '
