@@ -1,3 +1,14 @@
+/**
+ * @fileoverview This file contains the server code for the quizzes application.
+ * It sets up an Express server, defines routes for various API endpoints, and connects to a database.
+ * The server listens on port 5544 and allows cross-origin requests from http://localhost:3000.
+ * The routes handle user authentication, user management, test management, question management, and answer management.
+ * The server starts by connecting to the database and then starts listening on the specified port.
+ * @requires express
+ * @requires cors
+ * @requires ./database.js
+ * @requires ./graphic
+ */
 const express = require("express");
 const app = express();
 const port = 5544;
@@ -25,6 +36,7 @@ app.use(
 Database.connectToDatabase();
 
 // Login
+
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await Database.login(email, password);

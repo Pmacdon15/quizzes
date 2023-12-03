@@ -5,6 +5,11 @@ const path = require("path");
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const database = process.env.MSSQL_DATABASE;
 
+/**
+ * Represents a database connection.
+ * @class
+ * @memberof module:database
+ */
 class Database {
   constructor() {
     const config = {
@@ -22,7 +27,14 @@ class Database {
     this.pool = new sql.ConnectionPool(config);
   }
 
-  // Function to connect to the database
+  /**
+   * Connects to the database.
+   * @async
+   * @function connectToDatabase
+   * @memberof module:database
+   * @instance
+   * @throws {Error} If there is an error connecting to the database.
+   */
   async connectToDatabase() {
     try {
       await this.pool.connect();
@@ -32,7 +44,12 @@ class Database {
     }
   }
 
-  // Function for login
+  /**
+   * Authenticates a user by checking their email and password against the database.
+   * @param {string} email - The user's email.
+   * @param {string} password - The user's password.
+   * @returns {Promise<Array<Object>>} - A promise that resolves to an array of user objects without the password field.
+   */
   async login(email, password) {
     try {
       const result = await this.pool
@@ -48,7 +65,11 @@ class Database {
     }
   }
 
-  // Function to get users By email
+  /**
+   * Retrieves users from the database based on their email.
+   * @param {string} email - The email of the user to retrieve.
+   * @returns {Promise<Array<Object>>} - A promise that resolves to an array of user objects.
+   */
   async getUsersByEmail(email) {
     try {
       const result = await this.pool
@@ -61,7 +82,15 @@ class Database {
     }
   }
 
-  // Function to register user
+  /**
+   * Registers a new user in the database.
+   *
+   * @param {string} email - The email of the user.
+   * @param {string} first_name - The first name of the user.
+   * @param {string} last_name - The last name of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Promise<Object>} - A promise that resolves to the registered user object.
+   */
   async registerUser(email, first_name, last_name, password) {
     try {
       const result = await this.pool
@@ -80,7 +109,14 @@ class Database {
     }
   }
 
-  // Function to add admin user
+  /**
+   * Registers a user as an admin in the database.
+   * @param {string} email - The email of the user.
+   * @param {string} first_name - The first name of the user.
+   * @param {string} last_name - The last name of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Promise<Object>} - A promise that resolves to the registered user object.
+   */
   async registerUserAdmin(email, first_name, last_name, password) {
     try {
       const result = await this.pool
@@ -98,7 +134,13 @@ class Database {
     }
   }
 
-  // Function update password
+  /**
+   * Updates the password for a user with the specified email.
+   * @param {string} email - The email of the user.
+   * @param {string} new_password - The new password to set for the user.
+   * @returns {Promise<Object>} - A promise that resolves to the updated user object.
+   * @throws {Error} - If the new password is undefined.
+   */
   async updatePassword(email, new_password) {
     try {
       if (new_password === undefined) {
@@ -119,7 +161,11 @@ class Database {
     }
   }
 
-  // Function to delete user
+  /**
+   * Deletes a user from the database based on their email.
+   * @param {string} email - The email of the user to be deleted.
+   * @returns {Promise<Object>} - A promise that resolves to the deleted user object.
+   */
   async deleteUser(email) {
     try {
       const user = this.getUsersByEmail(email);
@@ -135,7 +181,10 @@ class Database {
     }
   }
 
-  // Function to get tests
+  /**
+   * Retrieves all tests from the database.
+   * @returns {Promise<Array>} An array of test objects.
+   */
   async getTests() {
     try {
       const result = await this.pool
@@ -148,7 +197,11 @@ class Database {
     }
   }
 
-  // Function to get tests by test name
+  /**
+   * Retrieves tests from the database by test name.
+   * @param {string} test_name - The name of the test to retrieve.
+   * @returns {Promise<Array>} - A promise that resolves to an array of test records.
+   */
   async getTestsByName(test_name) {
     try {
       const result = await this.pool
@@ -163,7 +216,12 @@ class Database {
     }
   }
 
-  // Function to add test
+  /**
+   * Adds a test to the database.
+   * @param {string} test_name - The name of the test to be added.
+   * @returns {Promise<Array>} - A promise that resolves to an array of tests after the new test has been added.
+   * @throws {Error} - If the test_name parameter is undefined.
+   */
   async addTest(test_name) {
     try {
       if (test_name === undefined) {
@@ -185,7 +243,13 @@ class Database {
     }
   }
 
-  // Function to edit test name by test name
+  /**
+   * Edits a test name in the database.
+   * @param {string} test_name - The current test name.
+   * @param {string} new_test_name - The new test name.
+   * @returns {Promise<Object>} - A Promise that resolves to the updated test object.
+   * @throws {Error} - If the new test name is undefined.
+   */
   async editTest(test_name, new_test_name) {
     try {
       if (new_test_name === undefined) {
@@ -207,7 +271,11 @@ class Database {
     }
   }
 
-  // Function to get questions by test id
+  /**
+   * Retrieves questions by test name from the database.
+   * @param {string} test_name - The name of the test.
+   * @returns {Promise<Array<Object>>} - A promise that resolves to an array of question objects.
+   */
   async getQuestionsByTestName(test_name) {
     try {
       const result = await this.pool
@@ -225,7 +293,11 @@ class Database {
     }
   }
 
-  // Function to get question by question id
+  /**
+   * Retrieves a question from the database based on the provided question ID.
+   * @param {string} question_id - The ID of the question to retrieve.
+   * @returns {Promise<Array<Object>>} - A promise that resolves to an array of question objects.
+   */
   async getQuestionByQuestionId(question_id) {
     try {
       const result = await this.pool
@@ -242,7 +314,12 @@ class Database {
     }
   }
 
-  // Function to add question by test id
+  /**
+   * Adds a question to the database by test name.
+   * @param {string} test_name - The name of the test.
+   * @param {string} question_text - The text of the question.
+   * @returns {Promise<Object>} - The added question.
+   */
   async addQuestionByTestName(test_name, question_text) {
     try {
       if (question_text === undefined) {
@@ -270,7 +347,13 @@ class Database {
     }
   }
 
-  // Function to edit question by question id
+  /**
+   * Edits a question in the database by its question ID.
+   * @param {number} question_id - The ID of the question to be edited.
+   * @param {string} question_text - The new text for the question.
+   * @returns {Promise<Object>} - A promise that resolves to the edited question object.
+   * @throws {Error} - If the question text is undefined.
+   */
   async editQuestionByQuestionId(question_id, question_text) {
     try {
       if (question_text === undefined) {
@@ -291,7 +374,11 @@ class Database {
     }
   }
 
-  // Function to delete question by question id
+  /**
+   * Deletes a question from the database by its question ID.
+   * @param {string} question_id - The ID of the question to be deleted.
+   * @returns {Promise<Object>} - A promise that resolves to the deleted question.
+   */
   async deleteQuestionByQuestionId(question_id) {
     try {
       const deletedQuestion = await this.getQuestionByQuestionId(question_id);
@@ -309,7 +396,10 @@ class Database {
     }
   }
 
-  // Function to get all answers
+  /**
+   * Retrieves all answers from the database.
+   * @returns {Promise<Array<Object>>} A promise that resolves to an array of answer objects.
+   */
   async getAnswers() {
     try {
       const result = await this.pool
@@ -322,22 +412,11 @@ class Database {
     }
   }
 
-  // // Function to get answers by question id
-  // async getAnswersByQuestionId(question_id) {
-  //   try {
-  //     const result = await this.pool
-  //       .request()
-  //       .query(
-  //         `SELECT * FROM quizzes.dbo.answers WHERE question_id = ${question_id}`
-  //       );
-  //     console.dir(result.recordset);
-  //     return result.recordset;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // Function to get answers by test name
+  /**
+   * Retrieves answers by test name.
+   * @param {string} test_name - The name of the test.
+   * @returns {Promise<Array>} - A promise that resolves to an array of answers.
+   */
   async getAnswersByTestName(test_name) {
     try {
       const result = await this.pool
@@ -345,15 +424,20 @@ class Database {
         .query(
           `SELECT * FROM quizzes.dbo.answers WHERE question_id IN (SELECT question_id FROM quizzes.dbo.questions WHERE test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}'))`
         );
-        if (result.recordset.length > 0) {
-          console.log("Answers retrieved successfully");
-          return result.recordset;
-        }
+      if (result.recordset.length > 0) {
+        console.log("Answers retrieved successfully");
+        return result.recordset;
+      }
     } catch (error) {
       console.log(error);
     }
   }
-  // Function to get answer by answer id
+
+  /**
+   * Retrieves an answer from the database based on the answer ID.
+   * @param {string} answer_id - The ID of the answer to retrieve.
+   * @returns {Promise<Array>} - A promise that resolves to an array of answer objects.
+   */
   async getAnswerByAnswerId(answer_id) {
     try {
       const result = await this.pool
@@ -368,12 +452,21 @@ class Database {
     }
   }
 
-  // Function to add answer by question id
+  /**
+   * Adds an answer to the database by question ID.
+   * @param {number} question_id - The ID of the question.
+   * @param {string} answer_text - The text of the answer.
+   * @param {boolean} correct - Indicates whether the answer is correct or not.
+   * @returns {Promise<Object>} - The added answer object.
+   * @throws {Error} - If answer_text or correct is undefined.
+   */
   async addAnswerByQuestionId(question_id, answer_text, correct) {
     try {
       if (answer_text === undefined || correct === undefined) {
-        throw new Error("Field Answer_text or correct is undefined. Cannot add answer.");
-      }      
+        throw new Error(
+          "Field Answer_text or correct is undefined. Cannot add answer."
+        );
+      }
       const result = await this.pool
         .request()
         .query(
@@ -396,29 +489,41 @@ class Database {
     }
   }
 
-  // Function to edit answer by answer id
+  /**
+   * Edits an answer in the database by its answer ID.
+   * @param {number} answer_id - The ID of the answer to be edited.
+   * @param {string} new_answer_text - The new text for the answer.
+   * @param {boolean} correct - Indicates whether the answer is correct or not.
+   * @returns {Promise<Object>} - A promise that resolves to the edited answer object.
+   * @throws {Error} - If 'new_answer_text' or 'correct' is undefined.
+   */
   async editAnswerByAnswerId(answer_id, new_answer_text, correct) {
     try {
       if (new_answer_text === undefined || correct === undefined) {
-        throw new Error("Field 'new_answer_text' or 'correct' is undefined. Cannot edit answer.");
+        throw new Error(
+          "Field 'new_answer_text' or 'correct' is undefined. Cannot edit answer."
+        );
       }
       const result = await this.pool
         .request()
         .query(
           `UPDATE quizzes.dbo.answers SET answer_text = '${new_answer_text}', correct = '${correct}' WHERE answer_id = '${answer_id}'`
-        );       
+        );
       if (result.rowsAffected[0] === 1) {
         console.log("Answer edited successfully");
         const answer = await this.getAnswerByAnswerId(answer_id);
         return answer;
       }
-      
     } catch (error) {
-      console.log(error);      
+      console.log(error);
     }
   }
 
-  // Function to delete answer by answer id
+  /**
+   * Deletes an answer from the database by its answer ID.
+   * @param {number} answer_id - The ID of the answer to be deleted.
+   * @returns {Promise<Object>} - The deleted answer object.
+   */
   async deleteAnswerByAnswerId(answer_id) {
     try {
       const deleted_answer = await this.getAnswerByAnswerId(answer_id);

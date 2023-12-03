@@ -1,3 +1,17 @@
+/*
+This SQL script creates a database schema for a quizzes application. It defines the tables and inserts sample data for users, tests, questions, and answers.
+
+Tables:
+- users: Stores user information including email, first name, last name, password, and admin status.
+- tests: Stores test information including test name.
+- questions: Stores question information including the test it belongs to and the question text.
+- answers: Stores answer information including the question it belongs to, the answer text, and whether it is correct or not.
+
+Sample Data:
+- The script inserts sample data into the users, tests, questions, and answers tables to demonstrate the functionality of the application.
+
+Note: This script assumes the existence of a database named "quizzes" and uses it as the current database.
+*/
 CREATE DATABASE quizzes;
 GO
 
