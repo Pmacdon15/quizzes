@@ -1,9 +1,9 @@
 /**
  * @fileoverview This file contains the server code for the quizzes application.
- * It sets up an Express server, defines routes for various API endpoints, and connects to a database.
+ * It sets up an Express server, defines routes for various API endpoints, and connects to a databaseInstance.
  * The server listens on port 5544 and allows cross-origin requests from http://localhost:3000.
  * The routes handle user authentication, user management, test management, question management, and answer management.
- * The server starts by connecting to the database and then starts listening on the specified port.
+ * The server starts by connecting to the databaseInstance and then starts listening on the specified port.
  * @requires express
  * @requires cors
  * @requires ./database.js
@@ -14,8 +14,11 @@ const app = express();
 const port = 5544;
 const cors = require("cors");
 
-// Import functions from database.js
+// Import functions from databaseInstance.js
 const Database = require("./database.js");
+
+// Create a new instance of the databaseInstance class
+const databaseInstance = new Database();
 
 // Import function from graphic.js
 const { displayGraphic } = require("./graphic");
@@ -33,15 +36,15 @@ app.use(
 );
 
 // Start connection to DB
-Database.connectToDatabase();
+databaseInstance.connectToDatabase();
 
 // Login
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const user = await Database.login(email, password);
+  const user = await databaseInstance.login(email, password);
   if (user === null || user === undefined) {
-    res.status(400).send("Something when wrong with login");
+    res.status(400).send("Something when wrong with login.");
   } else {
     res.status(200).json(user);
   }
@@ -49,7 +52,7 @@ app.post("/login", async (req, res) => {
 
 // Get user by email
 app.get("/user/:email", async (req, res) => {
-  const user = await Database.getUsersByEmail(req.params.email);
+  const user = await databaseInstance.getUsersByEmail(req.params.email);
   if (user === null || user === undefined) {
     res.status(400).send("Something when wrong with getting user.");
   } else {
@@ -60,7 +63,7 @@ app.get("/user/:email", async (req, res) => {
 // Register user
 app.post("/user", async (req, res) => {
   const { email, first_name, last_name, password } = req.body;
-  const user = await Database.registerUser(
+  const user = await databaseInstance.registerUser(
     email,
     first_name,
     last_name,
@@ -76,7 +79,7 @@ app.post("/user", async (req, res) => {
 // Register admin user
 app.post("/userAdmin", async (req, res) => {
   const { email, first_name, last_name, password } = req.body;
-  const users = await Database.registerUserAdmin(
+  const users = await databaseInstance.registerUserAdmin(
     email,
     first_name,
     last_name,
@@ -92,7 +95,7 @@ app.post("/userAdmin", async (req, res) => {
 // Update password
 app.put("/user/:email", async (req, res) => {
   const { new_password } = req.body;
-  const users = await Database.updatePassword(req.params.email, new_password);
+  const users = await databaseInstance.updatePassword(req.params.email, new_password);
   if (users === null || users === undefined) {
     res.status(400).send("Something when wrong with updating password.");
   } else {
@@ -102,7 +105,7 @@ app.put("/user/:email", async (req, res) => {
 
 // Delete user
 app.delete("/user/:email", async (req, res) => {
-  const users = await Database.deleteUser(req.params.email);
+  const users = await databaseInstance.deleteUser(req.params.email);
   if (users === null || users === undefined) {
     res.status(400).send("Something when wrong with deleting user.");
   } else {
@@ -112,7 +115,7 @@ app.delete("/user/:email", async (req, res) => {
 
 // Get all tests
 app.get("/tests", async (req, res) => {
-  const tests = await Database.getTests();
+  const tests = await databaseInstance.getTests();
   if (tests === null || tests === undefined) {
     res.status(400).send("Something when wrong with getting tests.");
   } else {
@@ -123,7 +126,7 @@ app.get("/tests", async (req, res) => {
 // Add test
 app.post("/test", async (req, res) => {
   const { test_name } = req.body;
-  const tests = await Database.addTest(test_name);
+  const tests = await databaseInstance.addTest(test_name);
   if (tests === null || tests === undefined) {
     res.status(400).send("Something when wrong with adding a test.");
   } else {
@@ -134,7 +137,7 @@ app.post("/test", async (req, res) => {
 // Edit test name
 app.put("/test/:test_name", async (req, res) => {
   const { new_test_name } = req.body;
-  const test = await Database.editTest(req.params.test_name, new_test_name);
+  const test = await databaseInstance.editTest(req.params.test_name, new_test_name);
   if (test === null || test === undefined) {
     res.status(400).send("Something when wrong with editing a test.");
   } else {
@@ -144,7 +147,7 @@ app.put("/test/:test_name", async (req, res) => {
 
 // Get questions by test name
 app.get("/questions/:test_name", async (req, res) => {
-  const questions = await Database.getQuestionsByTestName(req.params.test_name);
+  const questions = await databaseInstance.getQuestionsByTestName(req.params.test_name);
   if (questions === null || questions === undefined) {
     res.status(400).send("Something when wrong with getting questions.");
   } else {
@@ -155,7 +158,7 @@ app.get("/questions/:test_name", async (req, res) => {
 // Add question by test name
 app.post("/question/:test_name", async (req, res) => {
   const { question_text } = req.body;
-  const question = await Database.addQuestionByTestName(
+  const question = await databaseInstance.addQuestionByTestName(
     req.params.test_name,
     question_text
   );
@@ -169,7 +172,7 @@ app.post("/question/:test_name", async (req, res) => {
 // Edit question by by question id
 app.put("/question/:question_id", async (req, res) => {
   const { new_question_text } = req.body;
-  const question = await Database.editQuestionByQuestionId(
+  const question = await databaseInstance.editQuestionByQuestionId(
     req.params.question_id,
     new_question_text
   );
@@ -182,7 +185,7 @@ app.put("/question/:question_id", async (req, res) => {
 
 // Delete question by question id
 app.delete("/question/:question_id", async (req, res) => {
-  const question = await Database.deleteQuestionByQuestionId(
+  const question = await databaseInstance.deleteQuestionByQuestionId(
     req.params.question_id
   );
   if (question === null || question === undefined) {
@@ -194,23 +197,13 @@ app.delete("/question/:question_id", async (req, res) => {
 
 // Get all answers
 app.get("/answers", async (req, res) => {
-  const answers = await Database.getAnswers();
+  const answers = await databaseInstance.getAnswers();
   res.json(answers);
 });
 
-// // Get answers by question id
-// app.get("/answer/:question_id", async (req, res) => {
-//   const answers = await Database.getAnswersByQuestionId(req.params.question_id);
-//   if (answers === null || answers === undefined) {
-//     res.status(400).send("Something when wrong with getting answers.");
-//   } else {
-//     res.status(200).json(answers);
-//   }
-// });
-
 // Get answers by test name
 app.get("/answers/:test_name", async (req, res) => {
-  const answers = await Database.getAnswersByTestName(req.params.test_name);
+  const answers = await databaseInstance.getAnswersByTestName(req.params.test_name);
   if (answers === null || answers === undefined) {
     res.status(400).send("Something when wrong with getting answers.");
   } else {
@@ -221,7 +214,7 @@ app.get("/answers/:test_name", async (req, res) => {
 // Add answer by question id
 app.post("/answer/:question_id", async (req, res) => {
   const { new_answer_text, correct } = req.body;
-  const answer = await Database.addAnswerByQuestionId(
+  const answer = await databaseInstance.addAnswerByQuestionId(
     req.params.question_id,
     new_answer_text,
     correct
@@ -236,7 +229,7 @@ app.post("/answer/:question_id", async (req, res) => {
 // Edit answer by answer id
 app.put("/answer/:answer_id", async (req, res) => {
   const { new_answer_text, correct } = req.body;
-  const answer = await Database.editAnswerByAnswerId(
+  const answer = await databaseInstance.editAnswerByAnswerId(
     req.params.answer_id,
     new_answer_text,
     correct
@@ -250,7 +243,7 @@ app.put("/answer/:answer_id", async (req, res) => {
 
 // Delete answer by answer id
 app.delete("/answer/:answer_id", async (req, res) => {
-  const answer = await Database.deleteAnswerByAnswerId(req.params.answer_id);
+  const answer = await databaseInstance.deleteAnswerByAnswerId(req.params.answer_id);
   if (answer === null || answer === undefined) {
     res.status(400).send("Something when wrong with deleting an answer.");
   } else {
