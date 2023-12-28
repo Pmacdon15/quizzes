@@ -203,9 +203,10 @@ describe("Database", () => {
 
       const test = await database.editTest(test_name, new_test_name);
 
-      expect(test.test_name).toBe(new_test_name);
+      expect(test[0].test_name).toBe(new_test_name);
     });
   });
-
   
+
+
 });

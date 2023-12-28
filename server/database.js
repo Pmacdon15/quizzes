@@ -263,7 +263,7 @@ class Database {
       //console.log("Generated SQL query:", query);
       if (result.rowsAffected[0] === 1) {
         console.log("Test edited successfully");
-        const test = this.getTestsByName(new_test_name);
+        const test = this.getTestByName(new_test_name);
         return test;
       }
     } catch (error) {
