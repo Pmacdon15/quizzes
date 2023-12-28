@@ -21,6 +21,7 @@ const Index = ({ params }) => {
   const [answers, setAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [userResponses, setUserResponses] = useState([]);
 
   useEffect(() => {
     const fetchQuestionsAndAnswers = async () => {
@@ -39,20 +40,61 @@ const Index = ({ params }) => {
   }, []);
 
   const handleNextQuestion = () => {
+    // Find the correct answer for the current question
+    const filteredAnswers = answers.filter(
+      (answer) =>
+        answer.question_id === questions[currentQuestionIndex].question_id
+    );
+
+    const correctAnswer = filteredAnswers.find(
+      (answer) => answer.correct === true
+    );
+
+    // todo remove Log relevant information for debugging
+    console.log("Selected Answer:", selectedAnswer);
+    console.log("Filtered Answers:", filteredAnswers);
+    console.log("Correct Answer:", correctAnswer);
+
+    // Calculate whether the selected answer is correct
+    const isCorrect =
+      selectedAnswer === (correctAnswer ? correctAnswer.answer_text : null);
+
+    // todo remove Log whether the answer is correct
+    console.log("Is Correct:", isCorrect);
+
+    // Update the userResponses array with information about the current question
+    setUserResponses((prevResponses) => [
+      ...prevResponses,
+      {
+        question_id: questions[currentQuestionIndex].question_id,
+        correct: isCorrect,
+      },
+    ]);
+
+    // Log the current state of userResponses after updating
+    //console.log("After updating userResponses:", userResponses);
+
     // Move to the next question
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+
     // Clear the selected answer for the next question
     setSelectedAnswer(null);
   };
+
+  useEffect(() => {
+    console.log("userResponses in useEffect:", userResponses);
+  }, [userResponses]);
 
   const handleAnswerChange = (event) => {
     // Update the selected answer when the user clicks on a radio button
     setSelectedAnswer(event.target.value);
   };
 
-  const handleLastQuestion = () => {  
+  const handleLastQuestion = () => {
     // Move to the last question
     setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+    // Remove the last entry from the userResponses array
+    setUserResponses((prevResponses) => prevResponses.slice(0, -1));
     // Clear the selected answer for the next question
     setSelectedAnswer(null);
   };
