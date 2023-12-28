@@ -8,6 +8,7 @@ This is a simple application to store quizzes and allow users to access them. In
 - [Installation](#Installation)
 - [Requirements](#Requirements)
 - [Database](#Database)
+- [Testing](#Testing)
 - [Startup](#Startup)
 - [DevHelp](#DevHelp)
 
@@ -69,6 +70,10 @@ MSSQL_DATABASE='quizzes'
 
 > [!IMPORTANT]
 >The .env file should be located inside of root directory of the project.
+
+## Testing
+
+There are some tests included for the database. Once you have copied the Schema file in to the database, to confirm it is working correctly from the root directory run npm test. All test should pass.
 
 ## Startup
 
