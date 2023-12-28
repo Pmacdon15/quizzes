@@ -218,6 +218,69 @@ describe("Database", () => {
     });
   });
 
+  // Get questions by test name
+  describe("getQuestionsByTestName", () => {
+    it("should get questions with valid test_name", async () => {
+      const test_name = "Math";
+
+      const questions = await database.getQuestionsByTestName(test_name);
+
+      expect(questions.length).toBeGreaterThan(0);
+    });
+  });
+
+  // Get questions by question_id
+  describe("getQuestionByQuestionId", () => {
+    it("should get questions with valid question_id", async () => {
+      const question_id = 1;
+
+      const questions = await database.getQuestionByQuestionId(question_id);
+
+      expect(questions.length).toBeGreaterThan(0);
+    });
+  }); 
+
+  // Add question by test name
+  // Set question_id to be used in edit question by question id and delete question by question id
+  let question_id;
+  describe("addQuestionByTestName", () => {
+    it("should add a question with valid test_name and question_text", async () => {
+      const test_name = "Math";
+      const question_text = "This is the test question?";
+
+      const question = await database.addQuestionByTestName(
+        test_name,
+        question_text
+      );
+      question_id = question[0].question_id;
+
+      expect(question[0].question_text).toBe(question_text);
+    });
+  });
+
+  // Edit question by question id
+  describe("editQuestionByQuestionId", () => {
+    it("should edit a question with valid question_id and new_question_text", async () => {
+      const new_question_text = "Am i even a question?";
+
+      const question = await database.editQuestionByQuestionId(
+        question_id,
+        new_question_text
+      );
+
+      expect(question[0].question_text).toBe(new_question_text);
+    });
+  });
+
+  // Delete question by question id
+  describe("deleteQuestionByQuestionId", () => {
+    it("should delete a question with valid question_id", async () => {
+      const question = await database.deleteQuestionByQuestionId(question_id);
+
+      expect(question[0].question_id).toBe(question_id);
+    });
+  });
+
 
 
 });
