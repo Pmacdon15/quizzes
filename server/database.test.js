@@ -18,36 +18,14 @@ describe("Database", () => {
     // Disconnect from the database after each test
     await database.pool.close();
   });
-
-  describe("login", () => {
-    it("should authenticate a user with valid email and password", async () => {
-      const email = "user@example.com";
-      const password = "password";
-
-      const users = await database.login(email, password);
-
-      expect(users).toHaveLength(1);
-      expect(users[0].email).toBe(email);
-      expect(users[0].password).toBeUndefined();
-    });
-
-    it("should return Something when wrong with login", async () => {
-      const email = "invalid@example.com";
-      const password = "invalid";
-
-      const users = await database.login(email, password);
-
-      expect("Something when wrong with login.");
-    });
-  });
-
+  
   // Register user
+  let email = "test_user@example.com";
+  let password = "password";
   describe("registerUser", () => {
-    it("should add a user with valid email, first_name, last_name, password", async () => {
-      const email = "test_user@example.com";
+    it("should add a user with valid email, first_name, last_name, password", async () => {      
       const first_name = "user1";
-      const last_name = "example1";
-      const password = "password";
+      const last_name = "example1";      
 
       const users = await database.registerUser(
         email,
@@ -75,6 +53,29 @@ describe("Database", () => {
       );
 
       expect("Something when wrong with adding a user.");
+    });
+  });
+
+  // Login
+  describe("login", () => {
+    it("should authenticate a user with valid email and password", async () => {
+      // const email = "user@example.com";
+      // const password = "password";
+
+      const users = await database.login(email, password);
+
+      expect(users).toHaveLength(1);
+      expect(users[0].email).toBe(email);
+      expect(users[0].password).toBeUndefined();
+    });
+
+    it("should return Something when wrong with login", async () => {
+      const email = "invalid@example.com";
+      const password = "invalid";
+
+      const users = await database.login(email, password);
+
+      expect("Something when wrong with login.");
     });
   });
 
