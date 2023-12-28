@@ -1,3 +1,4 @@
+const { default: test } = require("node:test");
 const Database = require("./database");
 
 describe("Database", () => {
@@ -173,20 +174,15 @@ describe("Database", () => {
     });
   });
 
-  // Get all tests
-  describe("getTests", () => {
-    it("should get all tests", async () => {
-      const tests = await database.getTests();
-      expect(tests.length).toBeGreaterThan(0);
-    });
-  });
-
   //Add test
+  let test_name;
+  let test_id;
   describe("addTest", () => {
     it("should add a test with valid test_name", async () => {
-      const test_name = "New test";
-
+      test_name = "New test";
+      
       const tests = await database.addTest(test_name);
+      test_id = tests[0].test_id;
 
       const containsTestName = tests.some(
         (test) => test.test_name === test_name
@@ -195,50 +191,26 @@ describe("Database", () => {
     });
   });
 
+  // Get all tests
+  describe("getTests", () => {
+    it("should get all tests", async () => {
+      const tests = await database.getTests();
+      expect(tests.length).toBeGreaterThan(0);
+    });
+  });
+
   //Edit test name
   describe("editTest", () => {
     it("should edit a test name with valid test_name and new_test_name", async () => {
-      const test_name = "New test";
       const new_test_name = "New test name";
 
       const test = await database.editTest(test_name, new_test_name);
+      test_name = new_test_name;
 
       expect(test[0].test_name).toBe(new_test_name);
     });
   });
-
-  //Delete test
-  describe("deleteTest", () => {
-    it("should delete a test with valid test_name", async () => {
-      const test_name = "New test name";
-
-      const test = await database.deleteTest(test_name);
-
-      expect(test[0].test_name).toBe(test_name);
-    });
-  });
-
-  // Get questions by test name
-  describe("getQuestionsByTestName", () => {
-    it("should get questions with valid test_name", async () => {
-      const test_name = "Math";
-
-      const questions = await database.getQuestionsByTestName(test_name);
-
-      expect(questions.length).toBeGreaterThan(0);
-    });
-  });
-
-  // Get questions by question_id
-  describe("getQuestionByQuestionId", () => {
-    it("should get questions with valid question_id", async () => {
-      const question_id = 1;
-
-      const questions = await database.getQuestionByQuestionId(question_id);
-
-      expect(questions.length).toBeGreaterThan(0);
-    });
-  });
+  
 
   // Add question by test name
   // Set question_id to be used in edit question by question id and delete question by question id
@@ -255,6 +227,25 @@ describe("Database", () => {
       question_id = question[0].question_id;
 
       expect(question[0].question_text).toBe(question_text);
+    });
+  });
+
+  // Get questions by test name
+  describe("getQuestionsByTestName", () => {
+    it("should get questions with valid test_name", async () => {  
+      const questions = await database.getQuestionsByTestName(test_name);      
+      expect(questions.length).toBeGreaterThan(0);
+    });
+  });
+
+  // Get questions by question_id
+  describe("getQuestionByQuestionId", () => {
+    it("should get questions with valid question_id", async () => {
+      // const question_id = 1;
+
+      const questions = await database.getQuestionByQuestionId(question_id);
+
+      expect(questions.length).toBeGreaterThan(0);
     });
   });
 
@@ -298,7 +289,6 @@ describe("Database", () => {
       expect(answers[0].answer_id).toBe(answer_id);
     });
   });
-  
 
   // Delete question by question id
   describe("deleteQuestionByQuestionId", () => {
@@ -306,6 +296,15 @@ describe("Database", () => {
       const question = await database.deleteQuestionByQuestionId(question_id);
 
       expect(question[0].question_id).toBe(question_id);
+    });
+  });
+  
+  //Delete test
+  describe("deleteTest", () => {
+    it("should delete a test with valid test_name", async () => {
+      const test = await database.deleteTest(test_name);
+
+      expect(test[0].test_name).toBe(test_name);
     });
   });
 });
