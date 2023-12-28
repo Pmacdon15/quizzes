@@ -216,8 +216,7 @@ describe("Database", () => {
   // Set question_id to be used in edit question by question id and delete question by question id
   let question_id;
   describe("addQuestionByTestName", () => {
-    it("should add a question with valid test_name and question_text", async () => {
-      const test_name = "Math";
+    it("should add a question with valid test_name and question_text", async () => {      
       const question_text = "This is the test question?";
 
       const question = await database.addQuestionByTestName(
