@@ -276,6 +276,7 @@ describe("Database", () => {
       );
       answer_id = answer[0].answer_id;
 
+      expect(answer[0].correct).toBe(true);
       expect(answer[0].answer_text).toBe(answer_text);
     });
   });
@@ -284,8 +285,33 @@ describe("Database", () => {
   describe("getAnswerByAnswerId", () => {
     it("should get answers with valid answer_id", async () => {
       const answers = await database.getAnswerByAnswerId(answer_id);
-
+      
       expect(answers[0].answer_id).toBe(answer_id);
+    });
+  });
+
+  // Edit answer by answer id
+  describe("editAnswerByAnswerId", () => {
+    it("should edit an answer with valid answer_id and new_answer_text", async () => {
+      const new_answer_text = "This is the new test answer.";
+      const correct = 0;
+      const answer = await database.editAnswerByAnswerId(
+        answer_id,
+        new_answer_text,
+        correct
+      );
+      
+      expect(answer[0].correct).toBe(false);
+      expect(answer[0].answer_text).toBe(new_answer_text);
+    });
+  });
+
+  // Delete answer by answer id
+  describe("deleteAnswerByAnswerId", () => {
+    it("should delete an answer with valid answer_id", async () => {
+      const answer = await database.deleteAnswerByAnswerId(answer_id);
+
+      expect(answer[0].answer_id).toBe(answer_id);
     });
   });
 
