@@ -6,7 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Link from 'next/link';
+import Link from "next/link";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -50,6 +50,13 @@ const Index = ({ params }) => {
     setSelectedAnswer(event.target.value);
   };
 
+  const handleLastQuestion = () => {  
+    // Move to the last question
+    setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+    // Clear the selected answer for the next question
+    setSelectedAnswer(null);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -64,7 +71,7 @@ const Index = ({ params }) => {
             borderRadius: "10px",
           }}
         >
-            <h1>Questions Page</h1>
+          <h1>Questions Page</h1>
           {questions.length > 0 && answers.length > 0 && (
             <div className="questions">
               {questions[currentQuestionIndex].question_text}
@@ -84,19 +91,47 @@ const Index = ({ params }) => {
                     />
                   ))}
               </RadioGroup>
-              {currentQuestionIndex < questions.length && (
-                <Button variant="contained" color="primary" style={{ margin: '5px' }} onClick={handleNextQuestion}>Next Question</Button>
+              {currentQuestionIndex < questions.length - 1 ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ margin: "5px" }}
+                  onClick={handleNextQuestion}
+                >
+                  Next Question
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{ margin: "5px" }}
+                  // onClick={handleFinishTest}
+                >
+                  Finish Test
+                </Button>
+              )}
+              {currentQuestionIndex > 0 && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ margin: "5px" }}
+                  onClick={handleLastQuestion}
+                >
+                  Last Question
+                </Button>
               )}
             </div>
           )}
         </Box>
-      <Link href="/quiz" style={{display: 'flex', justifyContent: 'center'}}>
-        <Button variant="contained" color="primary" style={{ margin: '5px' }}>
-          Go Back to Menu
-        </Button>
-      </Link>
+        <Link
+          href="/quiz"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Button variant="contained" color="primary" style={{ margin: "5px" }}>
+            Go Back to Menu
+          </Button>
+        </Link>
       </Container>
-  
     </ThemeProvider>
   );
 };
