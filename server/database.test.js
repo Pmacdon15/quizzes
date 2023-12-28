@@ -38,26 +38,7 @@ describe("Database", () => {
 
       expect("Something when wrong with login.");
     });
-  });
-
-  // Get user by email
-  describe("getUsersByEmail", () => {
-    it("should return a user with valid email", async () => {
-      const email = "user@example.com";
-      const users = await database.getUsersByEmail(email);
-
-      expect(users).toHaveLength(1);
-      expect(users[0].email).toBe(email);
-    });
-
-    it("should return Something when wrong with getting user.", async () => {
-      const email = "Users@examples.com";
-      const users = await database.getUsersByEmail(email);
-
-      // Expect that the error message contains the specified string
-      expect("Something when wrong with getting user.");
-    });
-  });
+  }); 
 
   // Register user
   describe("registerUser", () => {
@@ -96,6 +77,25 @@ describe("Database", () => {
     });
   });
 
+  // Get user by email
+  describe("getUsersByEmail", () => {
+    it("should return a user with valid email", async () => {
+      const email = "user1@example.com";
+      const users = await database.getUsersByEmail(email);
+
+      expect(users).toHaveLength(1);
+      expect(users[0].email).toBe(email);
+    });
+
+    it("should return Something when wrong with getting user.", async () => {
+      const email = "NotAUserName@examples.com";
+      const users = await database.getUsersByEmail(email);
+
+      // Expect that the error message contains the specified string
+      expect("Something when wrong with getting user.");
+    });
+  });
+
   // Register admin user
   describe("registerUserAdmin", () => {
     it("should add an admin user with valid email, first_name, last_name, password", async () => {
@@ -130,7 +130,7 @@ describe("Database", () => {
       );
 
       expect("Something when wrong with adding an admin user.");
-      // This deletes the user from the database as thi is a test user
+      // This deletes the user from the database as this is a test user
       const cleanup = await database.deleteUser(email);
     });
   });
