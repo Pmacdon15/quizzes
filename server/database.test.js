@@ -272,8 +272,27 @@ describe("Database", () => {
     });
   });
 
-  // Delete question by question id
-  describe("deleteQuestionByQuestionId", () => {
+ 
+  // Add answer by question id
+  // Set answer_id to be used in edit answer by answer id and delete answer by answer id
+  let answer_id;
+  describe("addAnswerByQuestionId", () => {
+    it("should add an answer with valid question_id and answer_text", async () => {      
+      const answer_text = "This is the test answer.";
+      const correct = 1;
+      const answer = await database.addAnswerByQuestionId(
+        question_id,
+        answer_text,
+        correct
+      );
+      answer_id = answer[0].answer_id;
+
+      expect(answer[0].answer_text).toBe(answer_text);
+    });
+  });
+
+   // Delete question by question id
+   describe("deleteQuestionByQuestionId", () => {
     it("should delete a question with valid question_id", async () => {
       const question = await database.deleteQuestionByQuestionId(question_id);
 
