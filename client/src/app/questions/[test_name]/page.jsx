@@ -85,7 +85,7 @@ const Index = ({ params }) => {
                   ))}
               </RadioGroup>
               {currentQuestionIndex < questions.length - 1 && (
-                <Button onClick={handleNextQuestion}>Next Question</Button>
+                <Button variant="contained" color="primary" style={{ margin: '5px' }} onClick={handleNextQuestion}>Next Question</Button>
               )}
             </div>
           )}
