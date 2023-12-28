@@ -145,6 +145,16 @@ app.put("/test/:test_name", async (req, res) => {
   }
 });
 
+// Delete test
+app.delete("/test/:test_name", async (req, res) => {
+  const test = await databaseInstance.deleteTest(req.params.test_name);
+  if (test === null || test === undefined) {
+    res.status(400).send("Something when wrong with deleting a test.");
+  } else {
+    res.status(200).json(test);
+  }
+});
+
 // Get questions by test name
 app.get("/questions/:test_name", async (req, res) => {
   const questions = await databaseInstance.getQuestionsByTestName(req.params.test_name);

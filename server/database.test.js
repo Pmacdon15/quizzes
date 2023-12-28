@@ -172,4 +172,40 @@ describe("Database", () => {
       expect("Something when wrong with deleting user.");
     });
   });
+
+  // Get all tests
+  describe("getTests", () => {
+    it("should get all tests", async () => {
+      const tests = await database.getTests();
+      expect(tests.length).toBeGreaterThan(0);
+    });
+  });
+
+  //Add test
+  describe("addTest", () => {
+    it("should add a test with valid test_name", async () => {
+      const test_name = "New test";
+
+      const tests = await database.addTest(test_name);
+
+      const containsTestName = tests.some(
+        (test) => test.test_name === test_name
+      );
+      expect(containsTestName).toBe(true);
+    });
+  });
+
+  //Edit test name
+  describe("editTest", () => {
+    it("should edit a test name with valid test_name and new_test_name", async () => {
+      const test_name = "New test";
+      const new_test_name = "New test name";
+
+      const test = await database.editTest(test_name, new_test_name);
+
+      expect(test.test_name).toBe(new_test_name);
+    });
+  });
+
+  
 });

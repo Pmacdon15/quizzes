@@ -202,7 +202,7 @@ class Database {
    * @param {string} test_name - The name of the test to retrieve.
    * @returns {Promise<Array>} - A promise that resolves to an array of test records.
    */
-  async getTestsByName(test_name) {
+  async getTestByName(test_name) {
     try {
       const result = await this.pool
         .request()
@@ -235,7 +235,7 @@ class Database {
         );
       if (result.rowsAffected[0] === 1) {
         console.log("Test added successfully");
-        const test = this.getTests();
+        const test = this.getTestByName(test_name);
         return test;
       }
     } catch (error) {
@@ -264,6 +264,32 @@ class Database {
       if (result.rowsAffected[0] === 1) {
         console.log("Test edited successfully");
         const test = this.getTestsByName(new_test_name);
+        return test;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  /**
+   * Deletes a test from the database by test name.
+   * @param {string} test_name - The name of the test to be deleted.
+   * @returns {Promise<Object>} - A promise that resolves to the deleted test object.
+   * @throws {Error} - If the test name is undefined.
+   * @throws {Error} - If the test name is not found in the database.
+   */
+  async deleteTest(test_name) {
+    try {
+      if (test_name === undefined) {
+        throw new Error("Test name is undefined. Cannot delete test.");
+      }
+      const test = this.getTestByName(test_name);
+      const result = await this.pool
+        .request()
+        .query(
+          `DELETE FROM quizzes.dbo.tests WHERE test_name = '${test_name}'`
+        );
+      if (result.rowsAffected[0] === 1) {
+        console.log("Test deleted successfully");
         return test;
       }
     } catch (error) {
