@@ -206,7 +206,18 @@ describe("Database", () => {
       expect(test[0].test_name).toBe(new_test_name);
     });
   });
-  
+
+  //Delete test
+  describe("deleteTest", () => {
+    it("should delete a test with valid test_name", async () => {
+      const test_name = "New test name";
+
+      const test = await database.deleteTest(test_name);
+
+      expect(test[0].test_name).toBe(test_name);
+    });
+  });
+
 
 
 });
