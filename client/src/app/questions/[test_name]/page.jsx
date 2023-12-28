@@ -84,7 +84,7 @@ const Index = ({ params }) => {
                     />
                   ))}
               </RadioGroup>
-              {currentQuestionIndex < questions.length - 1 && (
+              {currentQuestionIndex < questions.length && (
                 <Button variant="contained" color="primary" style={{ margin: '5px' }} onClick={handleNextQuestion}>Next Question</Button>
               )}
             </div>
@@ -92,7 +92,7 @@ const Index = ({ params }) => {
         </Box>
       <Link href="/quiz" style={{display: 'flex', justifyContent: 'center'}}>
         <Button variant="contained" color="primary" style={{ margin: '5px' }}>
-          Go Back
+          Go Back to Menu
         </Button>
       </Link>
       </Container>
