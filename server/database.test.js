@@ -43,7 +43,7 @@ describe("Database", () => {
   // Register user
   describe("registerUser", () => {
     it("should add a user with valid email, first_name, last_name, password", async () => {
-      const email = "user1@example.com";
+      const email = "test_user@example.com";
       const first_name = "user1";
       const last_name = "example1";
       const password = "password";
@@ -61,7 +61,7 @@ describe("Database", () => {
       expect(users[0].last_name).toBe(last_name);
     });
     it("should return Something when wrong with adding a user.", async () => {
-      const email = "user1@example.com";
+      const email = "test_user@example.com";
       const first_name = "user1";
       const last_name = "example1";
       const password = "password";
@@ -80,7 +80,7 @@ describe("Database", () => {
   // Get user by email
   describe("getUsersByEmail", () => {
     it("should return a user with valid email", async () => {
-      const email = "user1@example.com";
+      const email = "test_user@example.com";
       const users = await database.getUsersByEmail(email);
 
       expect(users).toHaveLength(1);
@@ -99,7 +99,7 @@ describe("Database", () => {
   // Register admin user
   describe("registerUserAdmin", () => {
     it("should add an admin user with valid email, first_name, last_name, password", async () => {
-      const email = "admin1@example.com";
+      const email = "test_admin@example.com";
       const first_name = "admin1";
       const last_name = "example1";
       const password = "password";
@@ -117,7 +117,7 @@ describe("Database", () => {
       expect(users[0].last_name).toBe(last_name);
     });
     it("should return Something when wrong with adding an admin user.", async () => {
-      const email = "admin1@example.com";
+      const email = "test_admin@example.com";
       const first_name = "admin1";
       const last_name = "example1";
       const password = "password";
@@ -138,7 +138,7 @@ describe("Database", () => {
   // Update password
   describe("updatePassword", () => {
     it("should update a user's password with valid email and new_password", async () => {
-      const email = "admin@example.com";
+      const email = "test_user@example.com";
       const new_password = "password";
 
       const users = await database.updatePassword(email, new_password);
@@ -147,7 +147,7 @@ describe("Database", () => {
       expect(users[0].email).toBe(email);
     });
     it("should return Something when wrong with updating password.", async () => {
-      const email = "Admins@example.com";
+      const email = "not_a_test_user@example.com";
       const new_password = "password";
 
       const users = await database.updatePassword(email, new_password);
@@ -159,14 +159,14 @@ describe("Database", () => {
   // Delete user
   describe("deleteUser", () => {
     it("should delete a user with valid email", async () => {
-      const email = "user1@example.com";
+      const email = "test_user@example.com";
       const users = await database.deleteUser(email);
 
       expect(users).toHaveLength(1);
       expect(users[0].email).toBe(email);
     });
     it("should return Something when wrong with deleting user.", async () => {
-      const email = "user1@example.com";
+      const email = "test_user@example.com";
       const users = await database.deleteUser(email);
 
       expect("Something when wrong with deleting user.");
