@@ -67,12 +67,10 @@ const Index = ({ params }) => {
       ...prevResponses,
       {
         question_id: questions[currentQuestionIndex].question_id,
+        answer_id: correctAnswer ? correctAnswer.answer_id : null,
         correct: isCorrect,
       },
     ]);
-
-    // Log the current state of userResponses after updating
-    //console.log("After updating userResponses:", userResponses);
 
     // Move to the next question
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
