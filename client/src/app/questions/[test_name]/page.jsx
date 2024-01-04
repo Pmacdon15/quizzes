@@ -50,9 +50,9 @@ const Index = ({ params }) => {
     );
   
     // todo remove Log relevant information for debugging
-    console.log("Selected Answer:", selectedAnswer);
-    console.log("Filtered Answers:", filteredAnswers);
-    console.log("Correct Answer:", correctAnswer);
+    // console.log("Selected Answer:", selectedAnswer);
+    // console.log("Filtered Answers:", filteredAnswers);
+    // console.log("Correct Answer:", correctAnswer);
   
     // Calculate whether the selected answer is correct
     const isCorrect =
@@ -72,8 +72,7 @@ const Index = ({ params }) => {
     ]);
   }
 
-  const handleNextQuestion = () => {
-    
+  const handleNextQuestion = () => {    
     processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses);
 
     // Move to the next question
@@ -102,12 +101,8 @@ const Index = ({ params }) => {
     setSelectedAnswer(null);
   };
 
-  const handleFinishTest = () => {
-    
-    processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses);
-
-    // todo remove Log the userResponses array
-    console.log("userResponses in handleFinishTest:", userResponses);
+  const handleFinishTest = () => {            
+    processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses);       
 
     // Calculate the number of correct answers
     const numCorrect = userResponses.filter(
