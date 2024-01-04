@@ -39,58 +39,90 @@ const Index = ({ params }) => {
     fetchQuestionsAndAnswers();
   }, []);
 
-  function processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses) {
-    const filteredAnswers = answers.filter(
-      (answer) =>
-        answer.question_id === questions[currentQuestionIndex].question_id
-    );
-  
-    const correctAnswer = filteredAnswers.find(
-      (answer) => answer.correct === true
-    );
-  
-    // todo remove Log relevant information for debugging
-    // console.log("Selected Answer:", selectedAnswer);
-    // console.log("Filtered Answers:", filteredAnswers);
-    // console.log("Correct Answer:", correctAnswer);
-  
-    // Calculate whether the selected answer is correct
-    const isCorrect =
-      selectedAnswer === (correctAnswer ? correctAnswer.answer_text : null);
-  
-    // todo remove Log whether the answer is correct
-    console.log("Is Correct:", isCorrect);
-  
-    // Update the userResponses array with information about the current question
-    setUserResponses((prevResponses) => [
-      ...prevResponses,
-      {
-        question_id: questions[currentQuestionIndex].question_id,
-        answer_id: correctAnswer ? correctAnswer.answer_id : null,
-        correct: isCorrect,
-      },
-    ]);
-  }
-
-  const handleNextQuestion = () => {    
-    processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses);
-
-    // Move to the next question
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-
-    // Clear the selected answer for the next question
-    setSelectedAnswer(null);
-  };
-
   useEffect(() => {
-    // Todo remove Log the userResponses array
-    console.log("userResponses in useEffect:", userResponses);
-  }, [userResponses]);
+    // Calculate the number of correct answers when userResponses is updated
+    const numCorrect = userResponses.filter(
+      (response) => response.correct
+    ).length;
+
+    console.log(" currentQuestionIndex b4 if: ", currentQuestionIndex);
+     
+    console.log("userResponses: ", userResponses);
+    console.log("questions.length: ", questions.length);    
+
+    if (userResponses.length === questions.length) {
+      console.log(" userResponses.length", userResponses.length);
+      // Display the number of correct answers and total number of questions      
+      console.log(" currentQuestionIndex inside of if: ", currentQuestionIndex);     
+      
+      alert(`You got ${numCorrect} out of ${questions.length} correct!`);    }
+    
+
+  }, [userResponses, questions.length]);
+
+  function processAnswer(
+    answers,
+    currentQuestionIndex,
+    selectedAnswer,
+    questions,
+    setUserResponses
+  ) {
+    return new Promise((resolve) => {
+      const filteredAnswers = answers.filter(
+        (answer) =>
+          answer.question_id === questions[currentQuestionIndex].question_id
+      );
+
+      const correctAnswer = filteredAnswers.find(
+        (answer) => answer.correct === true
+      );
+
+      // Calculate whether the selected answer is correct
+      const isCorrect =
+        selectedAnswer === (correctAnswer ? correctAnswer.answer_text : null);
+
+      // Update the userResponses array with information about the current question
+      setUserResponses((prevResponses) => [
+        ...prevResponses,
+        {
+          question_id: questions[currentQuestionIndex].question_id,
+          answer_id: correctAnswer ? correctAnswer.answer_id : null,
+          correct: isCorrect,
+        },
+      ]);
+
+      // Resolve the promise after updating user responses
+      resolve();
+    });
+  }
 
   const handleAnswerChange = (event) => {
     // Update the selected answer when the user clicks on a radio button
     setSelectedAnswer(event.target.value);
   };
+
+  const handleNextQuestion = () => {  
+
+    processAnswer(
+      answers,
+      currentQuestionIndex,
+      selectedAnswer,
+      questions,
+      setUserResponses
+    );
+
+    // Move to the next question
+    setCurrentQuestionIndex(prevIndex => prevIndex + 1);    
+    
+    // Clear the selected answer for the next question
+    setSelectedAnswer(null);
+   
+  };
+
+  useEffect(() => {
+    // Log the updated currentQuestionIndex after each render
+    console.log("Updated currentQuestionIndex: ", currentQuestionIndex);
+  }, [currentQuestionIndex]);
 
   const handleGoToPrevQuestion = () => {
     // Move to the last question
@@ -101,16 +133,18 @@ const Index = ({ params }) => {
     setSelectedAnswer(null);
   };
 
-  const handleFinishTest = () => {            
-    processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses);       
-
-    // Calculate the number of correct answers
-    const numCorrect = userResponses.filter(
-      (response) => response.correct
-    ).length;
-
-    // Display the number of correct answers and total number of questions
-    alert(`You got ${numCorrect} out of ${questions.length} correct!`);
+  const handleFinishTest = async () => {    
+    await processAnswer(
+      answers,
+      currentQuestionIndex,
+      selectedAnswer,
+      questions,
+      setUserResponses
+    );
+    // // Calculate the number of correct answers
+    // const numCorrect = userResponses.filter(
+    //   (response) => response.correct
+    // ).length;
   };
 
   return (
