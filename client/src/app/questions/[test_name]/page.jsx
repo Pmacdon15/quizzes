@@ -39,29 +39,28 @@ const Index = ({ params }) => {
     fetchQuestionsAndAnswers();
   }, []);
 
-  const handleNextQuestion = () => {
-    // Find the correct answer for the current question
+  function processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses) {
     const filteredAnswers = answers.filter(
       (answer) =>
         answer.question_id === questions[currentQuestionIndex].question_id
     );
-
+  
     const correctAnswer = filteredAnswers.find(
       (answer) => answer.correct === true
     );
-
+  
     // todo remove Log relevant information for debugging
     console.log("Selected Answer:", selectedAnswer);
     console.log("Filtered Answers:", filteredAnswers);
     console.log("Correct Answer:", correctAnswer);
-
+  
     // Calculate whether the selected answer is correct
     const isCorrect =
       selectedAnswer === (correctAnswer ? correctAnswer.answer_text : null);
-
+  
     // todo remove Log whether the answer is correct
     console.log("Is Correct:", isCorrect);
-
+  
     // Update the userResponses array with information about the current question
     setUserResponses((prevResponses) => [
       ...prevResponses,
@@ -71,6 +70,11 @@ const Index = ({ params }) => {
         correct: isCorrect,
       },
     ]);
+  }
+
+  const handleNextQuestion = () => {
+    
+    processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses);
 
     // Move to the next question
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -89,13 +93,29 @@ const Index = ({ params }) => {
     setSelectedAnswer(event.target.value);
   };
 
-  const handleLastQuestion = () => {
+  const handleGoToPrevQuestion = () => {
     // Move to the last question
     setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     // Remove the last entry from the userResponses array
     setUserResponses((prevResponses) => prevResponses.slice(0, -1));
     // Clear the selected answer for the next question
     setSelectedAnswer(null);
+  };
+
+  const handleFinishTest = () => {
+    
+    processAnswer(answers, currentQuestionIndex, selectedAnswer, questions, setUserResponses);
+
+    // todo remove Log the userResponses array
+    console.log("userResponses in handleFinishTest:", userResponses);
+
+    // Calculate the number of correct answers
+    const numCorrect = userResponses.filter(
+      (response) => response.correct
+    ).length;
+
+    // Display the number of correct answers and total number of questions
+    alert(`You got ${numCorrect} out of ${questions.length} correct!`);
   };
 
   return (
@@ -147,7 +167,7 @@ const Index = ({ params }) => {
                   variant="contained"
                   color="secondary"
                   style={{ margin: "5px" }}
-                  // onClick={handleFinishTest}
+                  onClick={handleFinishTest}
                 >
                   Finish Test
                 </Button>
@@ -158,7 +178,7 @@ const Index = ({ params }) => {
                   variant="contained"
                   color="primary"
                   style={{ margin: "5px" }}
-                  onClick={handleLastQuestion}
+                  onClick={handleGoToPrevQuestion}
                 >
                   Last Question
                 </Button>
