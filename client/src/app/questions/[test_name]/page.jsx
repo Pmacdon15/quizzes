@@ -80,6 +80,7 @@ const Index = ({ params }) => {
   };
 
   useEffect(() => {
+    // Todo remove Log the userResponses array
     console.log("userResponses in useEffect:", userResponses);
   }, [userResponses]);
 
@@ -131,6 +132,7 @@ const Index = ({ params }) => {
                     />
                   ))}
               </RadioGroup>
+              {/* If the current question is not the last question, show the Next Question button */}
               {currentQuestionIndex < questions.length - 1 ? (
                 <Button
                   variant="contained"
@@ -150,6 +152,7 @@ const Index = ({ params }) => {
                   Finish Test
                 </Button>
               )}
+              {/* If the current question is not the first question, show the Last Question button */}
               {currentQuestionIndex > 0 && (
                 <Button
                   variant="contained"
