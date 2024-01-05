@@ -39,17 +39,15 @@ export default function Home() {
           console.log("User is not an admin. Redirecting to menu.");
           window.location.href = `/menu/${response.data[0].email}`;
         }
-        
       }
-      
     } catch (error) {
       console.error("Error while submitting the form:", error);
     }
     // Clear the form after submission
     reset();
-    };
+  };
 
-    return (
+  return (
     <main>
       <div
         style={{
@@ -93,14 +91,18 @@ export default function Home() {
                   variant="outlined"
                   type="password"
                 />
-
                 <div className="forgot-password">
-                  Lost your password? <span>Click Here!</span>
+                  Lost your password?
+                  <span>Click Here!</span>
                 </div>
                 <div className="register">
-                  Don't have an account? <span>Click Here!</span>
+                  Don't have an account?
+                  <Link href="/registration">
+                    
+                      <span>Click Here!</span>
+                    
+                  </Link>
                 </div>
-
                 <div className="submit-container">
                   <Button type="submit" variant="contained">
                     Sign In
