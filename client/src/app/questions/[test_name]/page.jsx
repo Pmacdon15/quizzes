@@ -108,11 +108,6 @@ const Index = ({ params }) => {
     setSelectedAnswer(null);
   };
 
-  // useEffect(() => {
-  //   // Log the updated currentQuestionIndex after each render
-  //   console.log("Updated currentQuestionIndex: ", currentQuestionIndex + 1);
-  // }, [currentQuestionIndex]);
-
   const handleGoToPrevQuestion = () => {
     // Move to the last question
     setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
@@ -130,6 +125,9 @@ const Index = ({ params }) => {
       questions,
       setUserResponses
     );
+
+    // Display the results
+    
   };
 
   return (
