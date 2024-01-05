@@ -43,6 +43,15 @@ export default function Home({ params }) {
                   Take A Quiz
                 </Button>
               </Link>
+              <Link href={`/results/${userEmail}`}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ margin: "5px" }}
+                >
+                  View Results
+                </Button>
+              </Link>
             </Box>
           </Container>
         </ThemeProvider>
