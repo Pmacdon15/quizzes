@@ -41,8 +41,7 @@ const Index = ({ params }) => {
     // Calculate the number of correct answers when userResponses is updated
     const numCorrect = userResponses.filter(
       (response) => response.correct
-    ).length;
-    console.log("look here at usersResponses Notice the state change")
+    ).length;    
     console.log(userResponses);
 
     // Store userResponses in local storage
@@ -102,7 +101,6 @@ const Index = ({ params }) => {
       questions,
       setUserResponses
     );
-
     // Move to the next question
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
 
@@ -128,7 +126,7 @@ const Index = ({ params }) => {
       questions,
       setUserResponses
     ); 
-      
+
     // Calculate the total correct responses and create userResponseObj
     const userResponseObj = {
       user_email: decodeURIComponent(params.user_email),
