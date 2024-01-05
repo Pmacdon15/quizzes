@@ -79,7 +79,7 @@ const registrationPage = () => {
     setValue("confirm_password", confirmPasswordValue);
   }, [confirmPasswordValue, setValue]);
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     if (
       emailError ||
       firstNameError ||
@@ -93,26 +93,15 @@ const registrationPage = () => {
       alert("Please enter valid information");
       return;
     }
-
+    
     try {
-    const response = await axios.post("http://localhost:5544/user", data);
-
-    if (response.status === 200) {
-      console.log("Registration successful. User data:", response.data);
-      // Assuming the email is returned in the response
-      window.location.href = `/menu/${response.data.email}`;
-      return;
-    } else {
-      // Handle other status codes if needed
-      console.log("Registration failed. Server returned status:", response.status);
+      axios.post("http://localhost:5544/userAdmin", data).then((res) => {
+        console.log(res.data);
+        reset();
+      });
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.error("Error during registration:", err);
-  }
-
-  // If you reach here, something went wrong
-  alert("Registration failed. Please try again.");
-  reset();
   };
 
   return (

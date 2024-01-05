@@ -35,7 +35,7 @@ export default function Home() {
 
           window.location.href = `/admin/menu/${response.data[0].email}`;
         } else {
-          // User is not an owner, redirect to CoworkersPage
+          // User is not an admin, redirect to menu
           console.log("User is not an admin. Redirecting to menu.");
           window.location.href = `/menu/${response.data[0].email}`;
         }
