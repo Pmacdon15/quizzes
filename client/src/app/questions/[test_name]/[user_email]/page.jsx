@@ -142,12 +142,15 @@ const Index = ({ params }) => {
 
     // Send userResponseObj to backend
     try{
-    axios.post("http://localhost:5544/results", userResponseObj);
-    
+    axios.post("http://localhost:5544/results", userResponseObj);    
     }
     catch(err){
       console.log(err);
     }
+    // Redirect to results page
+    // Navigate to results page
+    window.location.href = `/results/${user_email}`;    
+
   };
 
   return (
