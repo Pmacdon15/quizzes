@@ -11,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 
 import React, { useState, useEffect } from "react";
-import {useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import "../page.css";
 
@@ -49,12 +49,11 @@ const registrationPage = () => {
   const handleLastNameChange = (event) => {
     setLastNameValue(event.target.value);
     setLastNameError(event.target.value.trim().length < 3);
-  }
+  };
 
   useEffect(() => {
     setValue("last_name", lastNameValue);
-  }
-  , [lastNameValue, setValue]);
+  }, [lastNameValue, setValue]);
 
   const [passwordValue, setPasswordValue] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
@@ -81,15 +80,20 @@ const registrationPage = () => {
   }, [confirmPasswordValue, setValue]);
 
   const onSubmit = (data) => {
-    if (emailError || firstNameError || passwordError || confirmPasswordError) {
+    if (
+      emailError ||
+      firstNameError ||
+      passwordError ||
+      confirmPasswordError ||
+      !emailValue?.trim() ||
+      !firstNameValue?.trim() ||
+      !passwordValue?.trim() ||
+      !confirmPasswordValue?.trim()
+    ) {
       alert("Please enter valid information");
       return;
     }
-    if (emailValue === undefined ||emailValue === null || firstNameValue === undefined || passwordValue === undefined || confirmPasswordValue === undefined) {
-      alert("Please enter valid information");
-      console.log(data);
-      return;
-    }
+    
     try {
       axios.post("http://localhost:5544/user", data).then((res) => {
         console.log(res.data);
@@ -144,7 +148,7 @@ const registrationPage = () => {
                   : ""
               }
             />
-            <TextField  
+            <TextField
               sx={{ width: "100%" }}
               {...register("last_name")}
               label="Last Name"
@@ -152,9 +156,7 @@ const registrationPage = () => {
               onChange={handleLastNameChange}
               error={lastNameError}
               helperText={
-                lastNameError
-                  ? "Please enter a valid last name at least 3"
-                  : ""
+                lastNameError ? "Please enter a valid last name at least 3" : ""
               }
             />
             <TextField
