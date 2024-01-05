@@ -3,7 +3,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import theme from "../../../src/theme";
+import theme from "../../../theme";
 import Container from "@mui/material/Container";
 
 
