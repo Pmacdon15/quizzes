@@ -96,11 +96,11 @@ const registrationPage = () => {
 
     try {
     const response = await axios.post("http://localhost:5544/user", data);
-
+    
     if (response.status === 200) {
       console.log("Registration successful. User data:", response.data);
       // Assuming the email is returned in the response
-      window.location.href = `/menu/${response.data.email}`;
+      window.location.href = `/menu/${response.data[0].email}`;
       return;
     } else {
       // Handle other status codes if needed
