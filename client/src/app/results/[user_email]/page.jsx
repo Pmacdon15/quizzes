@@ -5,6 +5,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import Link from "next/link";
+import Button from "@mui/material/Button";
 
 const Index = ({ params }) => {
   // Declare userResults using useState
@@ -74,6 +76,14 @@ const Index = ({ params }) => {
             </p>
           ))}
         </Box>
+        <Link
+          href="/quiz"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Button variant="contained" color="primary" style={{ margin: "5px" }}>
+            Go Back to Menu
+          </Button>
+        </Link>
       </Container>
     </ThemeProvider>
   );

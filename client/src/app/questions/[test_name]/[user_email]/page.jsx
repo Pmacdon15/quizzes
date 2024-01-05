@@ -14,6 +14,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 import axios from "axios";
 
+import "./page.css";
+
 const Index = ({ params }) => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
