@@ -6,9 +6,12 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
 
 import * as React from "react";
 import { useForm } from "react-hook-form";
+
+import "./page.css"
 
 export default function Home() {
 
@@ -30,10 +33,40 @@ export default function Home() {
             display: 'flex', flexDirection: 'column', alignItems: 'center'
           }}
         >
-        <h1>Quiz App</h1>
-        <Link href="/quiz">
-          <Button variant="contained" color="primary" style={{ margin: '5px' }}>Get Started</Button>
-        </Link>
+        <div className="header">
+            <div className="text">login</div>
+            <div className="underline"></div>
+          </div>
+          <br></br>
+          {/* <form onSubmit={handleSubmit(onSubmit)} className="custom-form"> */}
+          <form className="custom-form">
+            <TextField
+              sx={{ width: "80%" }}
+              {...register("email")}
+              label="Email"
+              variant="outlined"
+            />
+            <TextField
+              sx={{ width: "80%" }}
+              {...register("password")}
+              label="Password"
+              variant="outlined"
+              type="password"
+            />
+
+            <div className="forgot-password">
+              Lost your password? <span>Click Here!</span>              
+            </div>
+            <div className="register">              
+              Don't have an account? <span>Click Here!</span>
+            </div>
+
+            <div className="submit-container">
+              <Button type="submit" variant="contained">
+                Sign In
+              </Button>
+            </div>
+          </form>
         </Box>
         </Container>
       </ThemeProvider>
