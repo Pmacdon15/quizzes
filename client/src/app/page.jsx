@@ -48,14 +48,7 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+    
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Container maxWidth="sm">
@@ -97,10 +90,8 @@ export default function Home() {
                 </div>
                 <div className="register">
                   Don't have an account?
-                  <Link href="/registration">
-                    
-                      <span>Click Here!</span>
-                    
+                  <Link href="/registration">                    
+                      <span>Click Here!</span>                    
                   </Link>
                 </div>
                 <div className="submit-container">
@@ -112,7 +103,6 @@ export default function Home() {
             </Box>
           </Container>
         </ThemeProvider>
-      </div>
-    </main>
+     
   );
 }

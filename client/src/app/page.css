@@ -49,16 +49,14 @@
     cursor: pointer;
 }
 
-
-
 .custom-form {
     margin: 1%;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    gap: 20px;
-    
+    gap: 20px;    
+    width: 70%;
 }
 
 .textField-box {
@@ -92,11 +90,10 @@
     width: 80%;    
 }
 
-.label-width {
-    min-width: 120px;
-    /* Adjust the width as needed */
+/* .label-width {
+    min-width: 120px;   
 }
 
 label {
     margin-right: 1%;
-}
+} */
