@@ -261,6 +261,17 @@ app.delete("/answer/:answer_id", async (req, res) => {
   }
 });
 
+// Post results
+app.post("/results", async (req, res) => {
+  const { user_email, test_name, total_correct, total_questions } = req.body;
+  const results = await databaseInstance.postResults(user_email, test_name, total_correct, total_questions);
+  if (results === null || results === undefined) {
+    res.status(400).send("Something when wrong with posting results.");
+  } else {
+    res.status(200).json(results);
+  }
+});
+
 // Start server
 app.listen(port, () => {
   displayGraphic(port);

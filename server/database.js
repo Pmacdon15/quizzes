@@ -566,6 +566,60 @@ class Database {
       console.log(error);
     }
   }
+
+  /**
+   * Posts results to the database.
+   * @param {string} user_email - The email of the user.
+   * @param {string} test_name - The name of the test.
+   * @param {number} total_correct - The total number of correct answers.
+   * @param {number} total_questions - The total number of questions.
+   * @returns {Promise<Object>} - The posted result.
+   * @throws {Error} - If user_email, test_name, total_correct, total_questions, or user_result is undefined.
+   */
+  async postResults(
+    user_email,
+    test_name,
+    total_correct,
+    total_questions,
+    user_result
+  ) {
+    try {
+      if (
+        user_email === undefined ||
+        test_name === undefined ||
+        total_correct === undefined ||
+        total_questions === undefined
+      ) {
+        throw new Error(
+          "Field user_email, test_name, total_correct, or total_questions is undefined. Cannot post result."
+        );
+      }
+
+      const result = await this.pool.request().query(
+        `INSERT INTO quizzes.dbo.results (user_id, test_id, test_name, total_correct, total_questions, date_taken) 
+     VALUES (
+       (SELECT user_id FROM quizzes.dbo.users WHERE email = '${user_email}'), 
+       (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}'), 
+       '${test_name}', 
+       '${total_correct}', 
+       '${total_questions}',
+       GETDATE()
+     )`
+      );
+
+      if (result.rowsAffected[0] === 1) {
+        console.log("Result posted successfully");
+        const posted_result = await this.pool.request().query(
+          `SELECT * FROM quizzes.dbo.results 
+             WHERE user_id = (SELECT user_id FROM quizzes.dbo.users WHERE email = '${user_email}') 
+               AND test_id = (SELECT test_id FROM quizzes.dbo.tests WHERE test_name = '${test_name}')`
+        );
+        return posted_result.recordset;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = Database;
