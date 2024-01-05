@@ -22,6 +22,24 @@ const Index = ({ params }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [userResponses, setUserResponses] = useState([]);
+  const userEmail = decodeURIComponent(params.user_email);
+
+   const [user, setUser] = useState([]);
+  
+  useEffect(() => {
+    const fetchUserResults = async () => {
+      const response = await fetch(
+        `http://localhost:5544/user/${userEmail}`
+      ).then((res) => res.json());
+      console.log("response", response);
+  
+      // Assuming response is an array, access the first user
+      if (Array.isArray(response) && response.length > 0) {
+        setUser(response[0]);
+      }
+    };
+    fetchUserResults();
+  }, [userEmail]);
 
   useEffect(() => {
     const fetchQuestionsAndAnswers = async () => {
@@ -147,7 +165,7 @@ const Index = ({ params }) => {
     }  
     // Redirect to results page
     window.location.href = `/results/${userResponseObj.user_email}`;
-  };
+  }; 
   
   return (
     <ThemeProvider theme={theme}>
@@ -218,7 +236,7 @@ const Index = ({ params }) => {
           )}
         </Box>
         <Link
-          href="/quiz"
+          href={user.admin ? `/menuAdmin/${userEmail}` : `/menu/${userEmail}`}
           style={{ display: "flex", justifyContent: "center" }}
         >
           <Button variant="contained" color="primary" style={{ margin: "5px" }}>
