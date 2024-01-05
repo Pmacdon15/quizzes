@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import theme from "../../../../src/theme";
+import theme from "../../../../../src/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -13,6 +13,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import axios from "axios";
+
+import "./page.css";
 
 const Index = ({ params }) => {
   const [questions, setQuestions] = useState([]);
@@ -41,10 +43,13 @@ const Index = ({ params }) => {
     // Calculate the number of correct answers when userResponses is updated
     const numCorrect = userResponses.filter(
       (response) => response.correct
-    ).length;
+    ).length;    
+    console.log(userResponses);
+
+    // Store userResponses in local storage
+    localStorage.setItem("userResponses", JSON.stringify(userResponses));
 
     if (userResponses.length === questions.length && questions.length > 0) {
-      
       alert(`You got ${numCorrect} out of ${questions.length} correct!`);
     }
   }, [userResponses, questions.length]);
@@ -98,7 +103,6 @@ const Index = ({ params }) => {
       questions,
       setUserResponses
     );
-
     // Move to the next question
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
 
@@ -114,20 +118,37 @@ const Index = ({ params }) => {
     // Clear the selected answer for the next question
     setSelectedAnswer(null);
   };
-
+  
   const handleFinishTest = async () => {
+    // Process the answer and update the userResponses state
     await processAnswer(
       answers,
       currentQuestionIndex,
       selectedAnswer,
       questions,
       setUserResponses
-    );
+    ); 
 
-    // Display the results
-    
+    // Calculate the total correct responses and create userResponseObj
+    const userResponseObj = {
+      user_email: decodeURIComponent(params.user_email),
+      test_name: params.test_name,
+      total_questions: questions.length,
+      total_correct: userResponses.filter((response) => response.correct).length,
+    };
+  
+    console.log(userResponseObj);
+  
+    // Send userResponseObj to backend
+    try {
+      await axios.post("http://localhost:5544/results", userResponseObj);
+    } catch (err) {
+      console.log(err);
+    }  
+    // Redirect to results page
+    window.location.href = `/results/${userResponseObj.user_email}`;
   };
-
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

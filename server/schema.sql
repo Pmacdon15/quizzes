@@ -45,6 +45,16 @@ CREATE TABLE answers (
     correct BIT NOT NULL
 );
 
+CREATE TABLE results (
+    result_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT FOREIGN KEY REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
+    test_id INT FOREIGN KEY REFERENCES tests(test_id) ON DELETE CASCADE NOT NULL,
+    test_name VARCHAR(50) NOT NULL,
+    total_correct INT NOT NULL,
+    total_questions INT NOT NULL,    
+    date_taken DATETIME NOT NULL
+);
+
 INSERT INTO users (email, first_name, last_name, password, admin) 
 VALUES 
     ('admin@example.com', 'Admin', 'User', 'password', 1),
@@ -56,7 +66,7 @@ INSERT INTO tests (test_name) VALUES ('Math'), ('Places'), ('Shapes');
 INSERT INTO questions (test_id, question_text) VALUES
     (1, 'What is 1 + 1?'),
     (1, 'What is 2 + 2?'),
-    (1,'What is 3 + 3?'),
+    (1, 'What is 3 + 3?'),
     (1, 'What is 4 + 4?'),
     (1, 'What is 5 + 5?'),
     (2, 'What is the capital of Canada?'),
