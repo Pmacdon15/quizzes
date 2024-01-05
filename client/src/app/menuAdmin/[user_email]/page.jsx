@@ -7,8 +7,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
 export default function menuAdmin({ params }) {
-  const userEmail = decodeURIComponent(params.user_email);
-  console.log(userEmail);
+  const userEmail = decodeURIComponent(params.user_email);  
   return (
     <main>
       <div

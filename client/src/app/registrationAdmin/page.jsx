@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 
 import "../page.css";
 
-const registrationAdminPage = () => {
+const registrationPage = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
 
   const [emailValue, setEmailValue] = React.useState("");
@@ -96,11 +96,11 @@ const registrationAdminPage = () => {
 
     try {
     const response = await axios.post("http://localhost:5544/userAdmin", data);
-
+            
     if (response.status === 200) {
-      console.log("Registration successful. User data:", response.data);
+      console.log("Registration successful. Admin data:", response.data);
       // Assuming the email is returned in the response
-      window.location.href = `/menuAdmin/${response.data.email}`;
+      window.location.href = `/menuAdmin/${response.data[0].email}`;
       return;
     } else {
       // Handle other status codes if needed
@@ -132,7 +132,7 @@ const registrationAdminPage = () => {
           }}
         >
           <div className="header">
-            <div className="text">Register</div>
+            <div className="text">Register Admin</div>
             <div className="underline"></div>
           </div>
 
@@ -207,6 +207,4 @@ const registrationAdminPage = () => {
   );
 };
 
-export default registrationAdminPage;
-
-
+export default registrationPage;
