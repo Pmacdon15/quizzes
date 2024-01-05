@@ -17,12 +17,7 @@ import "./page.css";
 
 export default function Home() {
   // document.title = "Login";
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
     try {
@@ -38,21 +33,23 @@ export default function Home() {
           // User is an owner, handle accordingly (redirect or other actions)
           console.log("User is an admin. Redirecting to Admin page.");
 
-          window.location.href =`/admin/menu/${response.data[0].email}`;
+          window.location.href = `/admin/menu/${response.data[0].email}`;
         } else {
           // User is not an owner, redirect to CoworkersPage
           console.log("User is not an admin. Redirecting to menu.");
-          window.location.href = `/menu/${response.data[0].email}`;          
+          window.location.href = `/menu/${response.data[0].email}`;
         }
-
-        reset(); // Reset the form
+        
       }
+      
     } catch (error) {
       console.error("Error while submitting the form:", error);
     }
-  };
+    // Clear the form after submission
+    reset();
+    };
 
-  return (
+    return (
     <main>
       <div
         style={{
@@ -82,7 +79,7 @@ export default function Home() {
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="custom-form">
-              {/* <form className="custom-form"> */}
+                {/* <form className="custom-form"> */}
                 <TextField
                   sx={{ width: "100%" }}
                   {...register("email")}
