@@ -10,13 +10,26 @@ import TextField from "@mui/material/TextField";
 
 import axios from "axios";
 
-import * as React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { setValue, useForm } from "react-hook-form";
 
-//  import "../page.css";
+import "../page.css";
 
-const registrationPage = () => {
+const registrationPage = () => {  
   const { register, handleSubmit, reset } = useForm();
+
+  const [emailValue, setEmailValue] = React.useState("");
+  const [emailError, setEmailError] = React.useState(false);
+
+  const handleEmailChange = (event) => {
+    setEmailValue(event.target.value);
+    setEmailError(event.target.value === "" || !event.target.value.includes("@"));
+  };
+
+  useEffect(() => {
+    setEmailValue("email", emailValue);
+  }, [emailValue, setEmailValue]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -45,6 +58,10 @@ const registrationPage = () => {
               {...register("email")}
               label="Email"
               variant="outlined"
+              onChange={handleEmailChange}
+              // value={emailValue}
+              error={emailError}
+              helperText={emailError ? "Please enter a valid email" : ""}
             />
             <TextField
               sx={{ width: "100%" }}
