@@ -73,7 +73,14 @@ MSSQL_DATABASE='quizzes'
 
 ## Testing
 
-There are some tests included for the database. Once you have copied the Schema file in to the database, to confirm it is working correctly from the root directory run npm test. All test should pass.
+There are some tests included for the database. Once you have copied the Schema file in to the database, to confirm it is working correctly from the root directory run 
+```bash
+
+npm test
+
+```
+
+All test should pass.
 
 ## Startup
 
