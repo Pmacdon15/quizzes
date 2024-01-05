@@ -39,7 +39,7 @@ export default function menuAdmin({ params }) {
                   color="primary"
                   style={{ margin: "5px" }}
                 >
-                  Get Started
+                  Take A Quiz
                 </Button>
               </Link>
             </Box>
