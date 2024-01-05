@@ -45,19 +45,10 @@ const Index = ({ params }) => {
       (response) => response.correct
     ).length;
 
-    console.log(" currentQuestionIndex b4 if: ", currentQuestionIndex);
-     
-    console.log("userResponses: ", userResponses);
-    console.log("questions.length: ", questions.length);    
-
-    if (userResponses.length === questions.length) {
-      console.log(" userResponses.length", userResponses.length);
-      // Display the number of correct answers and total number of questions      
-      console.log(" currentQuestionIndex inside of if: ", currentQuestionIndex);     
+    if (userResponses.length === questions.length && questions.length > 0) {
       
-      alert(`You got ${numCorrect} out of ${questions.length} correct!`);    }
-    
-
+      alert(`You got ${numCorrect} out of ${questions.length} correct!`);
+    }
   }, [userResponses, questions.length]);
 
   function processAnswer(
@@ -101,8 +92,7 @@ const Index = ({ params }) => {
     setSelectedAnswer(event.target.value);
   };
 
-  const handleNextQuestion = () => {  
-
+  const handleNextQuestion = () => {
     processAnswer(
       answers,
       currentQuestionIndex,
@@ -112,16 +102,15 @@ const Index = ({ params }) => {
     );
 
     // Move to the next question
-    setCurrentQuestionIndex(prevIndex => prevIndex + 1);    
-    
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+
     // Clear the selected answer for the next question
     setSelectedAnswer(null);
-   
   };
 
   useEffect(() => {
     // Log the updated currentQuestionIndex after each render
-    console.log("Updated currentQuestionIndex: ", currentQuestionIndex);
+    console.log("Updated currentQuestionIndex: ", currentQuestionIndex + 1);
   }, [currentQuestionIndex]);
 
   const handleGoToPrevQuestion = () => {
@@ -133,7 +122,7 @@ const Index = ({ params }) => {
     setSelectedAnswer(null);
   };
 
-  const handleFinishTest = async () => {    
+  const handleFinishTest = async () => {
     await processAnswer(
       answers,
       currentQuestionIndex,
@@ -141,10 +130,6 @@ const Index = ({ params }) => {
       questions,
       setUserResponses
     );
-    // // Calculate the number of correct answers
-    // const numCorrect = userResponses.filter(
-    //   (response) => response.correct
-    // ).length;
   };
 
   return (
