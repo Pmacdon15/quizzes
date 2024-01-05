@@ -16,7 +16,6 @@ const cors = require("cors");
 
 // Import functions from databaseInstance.js
 const Database = require("./database.js");
-
 // Create a new instance of the databaseInstance class
 const databaseInstance = new Database();
 

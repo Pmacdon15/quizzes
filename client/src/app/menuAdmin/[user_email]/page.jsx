@@ -6,9 +6,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
-export default function Home({ params }) {
-  const userEmail = decodeURIComponent(params.user_email);
-  console.log(userEmail);
+export default function menuAdmin({ params }) {
+  const userEmail = decodeURIComponent(params.user_email);  
   return (
     <main>
       <div
@@ -40,7 +39,7 @@ export default function Home({ params }) {
                   color="primary"
                   style={{ margin: "5px" }}
                 >
-                  Take A Quiz
+                  Get Started
                 </Button>
               </Link>
             </Box>
@@ -50,3 +49,4 @@ export default function Home({ params }) {
     </main>
   );
 }
+

@@ -33,84 +33,74 @@ export default function Home() {
           // User is an owner, handle accordingly (redirect or other actions)
           console.log("User is an admin. Redirecting to Admin page.");
 
-          window.location.href = `/admin/menu/${response.data[0].email}`;
+          window.location.href = `/menuAdmin/${response.data[0].email}`;
         } else {
-          // User is not an owner, redirect to CoworkersPage
+          // User is not an admin, redirect to menu
           console.log("User is not an admin. Redirecting to menu.");
           window.location.href = `/menu/${response.data[0].email}`;
         }
-        
       }
-      
     } catch (error) {
       console.error("Error while submitting the form:", error);
     }
     // Clear the form after submission
     reset();
-    };
+  };
 
-    return (
-    <main>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Container maxWidth="sm">
-            <Box
-              sx={{
-                bgcolor: "#ffffff",
-                height: "80vh",
-                padding: "3%",
-                marginTop: "12%",
-                borderRadius: "10px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <div className="header">
-                <div className="text">login</div>
-                <div className="underline"></div>
-              </div>
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="sm">
+        <Box
+          sx={{
+            bgcolor: "#ffffff",
+            height: "80vh",
+            padding: "3%",
+            marginTop: "12%",
+            borderRadius: "10px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",            
+          }}
+        >
+          <div className="header">
+            <div className="text">login</div>
+            <div className="underline"></div>
+          </div>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="custom-form">
-                {/* <form className="custom-form"> */}
-                <TextField
-                  sx={{ width: "100%" }}
-                  {...register("email")}
-                  label="Email"
-                  variant="outlined"
-                />
-                <TextField
-                  sx={{ width: "100%" }}
-                  {...register("password")}
-                  label="Password"
-                  variant="outlined"
-                  type="password"
-                />
-
-                <div className="forgot-password">
-                  Lost your password? <span>Click Here!</span>
-                </div>
-                <div className="register">
-                  Don't have an account? <span>Click Here!</span>
-                </div>
-
-                <div className="submit-container">
-                  <Button type="submit" variant="contained">
-                    Sign In
-                  </Button>
-                </div>
-              </form>
-            </Box>
-          </Container>
-        </ThemeProvider>
-      </div>
-    </main>
+          <form onSubmit={handleSubmit(onSubmit)} className="custom-form">
+            {/* <form className="custom-form"> */}
+            <TextField
+              sx={{ width: "100%" }}
+              {...register("email")}
+              label="Email"
+              variant="outlined"
+            />
+            <TextField
+              sx={{ width: "100%" }}
+              {...register("password")}
+              label="Password"
+              variant="outlined"
+              type="password"
+            />
+            <div className="forgot-password">
+              Lost your password?
+              <span>Click Here!</span>
+            </div>
+            <div className="register">
+              Don't have an account?
+              <Link href="/registration">
+                <span>Click Here!</span>
+              </Link>
+            </div>
+            <div className="submit-container">
+              <Button type="submit" variant="contained">
+                Sign In
+              </Button>
+            </div>
+          </form>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 }
