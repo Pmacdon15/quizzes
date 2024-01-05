@@ -40,5 +40,9 @@ const Index = () => {
     </div>
   );
 }
+// {quizSlugs.map((quiz) => (
+//   <Link key={quiz} href={`/questions/${encodeURIComponent(quiz)}`} passHref>
+//     <Button variant="contained" color="primary" style={{ margin: '5px' }}>
+//       {quiz}
 
 export default Index;

@@ -33,7 +33,7 @@ export default function Home() {
           // User is an owner, handle accordingly (redirect or other actions)
           console.log("User is an admin. Redirecting to Admin page.");
 
-          window.location.href = `/admin/menu/${response.data[0].email}`;
+          window.location.href = `/menuAdmin/${response.data[0].email}`;
         } else {
           // User is not an admin, redirect to menu
           console.log("User is not an admin. Redirecting to menu.");

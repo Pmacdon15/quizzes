@@ -6,8 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
-export default function Home({params}) {
-  const userEmail = params .user_email;
+export default function index() {
   return (
     <main>
       <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>

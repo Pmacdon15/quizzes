@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 
 import "../page.css";
 
-const registrationPage = () => {
+const registrationAdminPage = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
 
   const [emailValue, setEmailValue] = React.useState("");
@@ -79,7 +79,7 @@ const registrationPage = () => {
     setValue("confirm_password", confirmPasswordValue);
   }, [confirmPasswordValue, setValue]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (
       emailError ||
       firstNameError ||
@@ -93,15 +93,26 @@ const registrationPage = () => {
       alert("Please enter valid information");
       return;
     }
-    
+
     try {
-      axios.post("http://localhost:5544/userAdmin", data).then((res) => {
-        console.log(res.data);
-        reset();
-      });
-    } catch (err) {
-      console.log(err);
+    const response = await axios.post("http://localhost:5544/userAdmin", data);
+
+    if (response.status === 200) {
+      console.log("Registration successful. User data:", response.data);
+      // Assuming the email is returned in the response
+      window.location.href = `/menuAdmin/${response.data.email}`;
+      return;
+    } else {
+      // Handle other status codes if needed
+      console.log("Registration failed. Server returned status:", response.status);
     }
+  } catch (err) {
+    console.error("Error during registration:", err);
+  }
+
+  // If you reach here, something went wrong
+  alert("Registration failed. Please try again.");
+  reset();
   };
 
   return (
@@ -196,4 +207,6 @@ const registrationPage = () => {
   );
 };
 
-export default registrationPage;
+export default registrationAdminPage;
+
+
