@@ -37,17 +37,17 @@ export default function Home() {
             <div className="text">login</div>
             <div className="underline"></div>
           </div>
-          <br></br>
+        
           {/* <form onSubmit={handleSubmit(onSubmit)} className="custom-form"> */}
           <form className="custom-form">
             <TextField
-              sx={{ width: "80%" }}
+              sx={{ width: "100%" }}
               {...register("email")}
               label="Email"
               variant="outlined"
             />
             <TextField
-              sx={{ width: "80%" }}
+              sx={{ width: "100%" }}
               {...register("password")}
               label="Password"
               variant="outlined"

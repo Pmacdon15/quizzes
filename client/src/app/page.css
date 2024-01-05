@@ -4,8 +4,8 @@
     align-items: center;
     gap: 9px;
     width: 100%;
-    /* margin-top: 1%; */
-
+    margin-top: 8%;
+    margin-bottom: 4%;
 }
 
 .text {
@@ -30,22 +30,22 @@
 .forgot-password {
     /* padding-left: 62px; */
     margin-top: 5%;
-    color: rgba(19, 4, 133, 0.862);
+    /* color: rgba(19, 4, 133, 0.862); */
     font-size: 18px;
 }
 
 .register {
-    color: rgba(19, 4, 133, 0.862);
+    /* color: rgba(19, 4, 133, 0.862); */
     font-size: 18px;
 }
 
 .forgot-password span {
-    color: rgba(4, 162, 176, 0.534);
+    color: rgba(19, 4, 133, 0.862);
     cursor: pointer;
 }
 
 .register span {
-    color: rgba(4, 162, 176, 0.534);
+    color: rgba(19, 4, 133, 0.862);
     cursor: pointer;
 }
 
@@ -57,14 +57,14 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    gap: 10px;
-
+    gap: 20px;
+    
 }
 
 .textField-box {
     display: flex;
     flex-direction: row;
-    width: 80%;
+    width: 100%;
     padding: 1%;
 }
 
