@@ -14,8 +14,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 import axios from "axios";
 
-// import "./page.css";
-
 const Index = ({ params }) => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
@@ -46,7 +44,6 @@ const Index = ({ params }) => {
     ).length;
 
     if (userResponses.length === questions.length && questions.length > 0) {
-      
       alert(`You got ${numCorrect} out of ${questions.length} correct!`);
     }
   }, [userResponses, questions.length]);
@@ -126,8 +123,32 @@ const Index = ({ params }) => {
       setUserResponses
     );
 
-    // Display the results
+    // Create obj to send to backend
+    const user_email = params.user_email;
+    const test_name = params.test_name;
+    const total_correct = userResponses.filter(
+      (response) => response.correct
+    ).length;
+    const total_questions = questions.length;
+    const user_results = `${total_correct} out of ${total_questions} correct!`;
+
+    const userResponseObj = {
+      user_email: user_email,
+      test_name: test_name,
+      total_correct: total_correct,
+      totalQuestions: total_questions,
+      user_results: user_results,
+    };
+    console.log(userResponseObj);
+
+    // Send userResponseObj to backend
+    try{
+    axios.post("http://localhost:5544/results", userResponseObj);
     
+    }
+    catch(err){
+      console.log(err);
+    }
   };
 
   return (
