@@ -45,6 +45,9 @@ const Index = ({ params }) => {
     console.log("look here at usersResponses Notice the state change")
     console.log(userResponses);
 
+    // Store userResponses in local storage
+    localStorage.setItem("userResponses", JSON.stringify(userResponses));
+
     if (userResponses.length === questions.length && questions.length > 0) {
       alert(`You got ${numCorrect} out of ${questions.length} correct!`);
     }
@@ -124,15 +127,8 @@ const Index = ({ params }) => {
       selectedAnswer,
       questions,
       setUserResponses
-    );
-  
-    // Store userResponses in local storage
-    localStorage.setItem("userResponses", JSON.stringify(userResponses));
-  
-    // Log the updated userResponses state
-    console.log("userResponses inside handleFinishTest");
-    console.log(userResponses); 
-  
+    ); 
+      
     // Calculate the total correct responses and create userResponseObj
     const userResponseObj = {
       user_email: decodeURIComponent(params.user_email),
@@ -143,17 +139,12 @@ const Index = ({ params }) => {
   
     console.log(userResponseObj);
   
-    // Wait for the state to be updated
-    await new Promise((resolve) => {
-      setTimeout(resolve, 100000); // 10-second delay
-    });
     // Send userResponseObj to backend
     try {
       await axios.post("http://localhost:5544/results", userResponseObj);
     } catch (err) {
       console.log(err);
-    }
-  
+    }  
     // Redirect to results page
     window.location.href = `/results/${userResponseObj.user_email}`;
   };
