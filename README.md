@@ -1,6 +1,6 @@
 # Quizzes
 
-This is a simple application to store quizzes and allow users to access them. In this project we are using Node js, Express  Next.js and MS Sql.
+This is a simple application to store quizzes and allow users to access them. In this project we are using Node js, Express, Next.js and MS Sql.
  
 
 ## Table of Contents
