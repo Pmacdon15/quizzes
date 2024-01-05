@@ -11,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body style={{ height: '100vh' ,background: 'linear-gradient(to top, #002984, #3f51b5)' }}>
+      <body style={{ height: '100vh' ,background: 'linear-gradient(to top, #002984, #3f51b5)', overflow:'hidden' }}>
         {children}
       </body>
     </html>

@@ -11,11 +11,11 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 
 import React, { useState, useEffect } from "react";
-import { set, useForm } from "react-hook-form";
+import {useForm } from "react-hook-form";
 
 import "../page.css";
 
-const registrationPage = () => {  
+const registrationPage = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
 
   const [emailValue, setEmailValue] = React.useState("");
@@ -24,7 +24,11 @@ const registrationPage = () => {
   const handleEmailChange = (event) => {
     // const { value } = event.target;
     setEmailValue(event.target.value);
-    setEmailError(event.target.value === "" || !event.target.value.includes("@") || !event.target.value.includes(".com"));
+    setEmailError(
+      event.target.value === "" ||
+        !event.target.value.includes("@") ||
+        !event.target.value.includes(".com")
+    );
   };
 
   useEffect(() => {
@@ -39,14 +43,26 @@ const registrationPage = () => {
     setFirstNameError(event.target.value.trim().length < 3);
   };
 
+  const [lastNameValue, setLastNameValue] = React.useState("");
+  const [lastNameError, setLastNameError] = React.useState(false);
+
+  const handleLastNameChange = (event) => {
+    setLastNameValue(event.target.value);
+    setLastNameError(event.target.value.trim().length < 3);
+  }
+
+  useEffect(() => {
+    setValue("last_name", lastNameValue);
+  }
+  , [lastNameValue, setValue]);
+
   const [passwordValue, setPasswordValue] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
 
   const handlePasswordChange = (event) => {
-    const { value } = event.target;
     setPasswordValue(event.target.value);
-    setPasswordError(event.target.value.trim().length < 7); 
-  }
+    setPasswordError(event.target.value.trim().length < 7);
+  };
 
   useEffect(() => {
     setValue("password", passwordValue);
@@ -58,11 +74,31 @@ const registrationPage = () => {
   const handleConfirmPasswordChange = (event) => {
     setConfirmPasswordValue(event.target.value.trim());
     setConfirmPasswordError(event.target.value.trim() !== passwordValue.trim());
-  }
+  };
 
   useEffect(() => {
-    setValue("confirm_password", confirmPasswordValue);    
+    setValue("confirm_password", confirmPasswordValue);
   }, [confirmPasswordValue, setValue]);
+
+  const onSubmit = (data) => {
+    if (emailError || firstNameError || passwordError || confirmPasswordError) {
+      alert("Please enter valid information");
+      return;
+    }
+    if (emailValue === undefined ||emailValue === null || firstNameValue === undefined || passwordValue === undefined || confirmPasswordValue === undefined) {
+      alert("Please enter valid information");
+      console.log(data);
+      return;
+    }
+    try {
+      axios.post("http://localhost:5544/user", data).then((res) => {
+        console.log(res.data);
+        reset();
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -71,7 +107,7 @@ const registrationPage = () => {
         <Box
           sx={{
             bgcolor: "#ffffff",
-            height: "80vh",
+            height: "85vh",
             padding: "3%",
             marginTop: "12%",
             borderRadius: "10px",
@@ -85,27 +121,43 @@ const registrationPage = () => {
             <div className="underline"></div>
           </div>
 
-          {/* <form onSubmit={handleSubmit(onSubmit)} className="custom-form"> */}
-          <form className="custom-form">
+          <form onSubmit={handleSubmit(onSubmit)} className="custom-form">
             <TextField
               sx={{ width: "100%" }}
               {...register("email")}
               label="Email"
               variant="outlined"
-              onChange={handleEmailChange}              
+              onChange={handleEmailChange}
               error={emailError}
               helperText={emailError ? "Please enter a valid email" : ""}
-            />              
+            />
             <TextField
               sx={{ width: "100%" }}
               {...register("first_name")}
               label="First Name"
               variant="outlined"
-              onChange={handleFirstNameChange}  
+              onChange={handleFirstNameChange}
               error={firstNameError}
-              helperText={firstNameError ? "Please enter a valid first name at least 3" : ""}
+              helperText={
+                firstNameError
+                  ? "Please enter a valid first name at least 3"
+                  : ""
+              }
             />
-             <TextField
+            <TextField  
+              sx={{ width: "100%" }}
+              {...register("last_name")}
+              label="Last Name"
+              variant="outlined"
+              onChange={handleLastNameChange}
+              error={lastNameError}
+              helperText={
+                lastNameError
+                  ? "Please enter a valid last name at least 3"
+                  : ""
+              }
+            />
+            <TextField
               sx={{ width: "100%" }}
               {...register("password")}
               label="Password"
@@ -113,19 +165,23 @@ const registrationPage = () => {
               type="password"
               onChange={handlePasswordChange}
               error={passwordError}
-              helperText={passwordError ? "Please enter a valid password at least 7 Characters long" : ""}
-            />                 
+              helperText={
+                passwordError
+                  ? "Please enter a valid password at least 7 Characters long"
+                  : ""
+              }
+            />
             <TextField
               sx={{ width: "100%" }}
               {...register("confirm_password")}
               label="Confirm Password"
               variant="outlined"
-              type="password"  
+              type="password"
               onChange={handleConfirmPasswordChange}
               error={confirmPasswordError}
               helperText={confirmPasswordError ? "Passwords do not match" : ""}
             />
-            
+
             <div className="submit-container">
               <Button type="submit" variant="contained">
                 Register
