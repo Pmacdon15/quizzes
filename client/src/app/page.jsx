@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link';
 import theme from '../../src/theme';
 import {Button} from '@mui/material';
@@ -6,7 +7,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
+import * as React from "react";
+import { useForm } from "react-hook-form";
+
 export default function Home() {
+
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  
   return (
     <main>
       <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
