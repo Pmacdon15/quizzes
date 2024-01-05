@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import theme from "../../../../src/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,6 +11,8 @@ import Button from "@mui/material/Button";
 const Index = ({ params }) => {
   // Declare userResults using useState
   const [userResults, setUserResults] = useState([]);
+  const userEmail = decodeURIComponent(params.user_email);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     // Retrieve user results from local storage
@@ -21,7 +23,24 @@ const Index = ({ params }) => {
     setUserResults(storedUserResults || []);
   }, []); // Empty dependency array ensures this runs only once on mount
 
-    
+  // Fetch user information from the database
+
+  useEffect(() => {
+    const fetchUserResults = async () => {
+      const response = await fetch(
+        `http://localhost:5544/user/${userEmail}`
+      ).then((res) => res.json());
+      console.log("response", response);
+  
+      // Assuming response is an array, access the first user
+      if (Array.isArray(response) && response.length > 0) {
+        setUser(response[0]);
+      }
+    };
+    fetchUserResults();
+  }, [userEmail]);
+  
+
   if (userResults.length === 0) {
     return (
       <ThemeProvider theme={theme}>
@@ -77,7 +96,7 @@ const Index = ({ params }) => {
           ))}
         </Box>
         <Link
-          href="/quiz"
+          href={user.admin ? `/menuAdmin/${userEmail}` : `/menu/${userEmail}`}
           style={{ display: "flex", justifyContent: "center" }}
         >
           <Button variant="contained" color="primary" style={{ margin: "5px" }}>
