@@ -14,7 +14,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 import axios from "axios";
 
-
 const Index = ({ params }) => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
@@ -43,6 +42,8 @@ const Index = ({ params }) => {
     const numCorrect = userResponses.filter(
       (response) => response.correct
     ).length;
+    console.log("look here at usersResponses Notice the state change")
+    console.log(userResponses);
 
     if (userResponses.length === questions.length && questions.length > 0) {
       alert(`You got ${numCorrect} out of ${questions.length} correct!`);
@@ -114,8 +115,9 @@ const Index = ({ params }) => {
     // Clear the selected answer for the next question
     setSelectedAnswer(null);
   };
-
+  
   const handleFinishTest = async () => {
+    // Process the answer and update the userResponses state
     await processAnswer(
       answers,
       currentQuestionIndex,
@@ -123,36 +125,39 @@ const Index = ({ params }) => {
       questions,
       setUserResponses
     );
-
-    // Create obj to send to backend
-    const user_email = decodeURIComponent(params.user_email);
-    const test_name = params.test_name;
-    const total_correct = userResponses.filter(
-      (response) => response.correct
-    ).length;
-    const total_questions = questions.length;    
-
+  
+    // Store userResponses in local storage
+    localStorage.setItem("userResponses", JSON.stringify(userResponses));
+  
+    // Log the updated userResponses state
+    console.log("userResponses inside handleFinishTest");
+    console.log(userResponses); 
+  
+    // Calculate the total correct responses and create userResponseObj
     const userResponseObj = {
-      user_email: user_email,
-      test_name: test_name,
-      total_correct: total_correct,
-      total_questions: total_questions,      
+      user_email: decodeURIComponent(params.user_email),
+      test_name: params.test_name,
+      total_questions: questions.length,
+      total_correct: userResponses.filter((response) => response.correct).length,
     };
+  
     console.log(userResponseObj);
-
+  
+    // Wait for the state to be updated
+    await new Promise((resolve) => {
+      setTimeout(resolve, 100000); // 10-second delay
+    });
     // Send userResponseObj to backend
-    try{
-    axios.post("http://localhost:5544/results", userResponseObj);    
-    }
-    catch(err){
+    try {
+      await axios.post("http://localhost:5544/results", userResponseObj);
+    } catch (err) {
       console.log(err);
     }
+  
     // Redirect to results page
-    // Navigate to results page
-    window.location.href = `/results/${user_email}`;    
-
+    window.location.href = `/results/${userResponseObj.user_email}`;
   };
-
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
