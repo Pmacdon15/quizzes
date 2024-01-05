@@ -22,20 +22,17 @@ export default function Home() {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post("http://localhost:5544/login", data);
-
-      //console.log("Response from the server:", response.data);
-
+      
       if (response.status === 200) {
         //console.log("Login successful. User data:", response.data);
 
         // Check if the user is an owner based on the server response
-        if (response.data[0].admin === 1) {
+        if (response.data[0].admin === true) {
           // User is an owner, handle accordingly (redirect or other actions)
           console.log("User is an admin. Redirecting to Admin page.");
 
           window.location.href = `/menuAdmin/${response.data[0].email}`;
         } else {
-          // User is not an admin, redirect to menu
           console.log("User is not an admin. Redirecting to menu.");
           window.location.href = `/menu/${response.data[0].email}`;
         }
@@ -60,7 +57,7 @@ export default function Home() {
             borderRadius: "10px",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",            
+            alignItems: "center",
           }}
         >
           <div className="header">
