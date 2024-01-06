@@ -1,31 +1,26 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import theme from "../../../../../src/theme";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import Link from "next/link";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Button from "@mui/material/Button";
 
+import Link from "next/link";
 import axios from "axios";
 
-import "./page.css";
+import "../../../page.css"
 
-const Index = ({ params }) => {
+const Questions = ({ params }) => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [userResponses, setUserResponses] = useState([]);
   const userEmail = decodeURIComponent(params.user_email);
-
   const [user, setUser] = useState([]);
 
+  // Fetch user data
   useEffect(() => {
     const fetchUserResults = async () => {
       const response = await fetch(
@@ -41,6 +36,7 @@ const Index = ({ params }) => {
     fetchUserResults();
   }, [userEmail]);
 
+  // Fetch questions and answers
   useEffect(() => {
     const fetchQuestionsAndAnswers = async () => {
       try {
@@ -57,12 +53,12 @@ const Index = ({ params }) => {
     fetchQuestionsAndAnswers();
   }, []);
 
+  // Calculate the number of correct answers when userResponses is updated
   useEffect(() => {
     // Calculate the number of correct answers when userResponses is updated
     const numCorrect = userResponses.filter(
       (response) => response.correct
-    ).length;
-    console.log(userResponses);
+    ).length;    
 
     // Store userResponses in local storage
     localStorage.setItem("userResponses", JSON.stringify(userResponses));
@@ -72,6 +68,7 @@ const Index = ({ params }) => {
     }
   }, [userResponses, questions.length]);
 
+  // Process the answer and update the userResponses state
   function processAnswer(
     answers,
     currentQuestionIndex,
@@ -84,11 +81,9 @@ const Index = ({ params }) => {
         (answer) =>
           answer.question_id === questions[currentQuestionIndex].question_id
       );
-
       const correctAnswer = filteredAnswers.find(
         (answer) => answer.correct === true
       );
-
       // Calculate whether the selected answer is correct
       const isCorrect =
         selectedAnswer === (correctAnswer ? correctAnswer.answer_text : null);
@@ -102,17 +97,17 @@ const Index = ({ params }) => {
           correct: isCorrect,
         },
       ]);
-
       // Resolve the promise after updating user responses
       resolve();
     });
   }
 
+  // Update the selected answer when the user clicks on a radio button
   const handleAnswerChange = (event) => {
     // Update the selected answer when the user clicks on a radio button
     setSelectedAnswer(event.target.value);
   };
-
+  // Process the answer and update the userResponses state
   const handleNextQuestion = () => {
     processAnswer(
       answers,
@@ -123,11 +118,11 @@ const Index = ({ params }) => {
     );
     // Move to the next question
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-
     // Clear the selected answer for the next question
     setSelectedAnswer(null);
   };
 
+  // Move to the previous question
   const handleGoToPrevQuestion = () => {
     // Move to the last question
     setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
@@ -137,6 +132,7 @@ const Index = ({ params }) => {
     setSelectedAnswer(null);
   };
 
+  // Calculate the total correct responses and create userResponseObj
   const handleFinishTest = async () => {
     // Process the answer and update the userResponses state
     await processAnswer(
@@ -146,7 +142,6 @@ const Index = ({ params }) => {
       questions,
       setUserResponses
     );
-
     // Calculate the total correct responses and create userResponseObj
     const userResponseObj = {
       user_email: decodeURIComponent(params.user_email),
@@ -154,10 +149,7 @@ const Index = ({ params }) => {
       total_questions: questions.length,
       total_correct: userResponses.filter((response) => response.correct)
         .length,
-    };
-
-    console.log(userResponseObj);
-
+    };   
     // Send userResponseObj to backend
     try {
       await axios.post("http://localhost:5544/results", userResponseObj);
@@ -169,84 +161,75 @@ const Index = ({ params }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <Box
-          sx={{
-            bgcolor: "#ffffff",
-            height: "80vh",
-            padding: "3%",
-            // paddingLeft: "5%",
-            marginTop: "12%",
-            borderRadius: "10px",
-          }}
-        >
-          <h1>Questions Page</h1>
-          {questions.length > 0 && answers.length > 0 && (
-            <div className="questions">
-              {questions[currentQuestionIndex].question_text}
-              <RadioGroup value={selectedAnswer} onChange={handleAnswerChange}>
-                {answers
-                  .filter(
-                    (answer) =>
-                      answer.question_id ===
-                      questions[currentQuestionIndex].question_id
-                  )
-                  .map((answer) => (
-                    <FormControlLabel
-                      key={answer.answer_id}
-                      value={answer.answer_text}
-                      control={<Radio />}
-                      label={answer.answer_text}
-                    />
-                  ))}
-              </RadioGroup>
-              {/* If the current question is not the last question, show the Next Question button */}
-              {currentQuestionIndex < questions.length - 1 ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ margin: "5px" }}
-                  onClick={handleNextQuestion}
-                >
-                  Next Question
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  style={{ margin: "5px" }}
-                  onClick={handleFinishTest}
-                >
-                  Finish Test
-                </Button>
-              )}
-              {/* If the current question is not the first question, show the Last Question button */}
-              {currentQuestionIndex > 0 && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ margin: "5px" }}
-                  onClick={handleGoToPrevQuestion}
-                >
-                  Last Question
-                </Button>
-              )}
-            </div>
+    <div className="container">
+      <div className="header">
+        <div className="text">Questions</div>
+        <div className="underline"></div>
+      </div>
+      {questions.length > 0 && answers.length > 0 && (
+        <div className="questions">
+          {questions[currentQuestionIndex].question_text}
+          <RadioGroup value={selectedAnswer} onChange={handleAnswerChange}>
+            {answers
+              .filter(
+                (answer) =>
+                  answer.question_id ===
+                  questions[currentQuestionIndex].question_id
+              )
+              .map((answer) => (
+                <FormControlLabel
+                  key={answer.answer_id}
+                  value={answer.answer_text}
+                  control={<Radio />}
+                  label={answer.answer_text}
+                />
+              ))}
+          </RadioGroup>
+          {/* If the current question is not the last question, show the Next Question button */}
+          {currentQuestionIndex < questions.length - 1 ? (
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ margin: "5px" }}
+              onClick={handleNextQuestion}
+            >
+              Next Question
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ margin: "5px" , backgroundColor:"green"} }
+              onClick={handleFinishTest}
+            >
+              Finish Test
+            </Button>
           )}
-        </Box>
+          {/* If the current question is not the first question, show the Last Question button */}
+          {currentQuestionIndex > 0 && (
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ margin: "5px" }}
+              onClick={handleGoToPrevQuestion}
+            >
+              Last Question
+            </Button>
+          )}
+        </div>
+      )}
+      <div className="options-container">
         <Link
           href={user.admin ? `/menuAdmin/${userEmail}` : `/menu/${userEmail}`}
-          style={{ display: "flex", justifyContent: "center" }}
+          passHref
         >
           <Button variant="contained" color="primary" style={{ margin: "5px" }}>
             Go Back to Menu
           </Button>
         </Link>
-      </Container>
-    </ThemeProvider>
+      </div>
+    </div>
   );
 };
 
-export default Index;
+export default Questions;
