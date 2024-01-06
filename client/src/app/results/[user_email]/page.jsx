@@ -72,7 +72,7 @@ const Results = ({ params }) => {
 
       <Link
         href={user.admin ? `/menuAdmin/${userEmail}` : `/menu/${userEmail}`}
-        style={{ display: "flex", justifyContent: "center" }}
+        passHref
       >
         <Button variant="contained" color="primary" style={{ margin: "5px" }}>
           Go Back to Menu
