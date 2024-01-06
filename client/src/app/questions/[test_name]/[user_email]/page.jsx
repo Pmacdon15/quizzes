@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import Link from "next/link";
 import axios from "axios";
 
-import "./page.css";
 import "../../../page.css"
 
 const Questions = ({ params }) => {
