@@ -157,7 +157,7 @@ const Questions = ({ params }) => {
       console.log(err);
     }
     // Redirect to results page
-    window.location.href = `/results/${userResponseObj.user_email}`;
+    window.location.href = `/resultsAfterQuiz/${userResponseObj.user_email}`;
   };
 
   return (
