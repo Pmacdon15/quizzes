@@ -22,6 +22,24 @@ const Index = ({ params }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [userResponses, setUserResponses] = useState([]);
+  const userEmail = decodeURIComponent(params.user_email);
+
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const fetchUserResults = async () => {
+      const response = await fetch(
+        `http://localhost:5544/user/${userEmail}`
+      ).then((res) => res.json());
+      console.log("response", response);
+
+      // Assuming response is an array, access the first user
+      if (Array.isArray(response) && response.length > 0) {
+        setUser(response[0]);
+      }
+    };
+    fetchUserResults();
+  }, [userEmail]);
 
   useEffect(() => {
     const fetchQuestionsAndAnswers = async () => {
@@ -43,7 +61,7 @@ const Index = ({ params }) => {
     // Calculate the number of correct answers when userResponses is updated
     const numCorrect = userResponses.filter(
       (response) => response.correct
-    ).length;    
+    ).length;
     console.log(userResponses);
 
     // Store userResponses in local storage
@@ -118,7 +136,7 @@ const Index = ({ params }) => {
     // Clear the selected answer for the next question
     setSelectedAnswer(null);
   };
-  
+
   const handleFinishTest = async () => {
     // Process the answer and update the userResponses state
     await processAnswer(
@@ -127,28 +145,29 @@ const Index = ({ params }) => {
       selectedAnswer,
       questions,
       setUserResponses
-    ); 
+    );
 
     // Calculate the total correct responses and create userResponseObj
     const userResponseObj = {
       user_email: decodeURIComponent(params.user_email),
       test_name: params.test_name,
       total_questions: questions.length,
-      total_correct: userResponses.filter((response) => response.correct).length,
+      total_correct: userResponses.filter((response) => response.correct)
+        .length,
     };
-  
+
     console.log(userResponseObj);
-  
+
     // Send userResponseObj to backend
     try {
       await axios.post("http://localhost:5544/results", userResponseObj);
     } catch (err) {
       console.log(err);
-    }  
+    }
     // Redirect to results page
     window.location.href = `/results/${userResponseObj.user_email}`;
   };
-  
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -218,7 +237,7 @@ const Index = ({ params }) => {
           )}
         </Box>
         <Link
-          href="/quiz"
+          href={user.admin ? `/menuAdmin/${userEmail}` : `/menu/${userEmail}`}
           style={{ display: "flex", justifyContent: "center" }}
         >
           <Button variant="contained" color="primary" style={{ margin: "5px" }}>
