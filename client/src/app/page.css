@@ -87,7 +87,11 @@
 .options-container {
     display: flex;
     gap: 5px;
+    
     margin-top: 1%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 /* .checkbox-container {
