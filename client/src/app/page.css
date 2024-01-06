@@ -2,9 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 9px;
-    width: 100%;
-    margin-top: 4%;
+    /* gap: 9px; */
+    /* width: 100%; */
+    margin-top: 8%;
     margin-bottom: 4%;
 }
 
@@ -16,15 +16,20 @@
 }
 
 .underline {
-    width: 61px;
+    width: 100px;
     height: 6px;
     background: rgba(19, 4, 133, 0.862);
     border-radius: 9px;
+    /* margin top 4%; and margin bottom 4%; */
+    margin: 4% ;
 }
 
-/* .display-container {
-    margin-top: 10%;
-} */
+.container {
+    /* margin-top: 10%; */
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
 
 
 .forgot-password {
@@ -32,11 +37,14 @@
     margin-top: 5%;
     /* color: rgba(19, 4, 133, 0.862); */
     font-size: 18px;
+    /* display: flex;
+    flex-direction: row; */
 }
 
 .register {
     /* color: rgba(19, 4, 133, 0.862); */
     font-size: 18px;
+    
 }
 
 .forgot-password span {
@@ -50,13 +58,13 @@
 }
 
 .custom-form {
-    margin: 1%;
+    /* margin: 1%; */
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
     gap: 20px;    
-    width: 70%;
+    /* width: 70%; */
 }
 
 .textField-box {
@@ -73,7 +81,7 @@
     margin-top: 1%;
     justify-content: center;
     align-items: center;
-    flex-direction: row
+    flex-direction: column;
 }
 
 .options-container {
@@ -82,13 +90,13 @@
     margin-top: 1%;
 }
 
-.checkbox-container {
+/* .checkbox-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;    
     width: 80%;    
-}
+} */
 
 /* .label-width {
     min-width: 120px;   
