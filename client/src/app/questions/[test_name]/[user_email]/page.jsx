@@ -198,8 +198,8 @@ const Questions = ({ params }) => {
           ) : (
             <Button
               variant="contained"
-              color="secondary"
-              style={{ margin: "5px" }}
+              color="primary"
+              style={{ margin: "5px" , backgroundColor:"green"} }
               onClick={handleFinishTest}
             >
               Finish Test

@@ -36,6 +36,7 @@ export default function RootLayout({ children }) {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                overflow: "auto",
               }}
             >
               {children}

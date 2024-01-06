@@ -19,8 +19,7 @@
     width: 100px;
     height: 6px;
     background: rgba(19, 4, 133, 0.862);
-    border-radius: 9px;
-    /* margin top 4%; and margin bottom 4%; */
+    border-radius: 9px;    
     margin: 4% ;
 }
 
@@ -28,6 +27,7 @@
     /* margin-top: 10%; */
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 70%;
 }
 
@@ -86,9 +86,8 @@
 
 .options-container {
     display: flex;
-    gap: 5px;
-    
-    margin-top: 1%;
+    gap: 5px;    
+    /* margin-top: 1%; */
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -98,12 +97,10 @@ h1 {
     text-align: center;
 }
 
-.questions{
-    /* margin-top:10%; */
+.questions{   
     display: flex;
     flex-direction: column;
     align-content: center; 
     justify-content: center;
-    align-items: center;
-    gap: 20px;    
+    align-items: center;    
 }
