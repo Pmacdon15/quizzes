@@ -32,6 +32,14 @@ const Results = ({ params }) => {
     fetchUserResults();
   }, [user_email]);
 
+  if (userResults.length === 0) {
+    return (
+      <div className="container">
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+  
   return (
     <div className="Container">
       <div className="header">
@@ -40,7 +48,7 @@ const Results = ({ params }) => {
       </div>
         {/* loop threw userResults and display them  in a table */}
         <TableContainer component={Paper} >
-          <Table sx={{ maxWidth: "250px" }} aria-label="simple table">
+          <Table sx={{ maxWidth: "250px" }} aria-label="a dense table">
             <TableHead>
               <TableRow>
                 <TableCell>Quiz</TableCell>
@@ -54,7 +62,7 @@ const Results = ({ params }) => {
               {userResults.map((result) => (
                 <TableRow
                   key={result.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0} }}
+                  sx={{ '&:last-child td, &:last-child th': {backgroundColor: "theme.palette.action.hover", border: 0} }}
                 >
                   <TableCell component="th" scope="row">
                     {result.test_name}
