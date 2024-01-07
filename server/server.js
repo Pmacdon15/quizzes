@@ -271,6 +271,16 @@ app.post("/results", async (req, res) => {
   }
 });
 
+// Get results by user email
+app.get("/results/:user_email", async (req, res) => {
+  const results = await databaseInstance.getResultsByUserEmail(req.params.user_email);
+  if (results === null || results === undefined) {
+    res.status(400).send("Something when wrong with getting results.");
+  } else {
+    res.status(200).json(results);
+  }
+});
+
 // Start server
 app.listen(port, () => {
   displayGraphic(port);

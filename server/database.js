@@ -606,7 +606,6 @@ class Database {
        GETDATE()
      )`
       );
-
       if (result.rowsAffected[0] === 1) {
         console.log("Result posted successfully");
         const posted_result = await this.pool.request().query(
@@ -620,6 +619,28 @@ class Database {
       console.log(error);
     }
   }
+
+  /**
+   * Retrieves results by user email.
+   * @param {string} user_email - The email of the user.
+   * @returns {Promise<Array<Object>>} - A promise that resolves to an array of results.
+   */
+  async getResultsByUserEmail(user_email) {
+    try {
+      const result = await this.pool
+        .request()
+        .query(
+          `SELECT * FROM quizzes.dbo.results WHERE user_id = (SELECT user_id FROM quizzes.dbo.users WHERE email = '${user_email}')`
+        );
+      if (result.recordset.length > 0) {
+        console.log("Results retrieved successfully");
+        return result.recordset;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 }
 
 module.exports = Database;

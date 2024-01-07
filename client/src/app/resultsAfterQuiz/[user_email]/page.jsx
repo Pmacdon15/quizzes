@@ -69,7 +69,6 @@ const Results = ({ params }) => {
           Question {result.question_id}: Answer {result.answer_id} - Incorrect
         </p>
       ))}
-
       <Link
         href={user.admin ? `/menuAdmin/${userEmail}` : `/menu/${userEmail}`}
         passHref

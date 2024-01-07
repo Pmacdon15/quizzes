@@ -96,6 +96,24 @@ h1 {
     text-align: center;
 }
 
+.resultTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5%;
+}
+
+.totalsTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5%;
+}
+
 .questions{   
     display: flex;
     flex-direction: column;
