@@ -61,8 +61,6 @@ const Quizzes = ({ params }) => {
       const response = await axios.post("http://localhost:5544/test", {
         test_name: quizName,
       });
-      console.log(response);
-
       fetchQuizSlugs();
     } catch (err) {
       console.log(err);
@@ -70,7 +68,7 @@ const Quizzes = ({ params }) => {
   };
 
   const editQuiz = async (quizName, slug) => {
-    if (quizNameError||quizName==="") {
+    if (quizNameError || quizName === "") {
       alert("Please enter a valid quiz name");
       return;
     }
@@ -78,7 +76,6 @@ const Quizzes = ({ params }) => {
       const response = await axios.put(`http://localhost:5544/test/${slug}`, {
         new_test_name: quizName,
       });
-      console.log(response);
       fetchQuizSlugs();
     } catch (err) {
       console.log(err);
