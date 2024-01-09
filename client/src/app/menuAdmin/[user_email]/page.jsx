@@ -16,6 +16,11 @@ export default function menuAdmin({ params }) {
         <Button variant="contained" color="primary" style={{ margin: "5px" }}>
           Take A Quiz
         </Button>
+      </Link>      
+      <Link href={`/editQuizzes/${userEmail}`}>
+        <Button variant="contained" color="primary" style={{ margin: "5px" }}>
+          Edit Quizzes
+        </Button>
       </Link>
       <Link href={`/results/${userEmail}`}>
         <Button variant="contained" color="primary" style={{ margin: "5px" }}>
