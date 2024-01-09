@@ -5,9 +5,10 @@ import Link from "next/link";
 import Button from "@mui/material/Button";
 
 import "../../page.css";
+import { set } from "react-hook-form";
 
 const Quiz = ({ params }) => {
-  const quizSlugs = ["Math", "Places", "Shapes"];
+  //const quizSlugs = ["Math", "Places", "Shapes"];
   const userEmail = decodeURIComponent(params.user_email);
 
   const [user, setUser] = useState([]);
@@ -26,6 +27,24 @@ const Quiz = ({ params }) => {
     };
     fetchUserResults();
   }, [userEmail]);
+
+  const [quizSlugs, setQuizSlugs] = useState([]);
+
+  useEffect(() => {
+    const fetchQuizSlugs = async () => {
+      const response = await fetch(`http://localhost:5544/tests`).then((res) =>
+        res.json()
+      );
+      console.log("response", response);
+      // Loop through the response and add response[i].test_name as a slug
+      const slugs = [];
+      for (let i = 0; i < response.length; i++) {
+        slugs.push(response[i].test_name);
+      }
+     setQuizSlugs(slugs);
+    };
+    fetchQuizSlugs();
+  }, []);
 
   return (
     <div className="container">
