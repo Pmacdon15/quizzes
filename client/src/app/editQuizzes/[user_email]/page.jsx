@@ -14,24 +14,7 @@ const Quizzes = ({ params }) => {
   const { register, handleSubmit, setValue } = useForm();
   // const quizSlugs = ["Math", "Places", "Shapes"];
   const userEmail = decodeURIComponent(params.user_email);
-
-  const [user, setUser] = useState([]);
-
-  useEffect(() => {
-    const fetchUserResults = async () => {
-      const response = await fetch(
-        `http://localhost:5544/user/${userEmail}`
-      ).then((res) => res.json());
-      console.log("response", response);
-
-      // Assuming response is an array, access the first user
-      if (Array.isArray(response) && response.length > 0) {
-        setUser(response[0]);
-      }
-    };
-    fetchUserResults();
-  }, [userEmail]);
-
+  //
   const [quizSlugs, setQuizSlugs] = useState([]);
 
   const fetchQuizSlugs = async () => {
@@ -86,6 +69,22 @@ const Quizzes = ({ params }) => {
     }
   };
 
+  const editQuiz = async (quizName, slug) => {
+    if (quizNameError||quizName==="") {
+      alert("Please enter a valid quiz name");
+      return;
+    }
+    try {
+      const response = await axios.put(`http://localhost:5544/test/${slug}`, {
+        new_test_name: quizName,
+      });
+      console.log(response);
+      fetchQuizSlugs();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const deleteQuiz = async (slug) => {
     const response = await fetch(`http://localhost:5544/test/${slug}`, {
       method: "DELETE",
@@ -104,24 +103,32 @@ const Quizzes = ({ params }) => {
         {quizSlugs.map((slug) => (
           <div className="display-edit-quizzes" key={slug}>
             <div className="display-label">
-            <label>{slug}</label>
+              <label>{slug}</label>
             </div>
             <div className="display-buttons">
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ margin: "5px" }}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ margin: "5px" }}
-              onClick={() => deleteQuiz(slug)}
-            >
-              Delete
-            </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ margin: "5px" }}
+                onClick={() => editQuiz(quizName, slug)}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ margin: "5px" }}
+              >
+                Questions
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ margin: "5px" }}
+                onClick={() => deleteQuiz(slug)}
+              >
+                Delete
+              </Button>
             </div>
           </div>
         ))}
