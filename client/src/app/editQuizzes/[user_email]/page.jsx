@@ -2,12 +2,16 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
+import { useForm } from "react-hook-form";
+import axios from "axios";
+
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 
 import "../../page.css";
 
 const Quiz = ({ params }) => {
+  const { register, handleSubmit, setValue } = useForm();
   // const quizSlugs = ["Math", "Places", "Shapes"];
   const userEmail = decodeURIComponent(params.user_email);
 
@@ -47,6 +51,41 @@ const Quiz = ({ params }) => {
     fetchQuizSlugs();
   }, []);
 
+  const [quizName, setQuizName] = useState("");
+  const [quizNameError, setQuizNameError] = useState("");
+
+  const handleQuizNameChange = (event) => {
+    const { value } = event.target;
+    setQuizName(value);
+    setQuizNameError(value.trim().length < 3);
+
+    for (let i = 0; i < quizSlugs.length; i++) {
+      if (quizSlugs[i] === value || value.trim().length < 3) {
+        setQuizNameError(true);
+        break;
+      } else {
+        setQuizNameError(false);
+      }
+    }
+  };
+
+  const addQuiz = async (data) => {
+    try {
+      if (quizNameError) {
+        alert("Error adding quiz");
+        return;
+      }
+      const response = await axios.post("http://localhost:5544/test", {
+        test_name: quizName,
+      });
+      console.log(response);
+
+      fetchQuizSlugs();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const deleteQuiz = async (slug) => {
     const response = await fetch(`http://localhost:5544/test/${slug}`, {
       method: "DELETE",
@@ -82,16 +121,29 @@ const Quiz = ({ params }) => {
             </Button>
           </div>
         ))}
-        <TextField />
-        <Button variant="contained" color="primary" style={{ margin: "5px" }}>
-          Add Quiz
-        </Button>
+        <form onSubmit={handleSubmit(addQuiz)} className="custom-form">
+          <TextField
+            {...register("test_name", { required: true })}
+            label="Quiz Name"
+            variant="outlined"
+            onChange={handleQuizNameChange}
+            error={!!quizNameError}
+            helperText={
+              quizNameError ? "Quiz name must be at least 3 characters" : ""
+            }
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ margin: "5px" }}
+          >
+            Add Quiz
+          </Button>
+        </form>
       </div>
       <div className="options-container">
-        <Link
-          href={user.admin ? `/menuAdmin/${userEmail}` : `/menu/${userEmail}`}
-          passHref
-        >
+        <Link href={`/menuAdmin/${userEmail}`} passHref>
           <Button variant="contained" color="primary" style={{ margin: "5px" }}>
             Go Back to Menu
           </Button>
@@ -100,9 +152,5 @@ const Quiz = ({ params }) => {
     </div>
   );
 };
-// {quizSlugs.map((quiz) => (
-//   <Link key={quiz} href={`/questions/${encodeURIComponent(quiz)}`} passHref>
-//     <Button variant="contained" color="primary" style={{ margin: '5px' }}>
-//       {quiz}
 
 export default Quiz;
