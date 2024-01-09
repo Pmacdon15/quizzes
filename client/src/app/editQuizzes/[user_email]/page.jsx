@@ -102,8 +102,11 @@ const Quizzes = ({ params }) => {
       </div>
       <div className="submit-container">
         {quizSlugs.map((slug) => (
-          <div className="test" key={slug}>
+          <div className="display-edit-quizzes" key={slug}>
+            <div className="display-label">
             <label>{slug}</label>
+            </div>
+            <div className="display-buttons">
             <Button
               variant="contained"
               color="primary"
@@ -119,6 +122,7 @@ const Quizzes = ({ params }) => {
             >
               Delete
             </Button>
+            </div>
           </div>
         ))}
         <form onSubmit={handleSubmit(addQuiz)} className="custom-form">
