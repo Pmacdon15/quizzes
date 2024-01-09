@@ -83,6 +83,15 @@
     flex-direction: column;
 }
 
+.test
+{
+    /* display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 3px; */
+    
+}
 .options-container {
     display: flex;
     gap: 5px;    
