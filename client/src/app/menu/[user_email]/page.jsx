@@ -13,16 +13,21 @@ export default function Home({ params }) {
         <div className="underline"></div>
       </div>
       <div className="submit-container">
-      <Link href={`/quiz/${userEmail}`}>
-        <Button variant="contained" color="primary" style={{ margin: "5px" }}>
-          Take A Quiz
-        </Button>
-      </Link>
-      <Link href={`/results/${userEmail}`}>
-        <Button variant="contained" color="primary" style={{ margin: "5px" }}>
-          View Results
-        </Button>
-      </Link>
+        <Link href={`/quiz/${userEmail}`}>
+          <Button variant="contained" color="primary" style={{ margin: "5px" }}>
+            Take A Quiz
+          </Button>
+        </Link>
+        <Link href={`/results/${userEmail}`}>
+          <Button variant="contained" color="primary" style={{ margin: "5px" }}>
+            View Results
+          </Button>
+        </Link>
+        <Link href={`/`} passHref>
+          <Button variant="contained" color="primary" style={{ margin: "5px" }}>
+            Logout
+          </Button>
+        </Link>
       </div>
     </div>
   );
