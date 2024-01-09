@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 
 import "../../page.css";
 
-const Quiz = ({ params }) => {
+const Quizzes = ({ params }) => {
   const { register, handleSubmit, setValue } = useForm();
   // const quizSlugs = ["Math", "Places", "Shapes"];
   const userEmail = decodeURIComponent(params.user_email);
@@ -97,7 +97,7 @@ const Quiz = ({ params }) => {
   return (
     <div className="container">
       <div className="header">
-        <div className="text">Quiz</div>
+        <div className="text">Quizzes</div>
         <div className="underline"></div>
       </div>
       <div className="submit-container">
@@ -153,4 +153,4 @@ const Quiz = ({ params }) => {
   );
 };
 
-export default Quiz;
+export default Quizzes;
