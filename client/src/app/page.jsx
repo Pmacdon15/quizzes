@@ -36,9 +36,10 @@ export default function Home() {
           console.log("User is not an admin. Redirecting to menu.");
           window.location.href = `/menu/${response.data[0].email}`;
         }
-      }
+      }      
     } catch (error) {
       console.error("Error while submitting the form:", error);
+      alert("Error while logging in. Please try again.");
     }
     // Clear the form after submission
     reset();
