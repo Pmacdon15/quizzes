@@ -55,13 +55,13 @@ export default function Home() {
         {/* <form className="custom-form"> */}
         <TextField
           sx={{ width: "100%" }}
-          {...register("email")}
+          {...register("email", { required: true })}
           label="Email"
           variant="outlined"
         />
         <TextField
           sx={{ width: "100%" }}
-          {...register("password")}
+          {...register("password", { required: true })}
           label="Password"
           variant="outlined"
           type="password"
