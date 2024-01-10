@@ -128,7 +128,7 @@ const registrationPage = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="custom-form">
         <TextField
           sx={{ width: "100%" }}
-          {...register("email")}
+          {...register("email", { required: true })}
           label="Email"
           variant="outlined"
           onChange={handleEmailChange}
@@ -137,7 +137,7 @@ const registrationPage = () => {
         />
         <TextField
           sx={{ width: "100%" }}
-          {...register("first_name")}
+          {...register("first_name", { required: true })}
           label="First Name"
           variant="outlined"
           onChange={handleFirstNameChange}
@@ -148,7 +148,7 @@ const registrationPage = () => {
         />
         <TextField
           sx={{ width: "100%" }}
-          {...register("last_name")}
+          {...register("last_name", { required: true })}
           label="Last Name"
           variant="outlined"
           onChange={handleLastNameChange}
@@ -159,7 +159,7 @@ const registrationPage = () => {
         />
         <TextField
           sx={{ width: "100%" }}
-          {...register("password")}
+          {...register("password", { required: true })}
           label="Password"
           variant="outlined"
           type="password"
@@ -173,7 +173,7 @@ const registrationPage = () => {
         />
         <TextField
           sx={{ width: "100%" }}
-          {...register("confirm_password")}
+          {...register("confirm_password", { required: true })}
           label="Confirm Password"
           variant="outlined"
           type="password"
