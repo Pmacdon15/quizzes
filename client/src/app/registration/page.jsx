@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 
 import axios from "axios";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import "../page.css";
@@ -95,115 +95,100 @@ const registrationPage = () => {
     }
 
     try {
-    const response = await axios.post("http://localhost:5544/user", data);
-    
-    if (response.status === 200) {
-      console.log("Registration successful. User data:", response.data);
-      // Assuming the email is returned in the response
-      window.location.href = `/menu/${response.data[0].email}`;
-      return;
-    } else {
-      // Handle other status codes if needed
-      console.log("Registration failed. Server returned status:", response.status);
-    }
-  } catch (err) {
-    console.error("Error during registration:", err);
-  }
+      const response = await axios.post("http://localhost:5544/user", data);
 
-  // If you reach here, something went wrong
-  alert("Registration failed. Please try again.");
-  reset();
+      if (response.status === 200) {
+        console.log("Registration successful. User data:", response.data);
+        // Assuming the email is returned in the response
+        window.location.href = `/menu/${response.data[0].email}`;
+        return;
+      } else {
+        // Handle other status codes if needed
+        console.log(
+          "Registration failed. Server returned status:",
+          response.status
+        );
+      }
+    } catch (err) {
+      console.error("Error during registration:", err);
+    }
+
+    // If you reach here, something went wrong
+    alert("Registration failed. Please try again.");
+    reset();
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <Box
-          sx={{
-            bgcolor: "#ffffff",
-            height: "85vh",
-            padding: "3%",
-            marginTop: "12%",
-            borderRadius: "10px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <div className="header">
-            <div className="text">Register</div>
-            <div className="underline"></div>
-          </div>
+    <div className="containerReg">
+      <div className="header">
+        <div className="text">Register</div>
+        <div className="underline"></div>
+      </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="custom-form">
-            <TextField
-              sx={{ width: "100%" }}
-              {...register("email")}
-              label="Email"
-              variant="outlined"
-              onChange={handleEmailChange}
-              error={emailError}
-              helperText={emailError ? "Please enter a valid email" : ""}
-            />
-            <TextField
-              sx={{ width: "100%" }}
-              {...register("first_name")}
-              label="First Name"
-              variant="outlined"
-              onChange={handleFirstNameChange}
-              error={firstNameError}
-              helperText={
-                firstNameError
-                  ? "Please enter a valid first name at least 3"
-                  : ""
-              }
-            />
-            <TextField
-              sx={{ width: "100%" }}
-              {...register("last_name")}
-              label="Last Name"
-              variant="outlined"
-              onChange={handleLastNameChange}
-              error={lastNameError}
-              helperText={
-                lastNameError ? "Please enter a valid last name at least 3" : ""
-              }
-            />
-            <TextField
-              sx={{ width: "100%" }}
-              {...register("password")}
-              label="Password"
-              variant="outlined"
-              type="password"
-              onChange={handlePasswordChange}
-              error={passwordError}
-              helperText={
-                passwordError
-                  ? "Please enter a valid password at least 7 Characters long"
-                  : ""
-              }
-            />
-            <TextField
-              sx={{ width: "100%" }}
-              {...register("confirm_password")}
-              label="Confirm Password"
-              variant="outlined"
-              type="password"
-              onChange={handleConfirmPasswordChange}
-              error={confirmPasswordError}
-              helperText={confirmPasswordError ? "Passwords do not match" : ""}
-            />
+      <form onSubmit={handleSubmit(onSubmit)} className="custom-form">
+        <TextField
+          sx={{ width: "100%" }}
+          {...register("email")}
+          label="Email"
+          variant="outlined"
+          onChange={handleEmailChange}
+          error={emailError}
+          helperText={emailError ? "Please enter a valid email" : ""}
+        />
+        <TextField
+          sx={{ width: "100%" }}
+          {...register("first_name")}
+          label="First Name"
+          variant="outlined"
+          onChange={handleFirstNameChange}
+          error={firstNameError}
+          helperText={
+            firstNameError ? "Please enter a valid first name at least 3" : ""
+          }
+        />
+        <TextField
+          sx={{ width: "100%" }}
+          {...register("last_name")}
+          label="Last Name"
+          variant="outlined"
+          onChange={handleLastNameChange}
+          error={lastNameError}
+          helperText={
+            lastNameError ? "Please enter a valid last name at least 3" : ""
+          }
+        />
+        <TextField
+          sx={{ width: "100%" }}
+          {...register("password")}
+          label="Password"
+          variant="outlined"
+          type="password"
+          onChange={handlePasswordChange}
+          error={passwordError}
+          helperText={
+            passwordError
+              ? "Please enter a valid password at least 7 Characters long"
+              : ""
+          }
+        />
+        <TextField
+          sx={{ width: "100%" }}
+          {...register("confirm_password")}
+          label="Confirm Password"
+          variant="outlined"
+          type="password"
+          onChange={handleConfirmPasswordChange}
+          error={confirmPasswordError}
+          helperText={confirmPasswordError ? "Passwords do not match" : ""}
+        />
 
-            <div className="submit-container">
-              <Button type="submit" variant="contained">
-                Register
-              </Button>
-            </div>
-          </form>
-        </Box>
-      </Container>
-    </ThemeProvider>
+        <div className="submit-container">
+          <Button type="submit" variant="contained">
+            Register
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 

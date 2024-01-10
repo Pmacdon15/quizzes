@@ -33,6 +33,15 @@
     /* background-color: rgba(19, 4, 133, 0.862); */
 }
 
+.containerReg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;    
+    /* background-color: rgba(19, 4, 133, 0.862); */
+}
+
+
 .forgot-password {
     /* padding-left: 62px; */
     margin-top: 5%;
